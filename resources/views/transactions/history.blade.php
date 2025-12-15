@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-auto">
                     @if(request('start_date') && request('end_date'))
-                    <a href="{{ route('transactions.export-pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" class="btn btn-danger" target="_blank">
+                    <a href="{{ route('transactions.history.pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" class="btn btn-danger" target="_blank">
                         <i class="fas fa-file-pdf me-2"></i>Export PDF
                     </a>
                     @endif

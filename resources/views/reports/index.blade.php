@@ -29,6 +29,12 @@
                 </div>
             </form>
 
+
+            <div class="mb-3 d-flex justify-content-end">
+                <a href="{{ route('reports.pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}" class="btn btn-success shadow rounded-pill px-4 py-2" target="_blank">
+                    <i class="fas fa-print"></i> Print PDF
+                </a>
+            </div>
             <hr>
 
             <!-- Summary Cards -->

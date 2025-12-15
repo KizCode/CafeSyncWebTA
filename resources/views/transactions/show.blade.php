@@ -6,15 +6,15 @@
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+            <div class="card border-0 shadow-lg rounded-4" style="background: linear-gradient(135deg, #f8fafc 60%, #e3eafc 100%);">
+                <div class="card-header bg-gradient bg-primary text-white rounded-top-4 border-0" style="box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
                     <h4 class="mb-0"><i class="fas fa-receipt"></i> Detail Transaksi</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body rounded-bottom-4">
                     <!-- Transaction Info -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <table class="table table-sm">
+                            <table class="table table-sm table-borderless">
                                 <tr>
                                     <td width="40%">No. Invoice:</td>
                                     <td><strong>{{ $transaction->invoice_number }}</strong></td>
@@ -36,7 +36,7 @@
                             </table>
                         </div>
                         <div class="col-md-6">
-                            <table class="table table-sm">
+                            <table class="table table-sm table-borderless">
                                 <tr>
                                     <td width="40%">Metode Bayar:</td>
                                     <td><span class="badge bg-secondary text-uppercase">{{ $transaction->payment_method }}</span></td>
@@ -54,8 +54,8 @@
                     <!-- Items -->
                     <h5 class="mb-3">Detail Item</h5>
                     <div class="table-responsive mb-4">
-                        <table class="table table-sm">
-                            <thead class="table-light">
+                        <table class="table table-sm table-hover align-middle rounded-3 overflow-hidden">
+                            <thead class="table-primary">
                                 <tr>
                                     <th>Produk</th>
                                     <th class="text-center">Qty</th>
@@ -67,7 +67,7 @@
                                 @foreach($transaction->items as $item)
                                 <tr>
                                     <td>{{ $item->product->name }}</td>
-                                    <td class="text-center">{{ $item->quantity }}</td>
+                                    <td class="text-center fw-semibold">{{ $item->quantity }}</td>
                                     <td class="text-end">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>
                                     <td class="text-end">Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                 </tr>
@@ -81,7 +81,7 @@
                     <!-- Summary -->
                     <div class="row">
                         <div class="col-md-6 ms-auto">
-                            <table class="table table-sm">
+                            <table class="table table-sm table-borderless">
                                 <tr>
                                     <td>Subtotal:</td>
                                     <td class="text-end">Rp {{ number_format($transaction->subtotal, 0, ',', '.') }}</td>
@@ -124,11 +124,11 @@
 
                     <!-- Actions -->
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="{{ route('transactions.history') }}" class="btn btn-secondary">
+                        <a href="{{ route('transactions.history') }}" class="btn btn-outline-primary me-2 rounded-pill px-4 py-2">
                             <i class="fas fa-arrow-left"></i> Kembali
                         </a>
-                        <a href="{{ route('transactions.pdf', $transaction->id) }}" class="btn btn-danger" target="_blank">
-                            <i class="fas fa-file-pdf"></i> Cetak PDF
+                        <a href="{{ route('transactions.pdf', $transaction->id) }}" class="btn btn-success shadow rounded-pill px-4 py-2" target="_blank">
+                            <i class="fas fa-print"></i> Cetak Struk
                         </a>
                     </div>
                 </div>

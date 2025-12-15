@@ -147,6 +147,8 @@ class TransactionController extends Controller
         $totalRevenue = $transactions->sum('grand_total');
         $totalTransactions = $transactions->count();
 
-        return view('transactions.export-pdf', compact('transactions', 'startDate', 'endDate', 'totalRevenue', 'totalTransactions'));
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('transactions.export-pdf', compact('transactions', 'startDate', 'endDate', 'totalRevenue', 'totalTransactions'));
+        return $pdf->download('riwayat-transaksi.pdf');
     }
 }
