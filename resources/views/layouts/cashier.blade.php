@@ -307,6 +307,33 @@
                 });
         }, 600000); // 10 minutes
 
+        // Theme mode
+        const THEME_KEY = 'appTheme';
+
+        function applyTheme(theme) {
+            const dark = theme === 'dark';
+            document.documentElement.classList.toggle('dark', dark);
+            document.body.classList.toggle('dark', dark);
+            localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+            const themeToggle = document.getElementById('themeToggleSwitch');
+            if (themeToggle) {
+                themeToggle.checked = dark;
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
+            applyTheme(savedTheme);
+            const themeToggle = document.getElementById('themeToggleSwitch');
+            if (themeToggle) {
+                themeToggle.addEventListener('change', function () {
+                    applyTheme(this.checked ? 'dark' : 'light');
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initTheme);
+
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.user-dropdown') && !e.target.closest('.notification-bell')) {

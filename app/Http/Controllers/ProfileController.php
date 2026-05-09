@@ -18,6 +18,23 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'activeTab' => 'profile',
+        ]);
+    }
+
+    public function account(Request $request): View
+    {
+        return view('profile.account', [
+            'user' => $request->user(),
+            'activeTab' => 'account',
+        ]);
+    }
+
+    public function theme(Request $request): View
+    {
+        return view('profile.theme', [
+            'user' => $request->user(),
+            'activeTab' => 'theme',
         ]);
     }
 

@@ -2,6 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    color-scheme: light;
+    --bg-base: #f8fafc;
+    --surface: #ffffff;
+    --surface-strong: #f1f5f9;
+    --text-primary: #111827;
+    --text-muted: #6b7280;
+    --border-color: #e5e7eb;
+    --card-bg: #ffffff;
+    --card-border: #e5e7f0;
+    --input-bg: #f8fafc;
+    --input-border: #d1d5db;
+}
+
+html.dark {
+    color-scheme: dark;
+}
+
+html.dark body {
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+html.dark .bg-white {
+    background-color: #111827 !important;
+}
+
+html.dark .text-gray-900 {
+    color: #e2e8f0 !important;
+}
+
+html.dark .text-gray-600 {
+    color: #94a3b8 !important;
+}
+
+html.dark .border-gray-300 {
+    border-color: #334155 !important;
+}
+
+html.dark .bg-gray-100,
+html.dark .bg-slate-50 {
+    background-color: #0b1120 !important;
+}
+
+html.dark .shadow-md {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.dark .bg-gray-800 {
+    background-color: #0f172a !important;
+}
+
+html.dark .bg-gray-700 {
+    background-color: #111827 !important;
+}
+
+html.dark .border-gray-200 {
+    border-color: #334155 !important;
+}
+
 /* Custom global styles for auth and app layout */
 html {
     scroll-behavior: smooth;
@@ -9,7 +69,7 @@ html {
 
 body {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    background: linear-gradient(135deg, var(--bg-base) 0%, #eef2ff 100%);
 }
 
 ::selection {
