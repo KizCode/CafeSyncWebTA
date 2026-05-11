@@ -4,16 +4,18 @@
 
 :root {
     color-scheme: light;
+    --brand: #0ea5e9;
+    --brand-dark: #0284c7;
     --bg-base: #f8fafc;
     --surface: #ffffff;
     --surface-strong: #f1f5f9;
     --text-primary: #111827;
     --text-muted: #6b7280;
-    --border-color: #e5e7eb;
-    --card-bg: #ffffff;
-    --card-border: #e5e7f0;
+    --border-color: #e2e8f0;
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --card-border: rgba(148, 163, 184, 0.25);
     --input-bg: #f8fafc;
-    --input-border: #d1d5db;
+    --input-border: #cbd5e1;
 }
 
 html.dark {
@@ -69,7 +71,8 @@ html {
 
 body {
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--bg-base) 0%, #eef2ff 100%);
+    background: radial-gradient(circle at top left, #eff6ff 0%, #dbeafe 35%, #f8fafc 100%);
+    color: var(--text-primary);
 }
 
 ::selection {

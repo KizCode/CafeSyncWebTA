@@ -12,7 +12,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/cashier.css') }}">
 
@@ -55,36 +56,41 @@
             <!-- Notifications -->
             <div class="notification-bell dropdown">
                 <button class="notification-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Notifikasi">
+                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Notifikasi">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">3</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
-                    <li><h6 class="px-3 py-2 dropdown-header fw-700">Notifikasi</h6></li>
+                    <li>
+                        <h6 class="px-3 py-2 dropdown-header fw-700">Notifikasi</h6>
+                    </li>
                     <li><a class="dropdown-item" href="#">
-                        <div class="notification-item">
-                            <div class="notification-icon bg-warning">
-                                <i class="fas fa-exclamation-triangle"></i>
+                            <div class="notification-item">
+                                <div class="notification-icon bg-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="mb-0 fw-500">Stok Terbatas</p>
+                                    <small class="text-muted">Kopi arabika tinggal 5 items</small>
+                                </div>
                             </div>
-                            <div class="notification-content">
-                                <p class="mb-0 fw-500">Stok Terbatas</p>
-                                <small class="text-muted">Kopi arabika tinggal 5 items</small>
-                            </div>
-                        </div>
-                    </a></li>
+                        </a></li>
                     <li><a class="dropdown-item" href="#">
-                        <div class="notification-item">
-                            <div class="notification-icon bg-success">
-                                <i class="fas fa-check-circle"></i>
+                            <div class="notification-item">
+                                <div class="notification-icon bg-success">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p class="mb-0 fw-500">Transaksi Berhasil</p>
+                                    <small class="text-muted">10 transaksi hari ini</small>
+                                </div>
                             </div>
-                            <div class="notification-content">
-                                <p class="mb-0 fw-500">Transaksi Berhasil</p>
-                                <small class="text-muted">10 transaksi hari ini</small>
-                            </div>
-                        </div>
-                    </a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="text-center dropdown-item text-primary small fw-500" href="#">Lihat semua notifikasi</a></li>
+                        </a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="text-center dropdown-item text-primary small fw-500" href="#">Lihat semua
+                            notifikasi</a></li>
                 </ul>
             </div>
 
@@ -92,26 +98,30 @@
             <div class="user-dropdown">
                 <button class="user-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=10B981&color=fff"
-                         alt="User Avatar" class="user-avatar">
+                        alt="User Avatar" class="user-avatar">
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
                     <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
-                        <i class="fas fa-user me-2 text-primary"></i>
-                        <span>Profile</span>
-                    </a></li>
+                            <i class="fas fa-user me-2 text-primary"></i>
+                            <span>Profile</span>
+                        </a></li>
                     <li><a class="dropdown-item" href="#">
-                        <i class="fas fa-history me-2 text-info"></i>
-                        <span>Riwayat Login</span>
-                    </a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><form method="POST" action="{{ route('logout') }}" class="m-0">
-                        @csrf
-                        <button type="submit" class="dropdown-item text-danger w-100 text-start">
-                            <i class="fas fa-sign-out-alt me-2"></i>
-                            <span>Logout</span>
-                        </button>
-                    </form></li>
+                            <i class="fas fa-history me-2 text-info"></i>
+                            <span>Riwayat Login</span>
+                        </a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}" class="m-0">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger w-100 text-start">
+                                <i class="fas fa-sign-out-alt me-2"></i>
+                                <span>Logout</span>
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -124,9 +134,7 @@
                 <li class="sidebar-menu-item">
                     <a href="{{ route('cashier.index') }}"
                         class="sidebar-menu-link {{ request()->routeIs('cashier.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        data-bs-title="Kasir">
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Kasir">
                         <div class="sidebar-icon">
                             <i class="fas fa-cash-register"></i>
                         </div>
@@ -137,9 +145,7 @@
                 <li class="sidebar-menu-item">
                     <a href="{{ route('transactions.history') }}"
                         class="sidebar-menu-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        data-bs-title="Transaksi">
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Transaksi">
                         <div class="sidebar-icon">
                             <i class="fas fa-receipt"></i>
                         </div>
@@ -149,9 +155,7 @@
                 <li class="sidebar-menu-item">
                     <a href="{{ route('reports.index') }}"
                         class="sidebar-menu-link {{ request()->routeIs('reports.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        data-bs-title="Laporan">
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Laporan">
                         <div class="sidebar-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
@@ -164,11 +168,8 @@
 
             <ul class="sidebar-menu sidebar-footer">
                 <li class="sidebar-menu-item">
-                    <a href="{{ route('profile.edit') }}"
-                        class="sidebar-menu-link"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        data-bs-title="Pengaturan">
+                    <a href="{{ route('profile.edit') }}" class="sidebar-menu-link" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-title="Pengaturan">
                         <div class="sidebar-icon">
                             <i class="fas fa-cog"></i>
                         </div>
@@ -176,12 +177,8 @@
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
-                    <a href="#"
-                        class="sidebar-menu-link"
-                        onclick="event.preventDefault(); showAbout()"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        data-bs-title="Tentang">
+                    <a href="#" class="sidebar-menu-link" onclick="event.preventDefault(); showAbout()"
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tentang">
                         <div class="sidebar-icon">
                             <i class="fas fa-info-circle"></i>
                         </div>
@@ -218,10 +215,13 @@
         // Initialize Bootstrap tooltips
         function initTooltips() {
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
+            tooltipTriggerList.map(function(tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl, {
                     trigger: 'hover',
-                    delay: { show: 200, hide: 100 }
+                    delay: {
+                        show: 200,
+                        hide: 100
+                    }
                 });
             });
         }
@@ -253,9 +253,17 @@
         // Update date and time
         function updateDateTime() {
             const now = new Date();
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateOptions = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
             const dateStr = now.toLocaleDateString('id-ID', dateOptions);
-            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            const timeStr = now.toLocaleTimeString('id-ID', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
 
             document.getElementById('currentDate').textContent = dateStr;
             document.getElementById('currentTime').textContent = timeStr;
@@ -326,7 +334,7 @@
             applyTheme(savedTheme);
             const themeToggle = document.getElementById('themeToggleSwitch');
             if (themeToggle) {
-                themeToggle.addEventListener('change', function () {
+                themeToggle.addEventListener('change', function() {
                     applyTheme(this.checked ? 'dark' : 'light');
                 });
             }
