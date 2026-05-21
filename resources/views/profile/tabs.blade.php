@@ -7,8 +7,5 @@
         <a class="nav-link {{ ($activeTab ?? '') === 'account' ? 'active' : '' }}" href="{{ route('profile.account') }}">
             Akun
         </a>
-        <a class="nav-link {{ ($activeTab ?? '') === 'theme' ? 'active' : '' }}" href="{{ route('profile.theme') }}">
-            Tema
-        </a>
     </div>
 </nav>

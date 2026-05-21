@@ -16,22 +16,28 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-slate-50 text-slate-900">
-    <div class="min-h-screen flex items-center justify-center py-10 px-4 bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.22),_transparent_30%),linear-gradient(180deg,_#f8fafc_0%,_#e0f2fe_100%)]">
+<body class="font-sans antialiased bg-emerald-50 text-slate-900">
+    <div
+        class="min-h-screen flex items-center justify-center py-10 px-4 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.22),_transparent_30%),linear-gradient(180deg,_#dcfce7_0%,_#bbf7d0_100%)]">
         <div class="w-full max-w-2xl">
             <div class="text-center mb-8">
-                <a href="/" class="inline-flex items-center justify-center rounded-full bg-white/90 p-4 shadow-lg shadow-slate-300/30 border border-slate-200">
-                    <x-application-logo class="w-16 h-16 fill-current text-sky-600" />
+                <a href="/"
+                    class="inline-flex items-center justify-center rounded-full bg-white/90 p-4 shadow-lg shadow-slate-300/30 border border-slate-200">
+                    <x-application-logo class="w-16 h-16 fill-current text-emerald-600" />
                 </a>
-                <div class="mt-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700">
+                <div
+                    class="mt-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700">
                     <span>Selamat datang di</span>
                     <span class="text-slate-900">CafeSync</span>
                 </div>
-                <h1 class="mt-4 text-3xl font-semibold tracking-tight text-slate-900">{{ config('app.name', 'CafeSync') }}</h1>
-                <p class="mt-2 text-sm text-slate-600">Masuk untuk mengelola transaksi dan laporan kasir dengan cepat dan mudah.</p>
+                <h1 class="mt-4 text-3xl font-semibold tracking-tight text-slate-900">
+                    {{ config('app.name', 'CafeSync') }}</h1>
+                <p class="mt-2 text-sm text-slate-600">Masuk untuk mengelola transaksi dan laporan kasir dengan cepat
+                    dan mudah.</p>
             </div>
 
-            <div class="bg-white/95 shadow-2xl border border-slate-200/80 backdrop-blur-xl overflow-hidden rounded-[2rem]">
+            <div
+                class="bg-white/95 shadow-2xl border border-slate-200/80 backdrop-blur-xl overflow-hidden rounded-[2rem]">
                 <div class="px-6 py-8 sm:px-10">
                     {{ $slot }}
                 </div>

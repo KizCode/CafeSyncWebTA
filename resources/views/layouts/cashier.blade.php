@@ -7,12 +7,31 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Pos System')</title>
 
+    <style>
+        html { background: #f3f4f6; }
+        body { background: #f3f4f6; color: #111827; }
+        html.dark { background: #0f172a; }
+        html.dark body { background: #0f172a; color: #e2e8f0; }
+    </style>
+    <script>
+        (function() {
+            try {
+                if (localStorage.getItem('appTheme') === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {
+                // Ignore if storage access is blocked.
+            }
+        })();
+    </script>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/cashier.css') }}">
@@ -94,6 +113,12 @@
                 </ul>
             </div>
 
+            <!-- Theme toggle -->
+            <button id="themeToggleBtn" class="btn-toggle" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                data-bs-title="Ubah tema" aria-label="Ubah tema">
+                <i id="themeToggleIcon" class="fas fa-moon"></i>
+            </button>
+
             <!-- User Dropdown -->
             <div class="user-dropdown">
                 <button class="user-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -139,7 +164,6 @@
                             <i class="fas fa-cash-register"></i>
                         </div>
                         <span class="sidebar-text">Kasir</span>
-                        <span class="sidebar-badge">Live</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
@@ -317,30 +341,118 @@
 
         // Theme mode
         const THEME_KEY = 'appTheme';
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+        function updateThemeIcon(dark) {
+            const icon = document.getElementById('themeToggleIcon');
+            if (!icon) return;
+            icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+            themeToggleBtn?.setAttribute('data-bs-title', dark ? 'Ubah ke tema terang' : 'Ubah ke tema gelap');
+            themeToggleBtn?.setAttribute('title', dark ? 'Ubah ke tema terang' : 'Ubah ke tema gelap');
+        }
 
         function applyTheme(theme) {
             const dark = theme === 'dark';
             document.documentElement.classList.toggle('dark', dark);
             document.body.classList.toggle('dark', dark);
             localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
-            const themeToggle = document.getElementById('themeToggleSwitch');
-            if (themeToggle) {
-                themeToggle.checked = dark;
-            }
+            updateThemeIcon(dark);
         }
 
         function initTheme() {
             const savedTheme = localStorage.getItem(THEME_KEY) || 'light';
             applyTheme(savedTheme);
-            const themeToggle = document.getElementById('themeToggleSwitch');
-            if (themeToggle) {
-                themeToggle.addEventListener('change', function() {
-                    applyTheme(this.checked ? 'dark' : 'light');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function() {
+                    const currentDark = document.documentElement.classList.contains('dark');
+                    applyTheme(currentDark ? 'light' : 'dark');
                 });
             }
         }
 
-        document.addEventListener('DOMContentLoaded', initTheme);
+        function reinitializePage() {
+            initTooltips();
+        }
+
+        function shouldHandleLink(link) {
+            if (!link || link.target && link.target !== '_self') return false;
+            if (link.hasAttribute('download') || link.dataset.noAjax) return false;
+            if (link.closest('[data-bs-toggle]')) return false;
+            if (link.href.startsWith('mailto:') || link.href.startsWith('tel:')) return false;
+            const url = new URL(link.href, location.origin);
+            return url.origin === location.origin && url.href !== location.href;
+        }
+
+        async function loadContent(url, pushState = true) {
+            document.body.classList.add('page-loading');
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newMain = doc.getElementById('mainContent');
+                const newSidebar = doc.querySelector('.sidebar-nav');
+                const newTitle = doc.querySelector('title');
+
+                if (newMain) {
+                    mainContent.innerHTML = newMain.innerHTML;
+                } else {
+                    throw new Error('Konten utama tidak ditemukan');
+                }
+
+                if (newSidebar) {
+                    document.querySelector('.sidebar-nav').innerHTML = newSidebar.innerHTML;
+                }
+
+                if (newTitle) {
+                    document.title = newTitle.textContent;
+                }
+
+                if (pushState) {
+                    history.pushState({
+                        url
+                    }, '', url);
+                }
+
+                window.scrollTo(0, 0);
+                reinitializePage();
+            } catch (error) {
+                window.location.href = url;
+            } finally {
+                document.body.classList.remove('page-loading');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            history.replaceState({
+                url: location.href
+            }, '', location.href);
+
+            document.body.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && shouldHandleLink(link)) {
+                    e.preventDefault();
+                    loadContent(link.href);
+                }
+            });
+        });
+
+        window.addEventListener('popstate', function(event) {
+            const url = event.state?.url || location.href;
+            if (url) {
+                loadContent(url, false);
+            }
+        });
 
         // Close dropdowns when clicking outside
         document.addEventListener('click', function(e) {

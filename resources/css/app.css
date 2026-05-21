@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,6 +18,8 @@
     --card-border: rgba(148, 163, 184, 0.25);
     --input-bg: #f8fafc;
     --input-border: #cbd5e1;
+    --font-sans: "Montserrat", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-serif: "Cormorant Garamond", Georgia, serif;
 }
 
 html.dark {
@@ -73,6 +77,16 @@ body {
     min-height: 100vh;
     background: radial-gradient(circle at top left, #eff6ff 0%, #dbeafe 35%, #f8fafc 100%);
     color: var(--text-primary);
+    font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-serif);
 }
 
 ::selection {

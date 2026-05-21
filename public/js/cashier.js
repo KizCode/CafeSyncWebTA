@@ -163,7 +163,7 @@ const cashierApp = (() => {
         cart.forEach(item => {
             const total = item.price * item.quantity;
             html += `
-                <div class="bg-light p-3 rounded-3 mb-3 shadow-sm">
+                <div class="cart-item-card p-3 rounded-3 mb-3 shadow-sm">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="fw-semibold small text-truncate pe-3">${item.name}</div>
                         <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${item.id})">

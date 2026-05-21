@@ -3,44 +3,79 @@ name: problem-solving
 user-invocable: true
 description: "Guide a developer through a structured coding problem-solving workflow for bugs, feature work, and design decisions."
 argument-hint: What coding problem or task do you want to solve?
+maintainers:
+  - repo-maintainers
 ---
 
 # Problem Solving
 
-Use this skill when you want a repeatable, structured approach to understand a problem, evaluate options, and produce a clear fix plan.
+Use this skill to produce a concise, reproducible plan for diagnosing and fixing coding problems (bugs, feature design, or unclear behavior).
+
+**Scope**: workspace-scoped by default. If you prefer a personal workflow variation, indicate that when invoking the skill.
 
 ## Workflow
 
 1. Clarify the goal
-    - Restate the requested outcome in your own words.
-    - Confirm any missing constraints, edge cases, or accepted failure modes.
+    - Restate the requested outcome in one sentence.
+    - Ask up to 3 focused clarifying questions for any ambiguous constraints or failure modes.
 2. Inspect the context
-    - Identify the relevant files, functions, and data flow.
-    - Check for existing patterns, conventions, and prior solutions in the repo.
+    - Locate relevant files, routes, and functions; list them.
+    - Note repo conventions, existing tests, and prior related changes.
 3. Analyze the problem
-    - Pinpoint where the behavior diverges from the goal.
-    - Separate symptoms from root cause.
-4. Propose a solution
-    - Choose the smallest change that solves the problem safely.
-    - Call out tradeoffs and alternatives if more than one viable path exists.
-5. Implement and verify
-    - Edit the code with clear, minimal changes.
-    - Validate against tests, examples, or user-facing behavior.
+    - Reproduce or reason about the symptom and capture minimal repro steps.
+    - Distinguish symptom vs root cause; propose hypotheses.
+4. Propose options
+    - Give 2–3 options: quick fix, robust fix, and a tradeoff summary for each.
+    - Recommend a single preferred option and explain why.
+5. Implementation plan
+    - Break the chosen option into clear, verifiable steps (code edits, tests, migrations).
+    - Provide example diffs or code snippets when helpful.
+6. Verify and iterate
+    - Describe tests to run or manual checks to perform.
+    - If verification fails, repeat analysis with collected evidence.
 
 ## Decision Points
 
-- If the problem is ambiguous, ask a focused clarifying question before you modify files.
-- If there is an existing repo pattern, follow it rather than introducing a new style.
-- Prefer tiny, incremental changes for bug fixes; prefer plan-based changes for larger feature work.
+- Ambiguity: pause and ask focused questions rather than guessing.
+- Style/Pattern: follow existing repository conventions unless there is a clear, documented reason to change them.
+- Risk: prefer incremental, reversible changes for production code; prefer branch-and-PR flow for larger changes.
 
-## Completion Criteria
+## Completion Criteria (Definition of Done)
 
-- The requested behavior is clearly described and supported by the proposed implementation.
-- The fix does not introduce inconsistent style or break existing patterns in the repo.
-- The code change is verified by available tests or by reasoning about the expected output.
+- The desired behavior is restated and agreed.
+- A small, safe change or a clear multi-step plan is produced.
+- Changes are consistent with repository style and include tests or verification steps where applicable.
+- The author (or reviewer) can follow the implementation plan and reproduce verification steps.
+
+## Inputs and Outputs
+
+- Input: natural-language description of the problem, relevant file paths, and any additional constraints.
+- Output: (a) Clarifying questions if needed, or (b) a short plan with steps, proposed code snippets, and verification checks.
+
+## Ambiguities to Resolve (prompts to ask the user)
+
+- Is this change intended for a quick hotfix or a long-term solution?
+- Should the fix prioritize minimal disruption or correctness/performance?
+- Are there any deployment or backwards-compatibility constraints?
 
 ## Example Prompts
 
-- `Help me solve a validation bug in the profile update flow.`
-- `Create a plan for fixing the transaction total calculation.`
-- `Guide me through debugging this button action in the Laravel views.`
+- Help me fix inconsistent totals in the transaction report — I can share the controller and migration files.
+- Create a minimal PR plan to make profile updates validate phone numbers correctly.
+- Walk me through debugging a failing feature test for checkout flow.
+
+## Maintenance
+
+- File location: .github/skills/problem-solving/SKILL.md
+- Owner: repo maintainers by default; add a `maintainers:` frontmatter line if you want explicit ownership.
+
+## Reviewer checklist
+
+- [ ] Confirm the user goal was restated accurately.
+- [ ] Verify the proposed fix follows repo conventions.
+- [ ] Ensure verification steps are clear and actionable.
+- [ ] Check that any tradeoffs or alternatives are documented.
+
+---
+
+Revision notes: expanded workflow, added decision points, inputs/outputs, and clarifying questions.
