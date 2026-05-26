@@ -1,16 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.standalone')
 
 @section('title', 'Pembayaran')
 
 @section('content')
-    <div class="container py-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0"><i class="fas fa-credit-card"></i> Pembayaran</h4>
-                    </div>
-                    <div class="card-body">
+    <div class="card page-card shadow">
+        <div class="card-header">
+            <h4 class="mb-0"><i class="fas fa-credit-card"></i> Pembayaran</h4>
+        <div class="card-body">
                         <!-- Order Summary -->
                         <div class="bg-light p-3 rounded mb-4">
                             <h5 class="mb-3">Ringkasan Pesanan</h5>
@@ -141,16 +137,12 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection
 
-
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/cashier.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/payment.css') }}">
 @endpush
 
 @push('scripts')

@@ -3,63 +3,60 @@
 @section('title', 'Riwayat Transaksi')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="card shadow">
-            <div class="card-header bg-white">
-                <div class="row align-items-center">
-                    <div class="col">
-                        <h4 class="mb-0"><i class="fas fa-history"></i> Riwayat Transaksi</h4>
-                    </div>
-                    <div class="col-auto">
-                        @if (request('start_date') && request('end_date'))
-                            <a href="{{ route('transactions.history.pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
-                                class="btn btn-danger" target="_blank">
-                                <i class="fas fa-file-pdf me-2"></i>Export PDF
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
+    <div class="container-fluid page-shell">
+        <x-page-header title="Riwayat Transaksi" icon="fa-history" badge="Transaksi"
+            description="Lihat dan kelola semua transaksi penjualan.">
+            <x-slot:actions>
+                @if (request('start_date') && request('end_date'))
+                    <a href="{{ route('transactions.history.pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
+                        class="btn btn-danger" target="_blank">
+                        <i class="fas fa-file-pdf me-2"></i>Export PDF
+                    </a>
+                @endif
+            </x-slot:actions>
+        </x-page-header>
+
+        <div class="card page-card">
             <div class="card-body">
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
-                        <div class="card summary-card h-100">
+                        <div class="card summary-card stat-card h-100">
                             <div class="card-body d-flex align-items-center justify-content-between gap-3">
                                 <div>
                                     <span class="text-muted small">Transaksi di halaman</span>
                                     <h3 class="mb-0">{{ $transactions->count() }}</h3>
                                 </div>
-                                <i class="fas fa-receipt fa-2x text-success"></i>
+                                <div class="stat-card__icon"><i class="fas fa-receipt"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card summary-card h-100">
+                        <div class="card summary-card stat-card h-100">
                             <div class="card-body d-flex align-items-center justify-content-between gap-3">
                                 <div>
                                     <span class="text-muted small">Total pembayaran</span>
                                     <h3 class="mb-0">Rp
                                         {{ number_format($transactions->sum('grand_total'), 0, ',', '.') }}</h3>
                                 </div>
-                                <i class="fas fa-wallet fa-2x text-primary"></i>
+                                <div class="stat-card__icon"><i class="fas fa-wallet"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card summary-card h-100">
+                        <div class="card summary-card stat-card h-100">
                             <div class="card-body d-flex align-items-center justify-content-between gap-3">
                                 <div>
                                     <span class="text-muted small">Transaksi lunas</span>
                                     <h3 class="mb-0">{{ $transactions->where('status', 'lunas')->count() }}</h3>
                                 </div>
-                                <i class="fas fa-check-circle fa-2x text-success"></i>
+                                <div class="stat-card__icon"><i class="fas fa-check-circle"></i></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <form method="GET" class="mb-4">
-                    <div class="card card-soft shadow-sm">
+                    <div class="card card-soft filter-panel shadow-sm">
                         <div class="card-body">
                             <div class="row g-3 align-items-end">
                                 <div class="col-md-4">
@@ -85,7 +82,6 @@
                     </div>
                 </form>
 
-                <!-- Table -->
                 <div class="table-responsive card table-card p-3">
                     <table class="table table-hover">
                         <thead class="table-light">
@@ -132,14 +128,18 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center text-muted">Tidak ada data transaksi</td>
+                                    <td colspan="7">
+                                        <div class="empty-state">
+                                            <i class="fas fa-inbox d-block"></i>
+                                            Tidak ada data transaksi
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Pagination -->
                 <div class="mt-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
                     <div class="text-muted small">Menampilkan {{ $transactions->count() }} dari
                         {{ $transactions->total() }} transaksi</div>

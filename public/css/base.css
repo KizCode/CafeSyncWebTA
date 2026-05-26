@@ -1,0 +1,459 @@
+:root {
+    --bg-base: #f5f1e8;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+    --surface-strong: #f1f5f9;
+    --text-primary: #111827;
+    --text-secondary: #475569;
+    --text-muted: #6b7280;
+    --dark-color: #111827;
+    --light-color: #f8fafc;
+    --border-color: #e5e7eb;
+    --header-bg: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+    --header-text: #111827;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #475569;
+    --sidebar-active-bg: #d1fae5;
+    --sidebar-active-text: #059669;
+    --sidebar-border: #e5e7eb;
+    --card-bg: #ffffff;
+    --card-border: #e5e7f0;
+    --dropdown-bg: #ffffff;
+    --dropdown-border: #e5e7eb;
+    --button-bg: #f8fafc;
+    --button-hover-bg: #e2e8f0;
+    --shadow-color: rgba(15, 23, 42, 0.08);
+    --primary-color: #10b981;
+    --primary-dark: #059669;
+    --primary-light: #d1fae5;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --success-color: #10b981;
+    --info-color: #3b82f6;
+    --transition: all 0.2s ease;
+    --transition-fast: all 0.15s ease;
+}
+
+body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+html.dark,
+body.dark {
+    --bg-base: #0f172a;
+    --surface: #111827;
+    --surface-soft: #1e293b;
+    --surface-strong: #111827;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #94a3b8;
+    --dark-color: #e2e8f0;
+    --light-color: #1f2937;
+    --border-color: #334155;
+    --header-bg: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+    --header-text: #e2e8f0;
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #cbd5e1;
+    --sidebar-active-bg: rgba(59, 130, 246, 0.18);
+    --sidebar-active-text: #ffffff;
+    --sidebar-border: transparent;
+    --card-bg: #111827;
+    --card-border: #1f2937;
+    --dropdown-bg: #111827;
+    --dropdown-border: #334155;
+    --button-bg: #0f172a;
+    --button-hover-bg: #334155;
+    --shadow-color: rgba(0, 0, 0, 0.28);
+}
+
+html.dark .top-header,
+body.dark .top-header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+html.dark .header-info-item,
+html.dark .header-info-item i,
+html.dark .header-info-item span,
+html.dark .user-btn,
+html.dark .notification-btn,
+body.dark .header-info-item,
+body.dark .header-info-item i,
+body.dark .header-info-item span,
+body.dark .user-btn,
+body.dark .notification-btn {
+    color: var(--text-primary);
+}
+
+html.dark .sidebar,
+body.dark .sidebar {
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    border-color: var(--sidebar-border);
+}
+
+html.dark .sidebar-menu-link,
+body.dark .sidebar-menu-link {
+    color: var(--sidebar-text);
+}
+
+html.dark .sidebar-menu-link:hover,
+html.dark .sidebar-menu-link.active,
+body.dark .sidebar-menu-link:hover,
+body.dark .sidebar-menu-link.active {
+    color: var(--sidebar-active-text);
+    background: var(--sidebar-active-bg);
+}
+
+html.dark .sidebar-divider,
+html.dark .sidebar-footer-info,
+body.dark .sidebar-divider,
+body.dark .sidebar-footer-info {
+    background: #1f2937;
+}
+
+html.dark .main-content,
+body.dark .main-content {
+    background: #020617;
+}
+
+html.dark .card,
+html.dark .cashier-card,
+html.dark .product-card,
+html.dark .user-dropdown-menu,
+html.dark .notification-dropdown,
+html.dark .dropdown-menu,
+body.dark .card,
+body.dark .cashier-card,
+body.dark .product-card,
+body.dark .user-dropdown-menu,
+body.dark .notification-dropdown,
+body.dark .dropdown-menu {
+    background: var(--card-bg) !important;
+    background-color: var(--card-bg) !important;
+    border-color: var(--card-border) !important;
+    color: var(--text-primary);
+}
+
+html.dark .dropdown-menu .dropdown-item:hover,
+html.dark .user-dropdown-menu .dropdown-item:hover,
+html.dark .notification-dropdown .dropdown-item:hover,
+body.dark .dropdown-menu .dropdown-item:hover,
+body.dark .user-dropdown-menu .dropdown-item:hover,
+body.dark .notification-dropdown .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+html.dark .version-badge,
+body.dark .version-badge {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+html.dark .sidebar-menu-link::before,
+body.dark .sidebar-menu-link::before {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+html.dark .btn-toggle:hover,
+body.dark .btn-toggle:hover,
+html.dark .notification-btn:hover,
+body.dark .notification-btn:hover,
+html.dark .user-btn:hover,
+body.dark .user-btn:hover {
+    background: var(--button-hover-bg);
+}
+
+html.dark body,
+body.dark {
+    background: var(--bg-base);
+    color: var(--text-primary);
+}
+
+html.dark .bg-white,
+body.dark .bg-white {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary);
+}
+
+html.dark .card-header.bg-white,
+body.dark .card-header.bg-white {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary);
+    border-bottom-color: var(--border-color);
+}
+
+html.dark .table,
+body.dark .table {
+    --bs-table-color: var(--text-primary);
+    --bs-table-color-type: var(--text-primary);
+    --bs-table-color-state: var(--text-primary);
+    --bs-table-bg: transparent;
+    --bs-table-border-color: var(--border-color);
+    --bs-table-striped-color: var(--text-primary);
+    --bs-table-active-color: var(--text-primary);
+    --bs-table-hover-color: var(--text-primary);
+    color: var(--text-primary);
+    background-color: transparent;
+}
+
+html.dark .table-responsive,
+body.dark .table-responsive {
+    background-color: transparent !important;
+}
+
+html.dark .table-bordered,
+body.dark .table-bordered {
+    background-color: transparent !important;
+}
+
+html.dark .table > :not(caption) > * > *,
+body.dark .table > :not(caption) > * > *,
+html.dark .table th,
+body.dark .table th,
+html.dark .table td,
+body.dark .table td,
+html.dark .table-bordered th,
+body.dark .table-bordered th,
+html.dark .table-bordered td,
+body.dark .table-bordered td {
+    background-color: transparent !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+    box-shadow: none;
+}
+
+html.dark .table-hover tbody tr:hover,
+body.dark .table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+html.dark .table-hover tbody tr:hover > *,
+body.dark .table-hover tbody tr:hover > * {
+    color: var(--text-primary) !important;
+    --bs-table-color-state: var(--text-primary);
+}
+
+html.dark .table-light,
+body.dark .table-light,
+html.dark thead.table-light,
+body.dark thead.table-light,
+html.dark thead.table-light th,
+body.dark thead.table-light th {
+    --bs-table-color: var(--text-primary);
+    --bs-table-color-type: var(--text-primary);
+    --bs-table-color-state: var(--text-primary);
+    --bs-table-bg: #1e293b;
+    --bs-table-border-color: var(--border-color);
+    --bs-table-striped-color: var(--text-primary);
+    --bs-table-active-color: var(--text-primary);
+    --bs-table-hover-color: var(--text-primary);
+    background-color: #1e293b !important;
+    color: var(--text-primary) !important;
+}
+
+html.dark .table-light > :not(caption) > * > *,
+body.dark .table-light > :not(caption) > * > * {
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark .card-body,
+body.dark .card-body,
+html.dark .card-body h1,
+html.dark .card-body h2,
+html.dark .card-body h3,
+html.dark .card-body h4,
+html.dark .card-body h5,
+html.dark .card-body h6,
+body.dark .card-body h1,
+body.dark .card-body h2,
+body.dark .card-body h3,
+body.dark .card-body h4,
+body.dark .card-body h5,
+body.dark .card-body h6 {
+    color: var(--text-primary);
+}
+
+html.dark .table-primary,
+body.dark .table-primary {
+    background-color: rgba(59, 130, 246, 0.18) !important;
+    color: var(--text-primary) !important;
+}
+
+html.dark .table-borderless th,
+body.dark .table-borderless th,
+html.dark .table-borderless td,
+body.dark .table-borderless td {
+    border-color: transparent !important;
+}
+
+html.dark .text-muted,
+body.dark .text-muted {
+    color: var(--text-muted) !important;
+}
+
+html.dark .badge.bg-warning,
+body.dark .badge.bg-warning {
+    background-color: #f59e0b;
+    color: #111827;
+}
+
+html.dark .logo-section,
+body.dark .logo-section,
+html.dark .logo-name,
+body.dark .logo-name,
+html.dark .logo-subtitle,
+body.dark .logo-subtitle {
+    color: var(--text-primary);
+}
+
+html.dark .logo-subtitle,
+body.dark .logo-subtitle {
+    color: var(--text-muted);
+}
+
+html.dark .logo-icon,
+body.dark .logo-icon {
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.35) 0%,
+        rgba(30, 41, 59, 1) 100%
+    );
+}
+
+html.dark .logo-name,
+body.dark .logo-name {
+    color: #e2e8f0;
+}
+
+html.dark .product-name,
+body.dark .product-name {
+    color: #e2e8f0;
+}
+
+html.dark .product-stock,
+body.dark .product-stock {
+    color: #94a3b8;
+}
+
+html.dark .form-control,
+html.dark .form-select,
+body.dark .form-control,
+body.dark .form-select {
+    background: var(--surface-soft);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+html.dark .form-control::placeholder,
+html.dark .form-select::placeholder,
+body.dark .form-control::placeholder,
+body.dark .form-select::placeholder {
+    color: var(--text-secondary);
+}
+
+html.dark .form-label,
+html.dark .form-check-label,
+body.dark .form-label,
+body.dark .form-check-label {
+    color: var(--text-primary);
+}
+
+html.dark .badge,
+body.dark .badge {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+html.dark .modal-content,
+body.dark .modal-content {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+html.dark .modal-header,
+body.dark .modal-header {
+    border-color: var(--border-color);
+}
+
+html.dark .payment-method.active,
+body.dark .payment-method.active {
+    background-color: rgba(56, 189, 248, 0.15);
+    border-color: var(--border-color);
+}
+
+html.dark .card-soft,
+body.dark .card-soft {
+    background: #1f2937;
+    border-color: var(--border-color);
+}
+
+html.dark .card-soft-green,
+body.dark .card-soft-green {
+    background: rgba(16, 185, 129, 0.12);
+}
+
+html.dark .card-soft-blue,
+body.dark .card-soft-blue {
+    background: rgba(59, 130, 246, 0.12);
+}
+
+html.dark .text-small-13,
+body.dark .text-small-13 {
+    color: var(--text-primary);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+html.dark body,
+body.dark {
+    background: var(--bg-base);
+    color: var(--text-primary);
+}
+
+body {
+    font-family:
+        "Plus Jakarta Sans",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.logo-name,
+.logo-subtitle,
+.card-header h4,
+.card-header h5,
+.page-title,
+.section-title {
+    font-family: "Bitter", Georgia, serif;
+}
+
+.logo-name {
+    font-weight: 700;
+}

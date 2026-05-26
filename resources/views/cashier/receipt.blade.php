@@ -1,13 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.standalone')
 
 @section('title', 'Struk Pembayaran')
 
 @section('content')
-    <div class="container py-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card shadow">
-                    <div class="card-body p-4">
+    <div class="card page-card shadow">
+        <div class="card-body p-4">
                         <div class="text-center mb-4">
                             <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
                             <h3>Pembayaran Berhasil!</h3>
@@ -139,13 +136,10 @@
                                 <i class="fas fa-history"></i> Lihat Riwayat
                             </a>
                         </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/cashier.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/print.css') }}">
 @endpush

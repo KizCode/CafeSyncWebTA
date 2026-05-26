@@ -1,0 +1,28 @@
+﻿/* ======================= PAYMENT METHOD ======================= */
+.payment-method {
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.payment-method:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.payment-method.active {
+    border-color: var(--info-color);
+    background-color: #eff6ff;
+}
+
+.payment-method input[type="radio"] {
+    display: none;
+}
+
+.payment-method-option input:checked + label {
+    background: #f0fdf4 !important;
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color);
+}

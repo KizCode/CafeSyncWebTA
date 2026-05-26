@@ -6,39 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'CafeSync') }} — Masuk</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @include('layouts.partials.fonts')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-emerald-50 text-slate-900">
-    <div
-        class="min-h-screen flex items-center justify-center py-10 px-4 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.22),_transparent_30%),linear-gradient(180deg,_#dcfce7_0%,_#bbf7d0_100%)]">
-        <div class="w-full max-w-2xl">
-            <div class="text-center mb-8">
-                <a href="/"
-                    class="inline-flex items-center justify-center rounded-full bg-white/90 p-4 shadow-lg shadow-slate-300/30 border border-slate-200">
-                    <x-application-logo class="w-16 h-16 fill-current text-emerald-600" />
-                </a>
-                <div
-                    class="mt-4 inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-semibold text-sky-700">
-                    <span>Selamat datang di</span>
-                    <span class="text-slate-900">CafeSync</span>
-                </div>
-                <h1 class="mt-4 text-3xl font-semibold tracking-tight text-slate-900">
-                    {{ config('app.name', 'CafeSync') }}</h1>
-                <p class="mt-2 text-sm text-slate-600">Masuk untuk mengelola transaksi dan laporan kasir dengan cepat
-                    dan mudah.</p>
-            </div>
+<body class="font-sans antialiased">
+    <div class="auth-page">
+        <div class="auth-page__decor" aria-hidden="true"></div>
 
-            <div
-                class="bg-white/95 shadow-2xl border border-slate-200/80 backdrop-blur-xl overflow-hidden rounded-[2rem]">
-                <div class="px-6 py-8 sm:px-10">
+        <div class="auth-page__inner">
+            <header class="auth-page__brand">
+                <a href="{{ route('login') }}" class="inline-block" aria-label="CafeSync">
+                    <x-cafesync-logo size="lg" />
+                </a>
+                <div class="auth-page__intro">
+                    <span class="auth-page__badge">
+                        <i class="fas fa-seedling" aria-hidden="true"></i>
+                        Kopi di tengah sawah
+                    </span>
+                    <h1 class="auth-page__title">{{ config('app.name', 'CafeSync') }}</h1>
+                    <p class="auth-page__subtitle">
+                        Kelola transaksi, stok, dan laporan kasir dengan mudah — suasana hangat seperti warung kopi pedesaan.
+                    </p>
+                </div>
+            </header>
+
+            <div class="auth-card">
+                <div class="auth-card__body">
                     {{ $slot }}
                 </div>
             </div>

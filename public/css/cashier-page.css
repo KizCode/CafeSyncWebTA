@@ -1,0 +1,214 @@
+﻿/* ======================= CART ITEMS ======================= */
+.cart-item-card {
+    background: var(--surface-soft);
+}
+
+html.dark .cart-item-card,
+body.dark .cart-item-card {
+    background-color: #1f2937 !important;
+    color: var(--text-primary);
+    border-color: #334155;
+}
+
+html.dark .cart-item-card .form-control,
+body.dark .cart-item-card .form-control {
+    background-color: #0f172a !important;
+    color: var(--text-primary) !important;
+    border-color: #334155 !important;
+}
+
+html.dark .cart-item-card .input-group-text,
+body.dark .cart-item-card .input-group-text,
+html.dark .cart-item-card .btn-outline-secondary,
+body.dark .cart-item-card .btn-outline-secondary {
+    background-color: #1e293b !important;
+    color: var(--text-primary) !important;
+    border-color: #334155 !important;
+}
+
+/* ======================= CASHIER CARDS ======================= */
+.product-card {
+    transition: var(--transition);
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.15) !important;
+}
+
+.product-image-panel {
+    height: 140px;
+    border-radius: 12px 12px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.product-gradient-0 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.product-gradient-1 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.product-gradient-2 {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.product-gradient-3 {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.product-gradient-4 {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.product-icon-muted {
+    opacity: 0.9;
+}
+
+.product-name {
+    font-size: 13px;
+    color: #111827;
+    font-weight: 600;
+}
+
+.product-price {
+    font-size: 15px;
+    color: var(--success-color);
+    font-weight: 700;
+}
+
+.product-stock {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* ======================= CATEGORY BUTTONS ======================= */
+.category-btn {
+    transition: var(--transition-fast);
+    border: 2px solid transparent;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 500;
+}
+
+.category-btn:hover {
+    transform: translateY(-2px);
+}
+
+.category-btn.btn-success {
+    background: linear-gradient(
+        135deg,
+        var(--primary-color) 0%,
+        var(--primary-dark) 100%
+    );
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.category-btn.btn-outline-success {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.category-btn.btn-outline-success:hover {
+    background: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* ======================= CART SECTION ======================= */
+.cashier-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+    border: none;
+    border-radius: 12px;
+}
+
+.sticky-cart {
+    position: sticky;
+    top: 90px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cart-items-container {
+    max-height: 380px;
+    min-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 185, 129, 0.3) transparent;
+}
+
+.cart-items-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.cart-items-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.3);
+    border-radius: 3px;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.5);
+}
+
+/* ======================= FORMS ======================= */
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition-fast);
+    font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+}
+
+/* ======================= BUTTONS ======================= */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: var(--transition-fast);
+}
+
+#payButton {
+    position: relative;
+    overflow: hidden;
+}
+
+#payButton:not(:disabled) {
+    background: linear-gradient(
+        135deg,
+        var(--primary-color) 0%,
+        var(--primary-dark) 100%
+    );
+    border: none;
+}
+
+#payButton:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+#payButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

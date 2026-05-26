@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <title>Riwayat Transaksi</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; }
+        @import url("https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+        body { font-family: "Plus Jakarta Sans", Arial, sans-serif; font-size: 12px; }
+        h1, h2, h3 { font-family: "Bitter", Georgia, serif; }
         .header { text-align: center; margin-bottom: 8px; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
         .summary-row.total { font-size: 15px; font-weight: bold; border-top: 2px solid #333; padding-top: 4px; margin-top: 4px; }

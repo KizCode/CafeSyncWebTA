@@ -3,19 +3,16 @@
 @section('title', 'Profile - Pos System')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h4 class="mb-4"><i class="fas fa-user-circle me-2"></i>Profile</h4>
-
-                @include('profile.tabs', ['activeTab' => $activeTab ?? 'profile'])
-
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        @include('profile.partials.update-profile-information-form')
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-profile-layout :user="$user" activeTab="profile" title="Informasi Profil" icon="fa-user"
+        description="Perbarui nama dan alamat email yang terhubung ke akun kasir Anda.">
+        @include('profile.partials.update-profile-information-form')
+    </x-profile-layout>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endpush
+
+@push('scripts')
+    @include('profile.partials.edit-scripts')
+@endpush

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'role_id',
     ];
 
     /**
@@ -46,5 +48,29 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasRole(string $roleName): bool
+    {
+        return $this->role?->name === $roleName;
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->hasRole('Administrator');
+    }
+
+    public function canAccessPage(string $page): bool
+    {
+        if ($this->isAdministrator()) {
+            return true;
+        }
+
+        return $this->role?->accessControls()->where('page', $page)->where('allowed', true)->exists();
     }
 }

@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <title>Laporan Pendapatan</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; }
+        @import url("https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+        body { font-family: "Plus Jakarta Sans", Arial, sans-serif; font-size: 12px; }
+        h1, h2, h3 { font-family: "Bitter", Georgia, serif; }
         .header { text-align: center; margin-bottom: 20px; }
         .summary-table, .products-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         .summary-table th, .summary-table td, .products-table th, .products-table td { border: 1px solid #ccc; padding: 6px; }

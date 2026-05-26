@@ -6,7 +6,9 @@
 @section('page-subtitle', 'Layanan resmi')
 
 @section('content')
-    <div class="py-4 container-fluid">
+    <div class="container-fluid page-shell py-4">
+        <x-page-header title="Kasir" icon="fa-cash-register" badge="POS"
+            description="Pilih produk, atur pesanan, dan proses pembayaran." class="mb-4" />
         <div class="row g-4">
             <!-- Products Section -->
             <div class="col-lg-8">
@@ -323,4 +325,9 @@
             }
         });
     </script>
+@endpush
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/cashier-page.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/payment.css') }}">
 @endpush

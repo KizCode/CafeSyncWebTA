@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\AccessControlController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Middleware\CheckPageAccess;
+use App\Http\Middleware\EnsureUserHasRole;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,7 +14,7 @@ Route::get('/', function () {
 });
 
 Route::get('/transactions/history/pdf', [App\Http\Controllers\TransactionController::class, 'exportPdf'])->name('transactions.history.pdf');
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', CheckPageAccess::class])->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
         return redirect()->route('cashier.index');
@@ -47,6 +50,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/account', [ProfileController::class, 'account'])->name('profile.account');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Access Control Routes
+    Route::get('/access-control', [AccessControlController::class, 'index'])
+        ->middleware([EnsureUserHasRole::class . ':Administrator'])
+        ->name('access-control.index');
+    Route::post('/access-control', [AccessControlController::class, 'update'])
+        ->middleware([EnsureUserHasRole::class . ':Administrator'])
+        ->name('access-control.update');
 });
 
 require __DIR__ . '/auth.php';

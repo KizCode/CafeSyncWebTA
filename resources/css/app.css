@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -6,8 +6,8 @@
 
 :root {
     color-scheme: light;
-    --brand: #0ea5e9;
-    --brand-dark: #0284c7;
+    --brand: #10b981;
+    --brand-dark: #059669;
     --bg-base: #f8fafc;
     --surface: #ffffff;
     --surface-strong: #f1f5f9;
@@ -18,8 +18,10 @@
     --card-border: rgba(148, 163, 184, 0.25);
     --input-bg: #f8fafc;
     --input-border: #cbd5e1;
-    --font-sans: "Montserrat", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-serif: "Cormorant Garamond", Georgia, serif;
+    --font-sans:
+        "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-serif: "Bitter", Georgia, serif;
 }
 
 html.dark {
@@ -75,7 +77,12 @@ html {
 
 body {
     min-height: 100vh;
-    background: radial-gradient(circle at top left, #eff6ff 0%, #dbeafe 35%, #f8fafc 100%);
+    background: radial-gradient(
+        circle at top left,
+        #e8f0e8 0%,
+        #f5f1e8 40%,
+        #f8fafc 100%
+    );
     color: var(--text-primary);
     font-family: var(--font-sans);
 }
@@ -90,5 +97,5 @@ h6 {
 }
 
 ::selection {
-    background-color: rgba(59, 130, 246, 0.25);
+    background-color: rgba(16, 185, 129, 0.25);
 }

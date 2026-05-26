@@ -8,10 +8,23 @@
     <title>@yield('title', 'Pos System')</title>
 
     <style>
-        html { background: #f3f4f6; }
-        body { background: #f3f4f6; color: #111827; }
-        html.dark { background: #0f172a; }
-        html.dark body { background: #0f172a; color: #e2e8f0; }
+        html {
+            background: #f3f4f6;
+        }
+
+        body {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        html.dark {
+            background: #0f172a;
+        }
+
+        html.dark body {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
     </style>
     <script>
         (function() {
@@ -29,12 +42,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    @include('layouts.partials.fonts')
 
-    <link rel="stylesheet" href="{{ asset('css/cashier.css') }}">
+    @include('layouts.partials.cashier-core-styles')
 
     @stack('styles')
 </head>
@@ -186,6 +196,18 @@
                         <span class="sidebar-text">Laporan</span>
                     </a>
                 </li>
+                @if (auth()->user()?->isAdministrator())
+                    <li class="sidebar-menu-item">
+                        <a href="{{ route('access-control.index') }}"
+                            class="sidebar-menu-link {{ request()->routeIs('access-control.*') ? 'active' : '' }}"
+                            data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Kontrol Akses">
+                            <div class="sidebar-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <span class="sidebar-text">Kontrol Akses</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
 
             <div class="sidebar-divider"></div>
@@ -219,7 +241,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="main-content" id="mainContent">
+    <main class="main-content page-area" id="mainContent">
         @yield('content')
     </main>
 
