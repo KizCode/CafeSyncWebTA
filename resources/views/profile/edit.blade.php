@@ -3,8 +3,8 @@
 @section('title', 'Profile - Pos System')
 
 @section('content')
-    <x-profile-layout :user="$user" activeTab="profile" title="Informasi Profil" icon="fa-user"
-        description="Perbarui nama dan alamat email yang terhubung ke akun kasir Anda.">
+    <x-profile-layout :user="$user" activeTab="profile" title="Informasi Profil" icon="fa-user-circle"
+        description="Kelola identitas akun kasir Anda — nama dan email untuk login.">
         @include('profile.partials.update-profile-information-form')
     </x-profile-layout>
 @endsection

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expense;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
-use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,34 +12,64 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
+        $data = $this->buildReportData($request);
+
+        return view('reports.index', $data);
+    }
+
+    public function preview(Request $request)
+    {
+        return view('reports.preview', $this->buildReportData($request));
+    }
+
+    public function streamPdf(Request $request)
+    {
+        return $this->makePdf($request)->stream('laporan-pendapatan.pdf');
+    }
+
+    public function downloadPdf(Request $request)
+    {
+        return $this->makePdf($request)->download('laporan-pendapatan.pdf');
+    }
+
+    private function makePdf(Request $request)
+    {
+        $data = $this->buildReportData($request);
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->loadView('reports.pdf', $data);
+
+        return $pdf;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildReportData(Request $request): array
+    {
         $startDate = $request->start_date ?? now()->startOfMonth()->format('Y-m-d');
         $endDate = $request->end_date ?? now()->format('Y-m-d');
 
-        // Get transactions in date range
         $transactions = Transaction::whereBetween('created_at', [
             $startDate . ' 00:00:00',
-            $endDate . ' 23:59:59'
+            $endDate . ' 23:59:59',
         ])->where('status', 'lunas')->get();
 
-        // Calculate revenue
         $totalRevenue = $transactions->sum('grand_total');
         $totalTransactions = $transactions->count();
 
-        // Calculate total items sold
         $totalItemsSold = TransactionItem::whereIn('transaction_id', $transactions->pluck('id'))
             ->sum('quantity');
 
-        // Get expenses in date range
         $totalExpenses = Expense::whereBetween('expense_date', [$startDate, $endDate])
             ->sum('amount');
 
-        // Calculate gross profit
         $grossProfit = $totalRevenue - $totalExpenses;
 
-        // Get daily revenue for chart
         $dailyRevenue = Transaction::whereBetween('created_at', [
             $startDate . ' 00:00:00',
-            $endDate . ' 23:59:59'
+            $endDate . ' 23:59:59',
         ])
             ->where('status', 'lunas')
             ->select(
@@ -50,16 +80,15 @@ class ReportController extends Controller
             ->orderBy('date')
             ->get();
 
-        // Get top selling products
         $topProducts = TransactionItem::select('product_id', DB::raw('SUM(quantity) as total_qty'))
             ->whereIn('transaction_id', $transactions->pluck('id'))
             ->groupBy('product_id')
             ->orderBy('total_qty', 'desc')
             ->limit(10)
-            ->with('product')
+            ->with(['product.category'])
             ->get();
 
-        return view('reports.index', compact(
+        return compact(
             'startDate',
             'endDate',
             'totalRevenue',
@@ -69,45 +98,6 @@ class ReportController extends Controller
             'totalItemsSold',
             'dailyRevenue',
             'topProducts'
-        ));
-    }
-    public function downloadPdf(Request $request)
-    {
-        $startDate = $request->start_date ?? now()->startOfMonth()->format('Y-m-d');
-        $endDate = $request->end_date ?? now()->format('Y-m-d');
-
-        $transactions = Transaction::whereBetween('created_at', [
-            $startDate . ' 00:00:00',
-            $endDate . ' 23:59:59'
-        ])->where('status', 'lunas')->get();
-
-        $totalRevenue = $transactions->sum('grand_total');
-        $totalTransactions = $transactions->count();
-        $totalItemsSold = TransactionItem::whereIn('transaction_id', $transactions->pluck('id'))
-            ->sum('quantity');
-        $totalExpenses = Expense::whereBetween('expense_date', [$startDate, $endDate])
-            ->sum('amount');
-        $grossProfit = $totalRevenue - $totalExpenses;
-
-        $topProducts = TransactionItem::select('product_id', DB::raw('SUM(quantity) as total_qty'))
-            ->whereIn('transaction_id', $transactions->pluck('id'))
-            ->groupBy('product_id')
-            ->orderBy('total_qty', 'desc')
-            ->limit(10)
-            ->with('product')
-            ->get();
-
-        $pdf = app('dompdf.wrapper');
-        $pdf->loadView('reports.pdf', compact(
-            'startDate',
-            'endDate',
-            'totalRevenue',
-            'totalExpenses',
-            'grossProfit',
-            'totalTransactions',
-            'totalItemsSold',
-            'topProducts'
-        ));
-        return $pdf->download('laporan-pendapatan.pdf');
+        );
     }
 }

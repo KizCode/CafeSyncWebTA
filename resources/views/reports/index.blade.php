@@ -24,8 +24,8 @@
                                         required>
                                 </div>
                                 <div class="col-md-4 text-md-end">
-                                    <button type="submit" class="btn btn-primary mb-2">
-                                        <i class="fas fa-search"></i> Tampilkan Laporan
+                                    <button type="submit" class="btn btn-primary btn-sm mb-2">
+                                        <i class="fas fa-search"></i> Tampilkan
                                     </button>
                                 </div>
                             </div>
@@ -34,12 +34,14 @@
                 </form>
 
                 <div
-                    class="mb-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-                    <div class="text-muted small">Periode: {{ request('start_date') ?? 'Semua' }} sampai
-                        {{ request('end_date') ?? 'Semua' }}</div>
-                    <a href="{{ route('reports.pdf', ['start_date' => request('start_date'), 'end_date' => request('end_date')]) }}"
-                        class="btn btn-success shadow rounded-pill px-4 py-2" target="_blank">
-                        <i class="fas fa-print"></i> Print PDF
+                    class="mb-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+                    <div class="text-muted small">
+                        Periode: {{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }}
+                        — {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }}
+                    </div>
+                    <a href="{{ route('reports.preview', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
+                        class="btn btn-success btn-sm">
+                        <i class="fas fa-file-pdf me-1"></i> Pratinjau PDF
                     </a>
                 </div>
 
@@ -98,8 +100,8 @@
                                     @forelse($topProducts as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td><strong>{{ $item->product->name }}</strong></td>
-                                            <td>{{ $item->product->category->name }}</td>
+                                            <td><strong>{{ $item->product->name ?? '—' }}</strong></td>
+                                            <td>{{ $item->product?->category?->name ?? '—' }}</td>
                                             <td class="text-end">{{ $item->total_qty }}</td>
                                             <td class="text-end">Rp {{ number_format($item->product->price, 0, ',', '.') }}
                                             </td>

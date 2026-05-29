@@ -1,0 +1,266 @@
+/* Konten laporan di pratinjau (sama struktur dengan PDF) */
+
+.report-document {
+    width: 100%;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem 1.5rem;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-size: 0.8125rem;
+    color: #1f2937;
+    line-height: 1.45;
+    background: #fff;
+}
+
+.report-document .brand-name,
+.report-document .report-title,
+.report-document .section-title {
+    font-family: "Bitter", Georgia, serif;
+}
+
+.report-document .report-header {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.25rem;
+    border-bottom: 3px solid #10b981;
+    padding-bottom: 0.75rem;
+}
+
+.report-document .report-header td {
+    vertical-align: middle;
+}
+
+.report-document .brand-logo {
+    width: 46px;
+    height: 46px;
+    background: #10b981;
+    color: #fff;
+    font-family: "Bitter", serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 46px;
+    border-radius: 8px;
+}
+
+.report-document .brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #5c4a32;
+}
+
+.report-document .brand-tagline {
+    font-size: 0.65rem;
+    color: #059669;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+}
+
+.report-document .report-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111827;
+    margin-top: 0.15rem;
+}
+
+.report-document .report-meta {
+    text-align: right;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.report-document .period-pill {
+    display: inline-block;
+    margin-top: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #047857;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 4px;
+}
+
+.report-document .section-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #5c4a32;
+    margin: 1rem 0 0.6rem;
+    padding: 0.35rem 0 0.35rem 0.5rem;
+    border-left: 4px solid #10b981;
+    background: #f9fafb;
+}
+
+.report-document .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.85rem;
+}
+
+.report-document .summary-table td {
+    width: 25%;
+    padding: 0.2rem;
+    vertical-align: top;
+}
+
+.report-document .stat-box {
+    border: 1px solid #e5e7eb;
+    padding: 0.55rem 0.65rem;
+    background: #f9fafb;
+    border-radius: 6px;
+    min-height: 3rem;
+}
+
+.report-document .stat-box--green {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+.report-document .stat-box--blue {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+.report-document .stat-box--gold {
+    background: #fffbeb;
+    border-color: #fde68a;
+}
+
+.report-document .stat-label {
+    font-size: 0.6rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+
+.report-document .stat-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.report-document .stat-value.green {
+    color: #047857;
+}
+
+.report-document .stat-value.red {
+    color: #b91c1c;
+}
+
+.report-document .profit-banner {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.report-document .profit-banner td {
+    background: #10b981;
+    color: #fff;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+.report-document .profit-banner .label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.report-document .profit-banner .value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 0.15rem;
+}
+
+.report-document .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.85rem;
+    font-size: 0.75rem;
+}
+
+.report-document .data-table thead th {
+    background: #10b981;
+    color: #fff;
+    font-weight: 700;
+    text-align: left;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+}
+
+.report-document .data-table tbody td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.report-document .data-table tbody tr.alt td {
+    background: #f9fafb;
+}
+
+.report-document .data-table tfoot td {
+    padding: 0.5rem;
+    background: #ecfdf5;
+    font-weight: 700;
+    border-top: 2px solid #10b981;
+}
+
+.report-document .text-right {
+    text-align: right;
+}
+
+.report-document .rank {
+    color: #10b981;
+    font-weight: 700;
+}
+
+.report-document .product-name {
+    font-weight: 600;
+}
+
+.report-document .muted {
+    color: #6b7280;
+}
+
+.report-document .empty-msg {
+    text-align: center;
+    padding: 1.25rem;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.report-document .report-footer-meta {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-collapse: collapse;
+    font-size: 0.65rem;
+    color: #9ca3af;
+}
+
+.report-document .disclaimer {
+    margin-top: 0.65rem;
+    padding: 0.55rem;
+    background: #f3f4f6;
+    font-size: 0.65rem;
+    color: #6b7280;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+@media (max-width: 640px) {
+    .report-document .summary-table td {
+        display: block;
+        width: 100%;
+        padding: 0.15rem 0;
+    }
+}
+
+@media print {
+    .report-document {
+        max-width: none;
+        padding: 0;
+    }
+}

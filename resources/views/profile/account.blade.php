@@ -3,8 +3,8 @@
 @section('title', 'Account - Pos System')
 
 @section('content')
-    <x-profile-layout :user="$user" activeTab="account" title="Akun & Keamanan" icon="fa-shield-alt"
-        description="Ubah kata sandi atau hapus akun jika diperlukan.">
+    <x-profile-layout :user="$user" activeTab="account" title="Akun & Keamanan" icon="fa-shield-halved"
+        description="Amankan akun dengan kata sandi baru atau kelola penghapusan akun.">
         @include('profile.partials.update-password-form')
         @include('profile.partials.delete-user-form')
     </x-profile-layout>

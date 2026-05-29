@@ -26,6 +26,23 @@ body.dark .cart-item-card .btn-outline-secondary {
     border-color: #334155 !important;
 }
 
+/* ======================= PRODUCT SEARCH ======================= */
+.cashier-search {
+    max-width: 320px;
+}
+
+.cashier-search .form-control {
+    font-size: 0.8125rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.cashier-search .input-group-text {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.75rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+
 /* ======================= CASHIER CARDS ======================= */
 .product-card {
     transition: var(--transition);

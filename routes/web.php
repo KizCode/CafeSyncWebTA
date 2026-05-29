@@ -43,7 +43,9 @@ Route::middleware(['auth', CheckPageAccess::class])->group(function () {
     // Report Routes
     Route::get('/transactions/history/pdf', [TransactionController::class, 'exportPdf'])->name('transactions.history.pdf');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/pdf', [ReportController::class, 'downloadPdf'])->name('reports.pdf');
+    Route::get('/reports/preview', [ReportController::class, 'preview'])->name('reports.preview');
+    Route::get('/reports/pdf', [ReportController::class, 'streamPdf'])->name('reports.pdf');
+    Route::get('/reports/pdf/download', [ReportController::class, 'downloadPdf'])->name('reports.pdf.download');
 
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

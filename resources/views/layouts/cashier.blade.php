@@ -8,23 +8,10 @@
     <title>@yield('title', 'Pos System')</title>
 
     <style>
-        html {
-            background: #f3f4f6;
-        }
-
-        body {
-            background: #f3f4f6;
-            color: #111827;
-        }
-
-        html.dark {
-            background: #0f172a;
-        }
-
-        html.dark body {
-            background: #0f172a;
-            color: #e2e8f0;
-        }
+        html { background: #f5f1e8; }
+        body { background: #f5f1e8; color: #111827; }
+        html.dark { background: #0f172a; }
+        html.dark body { background: #0f172a; color: #e2e8f0; }
     </style>
     <script>
         (function() {
@@ -53,39 +40,40 @@
     <!-- Top Header -->
     <header class="top-header no-print">
         <div class="header-left">
-            <button id="toggleSidebar" class="btn-toggle" title="Toggle Sidebar">
+            <button id="toggleSidebar" class="btn-toggle" type="button" title="Toggle Sidebar"
+                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Sembunyikan menu">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="logo-section">
+            <a href="{{ route('cashier.index') }}" class="logo-section text-decoration-none">
                 <div class="logo-icon">
                     <i class="fas fa-mug-hot"></i>
                 </div>
                 <div class="logo-text">
                     <div class="logo-name">CafeSync</div>
-                    <div class="logo-subtitle">POS System</div>
+                    <div class="logo-subtitle">Kopi & Sawah</div>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-center d-none d-lg-flex">
+            <div class="header-datetime">
+                <div class="header-info-item">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                    <span id="currentDate"></span>
+                </div>
+                <div class="header-info-divider" aria-hidden="true"></div>
+                <div class="header-info-item">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <span id="currentTime"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Center Info -->
-        <div class="header-center d-none d-lg-flex">
-            <div class="header-info-item">
-                <i class="fas fa-calendar-alt text-muted"></i>
-                <span id="currentDate" class="text-muted small"></span>
-            </div>
-            <div class="header-info-divider"></div>
-            <div class="header-info-item">
-                <i class="fas fa-clock text-muted"></i>
-                <span id="currentTime" class="text-muted small"></span>
-            </div>
-        </div>
-
-        <!-- Right Section -->
         <div class="header-right">
-            <!-- Notifications -->
+            <div class="header-actions">
             <div class="notification-bell dropdown">
                 <button class="notification-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Notifikasi">
+                    data-bs-placement="bottom" data-bs-title="Notifikasi" aria-label="Notifikasi">
                     <i class="fas fa-bell"></i>
                     <span class="notification-badge">3</span>
                 </button>
@@ -123,48 +111,58 @@
                 </ul>
             </div>
 
-            <!-- Theme toggle -->
-            <button id="themeToggleBtn" class="btn-toggle" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                data-bs-title="Ubah tema" aria-label="Ubah tema">
+            <button id="themeToggleBtn" class="btn-toggle" type="button" data-bs-toggle="tooltip"
+                data-bs-placement="bottom" data-bs-title="Ubah tema" aria-label="Ubah tema">
                 <i id="themeToggleIcon" class="fas fa-moon"></i>
             </button>
 
-            <!-- User Dropdown -->
             <div class="user-dropdown">
-                <button class="user-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=10B981&color=fff"
-                        alt="User Avatar" class="user-avatar">
+                <button class="user-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-label="Menu pengguna">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=10B981&color=fff"
+                        alt="" class="user-avatar">
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            <i class="fas fa-user me-2 text-primary"></i>
-                            <span>Profile</span>
-                        </a></li>
-                    <li><a class="dropdown-item" href="#">
-                            <i class="fas fa-history me-2 text-info"></i>
-                            <span>Riwayat Login</span>
-                        </a></li>
                     <li>
-                        <hr class="dropdown-divider">
+                        <div class="dropdown-header-user">
+                            <strong>{{ Auth::user()->name }}</strong>
+                            <small>{{ Auth::user()->email }}</small>
+                        </div>
                     </li>
+                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
+                            <i class="fas fa-user me-2 text-success"></i>
+                            <span>Profil</span>
+                        </a></li>
+                    <li><a class="dropdown-item" href="{{ route('profile.account') }}">
+                            <i class="fas fa-lock me-2 text-success"></i>
+                            <span>Keamanan Akun</span>
+                        </a></li>
+                    <li><hr class="dropdown-divider my-2"></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}" class="m-0">
                             @csrf
                             <button type="submit" class="dropdown-item text-danger w-100 text-start">
                                 <i class="fas fa-sign-out-alt me-2"></i>
-                                <span>Logout</span>
+                                <span>Keluar</span>
                             </button>
                         </form>
                     </li>
                 </ul>
             </div>
+            </div>
         </div>
     </header>
 
-    <!-- Sidebar -->
     <aside class="sidebar no-print" id="sidebar">
+        <div class="sidebar-brand">
+            <span class="sidebar-brand__tag">
+                <i class="fas fa-seedling" aria-hidden="true"></i>
+                <span>Menu Utama</span>
+            </span>
+        </div>
         <nav class="sidebar-nav">
+            <p class="sidebar-section-label">Operasional</p>
             <ul class="sidebar-menu">
                 <li class="sidebar-menu-item">
                     <a href="{{ route('cashier.index') }}"
@@ -212,10 +210,12 @@
 
             <div class="sidebar-divider"></div>
 
+            <p class="sidebar-section-label">Pengaturan</p>
             <ul class="sidebar-menu sidebar-footer">
                 <li class="sidebar-menu-item">
-                    <a href="{{ route('profile.edit') }}" class="sidebar-menu-link" data-bs-toggle="tooltip"
-                        data-bs-placement="right" data-bs-title="Pengaturan">
+                    <a href="{{ route('profile.edit') }}"
+                        class="sidebar-menu-link {{ request()->routeIs('profile.*') ? 'active' : '' }}"
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Pengaturan">
                         <div class="sidebar-icon">
                             <i class="fas fa-cog"></i>
                         </div>
@@ -234,8 +234,11 @@
             </ul>
         </nav>
 
-        <!-- Sidebar Footer Info -->
         <div class="sidebar-footer-info">
+            <div class="sidebar-footer-card">
+                <i class="fas fa-mug-hot" aria-hidden="true"></i>
+                <p>CafeSync POS — suasana hangat warung kopi di tengah sawah</p>
+            </div>
             <div class="version-badge">v1.0.0</div>
         </div>
     </aside>
@@ -369,6 +372,7 @@
             const icon = document.getElementById('themeToggleIcon');
             if (!icon) return;
             icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+            themeToggleBtn?.classList.toggle('is-dark', dark);
             themeToggleBtn?.setAttribute('data-bs-title', dark ? 'Ubah ke tema terang' : 'Ubah ke tema gelap');
             themeToggleBtn?.setAttribute('title', dark ? 'Ubah ke tema terang' : 'Ubah ke tema gelap');
         }

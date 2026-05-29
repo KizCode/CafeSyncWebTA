@@ -20,12 +20,12 @@
                         </div>
 
                         <!-- Search Bar -->
-                        <div class="mb-4">
-                            <div class="input-group input-group-lg">
-                                <span class="bg-transparent border-2 input-group-text border-light">
-                                    <i class="fas fa-search text-muted"></i>
+                        <div class="mb-3">
+                            <div class="input-group input-group-sm cashier-search">
+                                <span class="input-group-text bg-transparent border-light">
+                                    <i class="fas fa-search text-muted small"></i>
                                 </span>
-                                <input type="text" class="border-2 form-control rounded-end border-light text-large-1-0"
+                                <input type="text" class="form-control border-light"
                                     placeholder="Cari produk..." id="searchProduct">
                             </div>
                         </div>
