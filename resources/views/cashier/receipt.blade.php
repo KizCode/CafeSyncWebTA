@@ -26,6 +26,17 @@
                                     <div class="col-7 text-end">
                                         <small><strong>{{ $transaction->invoice_number }}</strong></small></div>
                                 </div>
+                                @php
+                                    $queueSettings = \App\Models\QueueSetting::current();
+                                @endphp
+                                @if ($queueSettings->show_queue_on_receipt && $transaction->queue_number)
+                                    <div class="row mb-1">
+                                        <div class="col-5"><small>No. Antrian:</small></div>
+                                        <div class="col-7 text-end">
+                                            <small><strong class="text-success">{{ $transaction->queue_number }}</strong></small>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="row mb-1">
                                     <div class="col-5"><small>Tanggal:</small></div>
                                     <div class="col-7 text-end">

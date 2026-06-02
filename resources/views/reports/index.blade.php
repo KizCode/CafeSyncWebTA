@@ -40,7 +40,7 @@
                         — {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }}
                     </div>
                     <a href="{{ route('reports.preview', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
-                        class="btn btn-success btn-sm">
+                        class="btn btn-success btn-sm" data-no-ajax>
                         <i class="fas fa-file-pdf me-1"></i> Pratinjau PDF
                     </a>
                 </div>

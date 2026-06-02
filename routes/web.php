@@ -1,12 +1,10 @@
 <?php
 
-use App\Http\Controllers\AccessControlController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
-use App\Http\Middleware\CheckPageAccess;
-use App\Http\Middleware\EnsureUserHasRole;
+use App\Http\Controllers\QueueController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,7 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('/transactions/history/pdf', [App\Http\Controllers\TransactionController::class, 'exportPdf'])->name('transactions.history.pdf');
-Route::middleware(['auth', CheckPageAccess::class])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
         return redirect()->route('cashier.index');
@@ -47,19 +45,21 @@ Route::middleware(['auth', CheckPageAccess::class])->group(function () {
     Route::get('/reports/pdf', [ReportController::class, 'streamPdf'])->name('reports.pdf');
     Route::get('/reports/pdf/download', [ReportController::class, 'downloadPdf'])->name('reports.pdf.download');
 
+    // Queue & production
+    Route::get('/queue', [QueueController::class, 'index'])->name('queue.index');
+    Route::patch('/queue/{transaction}/status', [QueueController::class, 'updateOrderStatus'])->name('queue.update-status');
+    Route::put('/queue/settings', [QueueController::class, 'updateSettings'])->name('queue.settings.update');
+    Route::post('/queue/statuses', [QueueController::class, 'storeStatus'])->name('queue.statuses.store');
+    Route::put('/queue/statuses/{status}', [QueueController::class, 'updateStatus'])->name('queue.statuses.update');
+    Route::delete('/queue/statuses/{status}', [QueueController::class, 'destroyStatus'])->name('queue.statuses.destroy');
+
+    Route::redirect('/settings/queue', '/queue#pengaturan');
+
     // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/account', [ProfileController::class, 'account'])->name('profile.account');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Access Control Routes
-    Route::get('/access-control', [AccessControlController::class, 'index'])
-        ->middleware([EnsureUserHasRole::class . ':Administrator'])
-        ->name('access-control.index');
-    Route::post('/access-control', [AccessControlController::class, 'update'])
-        ->middleware([EnsureUserHasRole::class . ':Administrator'])
-        ->name('access-control.update');
 });
 
 require __DIR__ . '/auth.php';

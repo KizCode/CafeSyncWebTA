@@ -64,13 +64,4 @@ class User extends Authenticatable
     {
         return $this->hasRole('Administrator');
     }
-
-    public function canAccessPage(string $page): bool
-    {
-        if ($this->isAdministrator()) {
-            return true;
-        }
-
-        return $this->role?->accessControls()->where('page', $page)->where('allowed', true)->exists();
-    }
 }

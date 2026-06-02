@@ -4,3 +4,5 @@
 <link rel="stylesheet" href="{{ asset('css/shell.css') }}">
 <link rel="stylesheet" href="{{ asset('css/components.css') }}">
 <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
+<link rel="stylesheet" href="{{ asset('css/report-preview.css') }}">
+<link rel="stylesheet" href="{{ asset('css/queue.css') }}">

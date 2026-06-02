@@ -2,11 +2,6 @@
 
 @section('title', 'Pratinjau Laporan PDF')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('css/report-preview.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/report-document.css') }}">
-@endpush
-
 @section('content')
     @php
         $pdfQuery = ['start_date' => $startDate, 'end_date' => $endDate];
@@ -16,11 +11,13 @@
             \Carbon\Carbon::parse($endDate)->format('d M Y');
     @endphp
 
-    <div class="container-fluid page-shell report-preview-page">
+    <div class="container-fluid page-shell report-preview-page"
+        data-pdf-url="{{ route('reports.pdf', $pdfQuery) }}">
         <x-page-header title="Pratinjau Laporan" icon="fa-file-pdf" badge="PDF"
-            description="Periksa dokumen sebelum mencetak atau mengunduh.">
+            description="Pratinjau file PDF sebelum mencetak atau mengunduh.">
             <x-slot:actions>
-                <a href="{{ route('reports.index', $pdfQuery) }}" class="btn btn-outline-secondary btn-sm">
+                <a href="{{ route('reports.index', $pdfQuery) }}" class="btn btn-outline-secondary btn-sm"
+                    data-no-ajax>
                     <i class="fas fa-arrow-left me-1"></i> Kembali
                 </a>
             </x-slot:actions>
@@ -45,7 +42,7 @@
                             <i class="fas fa-search-minus"></i>
                         </button>
                         <button type="button" class="report-preview-zoom__btn is-active" data-zoom="1"
-                            title="Ukuran normal">100%</button>
+                            title="Ukuran A4">100%</button>
                         <button type="button" class="report-preview-zoom__btn" data-zoom="1.05" title="Perbesar">
                             <i class="fas fa-search-plus"></i>
                         </button>
@@ -55,7 +52,7 @@
                         <a href="{{ route('reports.pdf.download', $pdfQuery) }}" class="btn btn-success btn-sm">
                             <i class="fas fa-download me-1"></i> Unduh PDF
                         </a>
-                        <button type="button" class="btn btn-primary btn-sm" id="btnPrintReport">
+                        <button type="button" class="btn btn-primary btn-sm" id="btnPrintPdf">
                             <i class="fas fa-print me-1"></i> Cetak
                         </button>
                     </div>
@@ -71,10 +68,19 @@
                     <div class="report-preview-paper__badge">
                         <i class="fas fa-file-alt me-1"></i> A4 · Portrait
                     </div>
-                    <div class="report-preview-paper__frame" id="reportDocument">
-                        <div class="report-document">
-                            @include('reports.partials.document')
+
+                    <div class="report-preview-paper__frame">
+                        <div class="report-preview-frame__loading" id="pdfLoading">
+                            <div class="report-preview-frame__loading-icon">
+                                <i class="fas fa-mug-hot"></i>
+                            </div>
+                            <div class="spinner-border text-success spinner-border-sm" role="status"
+                                aria-hidden="true"></div>
+                            <span>Memuat PDF…</span>
                         </div>
+                        <iframe id="reportPdfFrame" class="report-preview-frame"
+                            title="Pratinjau laporan pendapatan PDF"
+                            src="{{ route('reports.pdf', $pdfQuery) }}"></iframe>
                     </div>
                 </div>
             </div>
@@ -82,40 +88,8 @@
 
         <p class="report-preview-hint no-print">
             <i class="fas fa-info-circle me-1"></i>
-            Pratinjau ini sama dengan isi file PDF. Gunakan <strong>Unduh PDF</strong> untuk menyimpan, atau
-            <strong>Cetak</strong> untuk mencetak.
+            Tampilan di atas adalah file PDF asli. Gunakan <strong>Unduh PDF</strong> atau <strong>Cetak</strong> sesuai
+            kebutuhan.
         </p>
     </div>
 @endsection
-
-@push('scripts')
-    <script>
-        (function() {
-            const paper = document.getElementById('previewPaper');
-            const printBtn = document.getElementById('btnPrintReport');
-            const zoomBtns = document.querySelectorAll('.report-preview-zoom__btn[data-zoom]');
-
-            function applyZoom(scale) {
-                paper.dataset.zoom = String(scale);
-                paper.style.transform = 'scale(' + scale + ')';
-                paper.style.transformOrigin = 'top center';
-
-                zoomBtns.forEach(function(btn) {
-                    btn.classList.toggle('is-active', parseFloat(btn.dataset.zoom) === scale);
-                });
-            }
-
-            zoomBtns.forEach(function(btn) {
-                btn.addEventListener('click', function() {
-                    applyZoom(parseFloat(btn.dataset.zoom));
-                });
-            });
-
-            printBtn.addEventListener('click', function() {
-                window.print();
-            });
-
-            applyZoom(1);
-        })();
-    </script>
-@endpush

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductionStatus;
+use App\Models\QueueSetting;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Illuminate\Http\Request;
@@ -34,8 +36,22 @@ class TransactionController extends Controller
         try {
             $cartItems = json_decode($request->items, true);
 
+            $queueSettings = QueueSetting::current();
+            $queueData = [];
+
+            if ($queueSettings->is_enabled && $queueSettings->auto_enqueue_on_payment) {
+                $defaultStatus = ProductionStatus::defaultForQueue();
+                if ($defaultStatus) {
+                    $queueData = [
+                        'queue_number' => Transaction::generateQueueNumber(),
+                        'production_status_id' => $defaultStatus->id,
+                        'queued_at' => now(),
+                    ];
+                }
+            }
+
             // Create transaction
-            $transaction = Transaction::create([
+            $transaction = Transaction::create(array_merge([
                 'invoice_number' => Transaction::generateInvoiceNumber(),
                 'subtotal' => $request->subtotal,
                 'discount_type' => null,
@@ -48,7 +64,7 @@ class TransactionController extends Controller
                 'paid_amount' => $request->cash_received ?? $request->total_amount,
                 'change_amount' => $request->change_amount ?? 0,
                 'status' => 'lunas',
-            ]);
+            ], $queueData));
 
             // Create transaction items and update stock
             foreach ($cartItems as $item) {
@@ -74,7 +90,8 @@ class TransactionController extends Controller
                 'success' => true,
                 'message' => 'Transaksi berhasil',
                 'invoice_number' => $transaction->invoice_number,
-                'transaction_id' => $transaction->id
+                'transaction_id' => $transaction->id,
+                'queue_number' => $transaction->queue_number,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();

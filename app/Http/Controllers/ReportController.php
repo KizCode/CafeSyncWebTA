@@ -19,7 +19,12 @@ class ReportController extends Controller
 
     public function preview(Request $request)
     {
-        return view('reports.preview', $this->buildReportData($request));
+        $data = $this->buildReportData($request);
+
+        return view('reports.preview', [
+            'startDate' => $data['startDate'],
+            'endDate' => $data['endDate'],
+        ]);
     }
 
     public function streamPdf(Request $request)

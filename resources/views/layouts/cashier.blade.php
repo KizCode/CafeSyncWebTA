@@ -194,18 +194,16 @@
                         <span class="sidebar-text">Laporan</span>
                     </a>
                 </li>
-                @if (auth()->user()?->isAdministrator())
-                    <li class="sidebar-menu-item">
-                        <a href="{{ route('access-control.index') }}"
-                            class="sidebar-menu-link {{ request()->routeIs('access-control.*') ? 'active' : '' }}"
-                            data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Kontrol Akses">
-                            <div class="sidebar-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <span class="sidebar-text">Kontrol Akses</span>
-                        </a>
-                    </li>
-                @endif
+                <li class="sidebar-menu-item">
+                    <a href="{{ route('queue.index') }}"
+                        class="sidebar-menu-link {{ request()->routeIs('queue.*') ? 'active' : '' }}"
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Antrian Produksi">
+                        <div class="sidebar-icon">
+                            <i class="fas fa-list-check"></i>
+                        </div>
+                        <span class="sidebar-text">Antrian</span>
+                    </a>
+                </li>
             </ul>
 
             <div class="sidebar-divider"></div>
@@ -396,8 +394,23 @@
             }
         }
 
+        function syncStylesheets(doc) {
+            doc.querySelectorAll('head link[rel="stylesheet"]').forEach(function(link) {
+                const href = link.getAttribute('href');
+                if (!href) return;
+                const exists = Array.from(document.querySelectorAll('head link[rel="stylesheet"]'))
+                    .some(function(existing) {
+                        return existing.getAttribute('href') === href;
+                    });
+                if (!exists) {
+                    document.head.appendChild(link.cloneNode(true));
+                }
+            });
+        }
+
         function reinitializePage() {
             initTooltips();
+            document.dispatchEvent(new CustomEvent('page:loaded'));
         }
 
         function shouldHandleLink(link) {
@@ -442,6 +455,8 @@
                 if (newTitle) {
                     document.title = newTitle.textContent;
                 }
+
+                syncStylesheets(doc);
 
                 if (pushState) {
                     history.pushState({
@@ -499,6 +514,9 @@
         });
     </script>
 
+    <script src="{{ asset('js/report-preview.js') }}"></script>
+    <script src="{{ asset('js/queue-board.js') }}"></script>
+    <script src="{{ asset('js/queue-icon-picker.js') }}"></script>
     @stack('scripts')
 </body>
 

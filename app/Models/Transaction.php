@@ -22,9 +22,13 @@ class Transaction extends Model
         'paid_amount',
         'change_amount',
         'status',
+        'queue_number',
+        'production_status_id',
+        'queued_at',
     ];
 
     protected $casts = [
+        'queued_at' => 'datetime',
         'subtotal' => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'discount_value' => 'decimal:2',
@@ -38,6 +42,35 @@ class Transaction extends Model
     public function items()
     {
         return $this->hasMany(TransactionItem::class);
+    }
+
+    public function productionStatus()
+    {
+        return $this->belongsTo(ProductionStatus::class);
+    }
+
+    public function isInQueue(): bool
+    {
+        return $this->queue_number !== null;
+    }
+
+    public static function generateQueueNumber(): string
+    {
+        $settings = QueueSetting::current();
+        $query = self::query()->whereNotNull('queue_number');
+
+        if ($settings->reset_queue_daily) {
+            $query->whereDate('created_at', now()->toDateString());
+        }
+
+        $last = $query->orderByDesc('id')->first();
+        $sequence = 1;
+
+        if ($last && preg_match('/-(\d+)$/', $last->queue_number, $matches)) {
+            $sequence = (int) $matches[1] + 1;
+        }
+
+        return 'A' . now()->format('md') . '-' . str_pad((string) $sequence, 3, '0', STR_PAD_LEFT);
     }
 
     public static function generateInvoiceNumber()
