@@ -1,10 +1,10 @@
-@extends('layouts.cashier')
+@extends($areaLayout ?? 'layouts.cashier')
 
-@section('title', 'Profile - Pos System')
+@section('title', __('ui.profile_settings'))
 
 @section('content')
-    <x-profile-layout :user="$user" activeTab="profile" title="Informasi Profil" icon="fa-user-circle"
-        description="Kelola identitas akun kasir Anda — nama dan email untuk login.">
+    <x-profile-layout :user="$user" activeTab="profile" :title="__('ui.profile_info')" icon="fa-user-circle"
+        :description="__('ui.profile_info_desc')">
         @include('profile.partials.update-profile-information-form')
     </x-profile-layout>
 @endsection

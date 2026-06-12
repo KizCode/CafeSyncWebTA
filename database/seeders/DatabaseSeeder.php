@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
             QueueSettingSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
+            IngredientSeeder::class,
             ProductSeeder::class,
+            ProductRecipeSeeder::class,
             ExpenseSeeder::class,
             TransactionSeeder::class,
         ]);

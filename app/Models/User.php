@@ -64,4 +64,34 @@ class User extends Authenticatable
     {
         return $this->hasRole('Administrator');
     }
+
+    public function isKasir(): bool
+    {
+        return $this->hasRole('Kasir');
+    }
+
+    public function isGudang(): bool
+    {
+        return $this->hasRole('Gudang');
+    }
+
+    public function homeRoute(): string
+    {
+        return match ($this->role?->name) {
+            'Kasir' => 'cashier.index',
+            'Gudang' => 'warehouse.index',
+            'Administrator' => 'admin.dashboard',
+            default => 'cashier.index',
+        };
+    }
+
+    public function translatedRoleName(): ?string
+    {
+        return match ($this->role?->name) {
+            'Kasir' => __('ui.role_kasir'),
+            'Gudang' => __('ui.role_gudang'),
+            'Administrator' => __('ui.role_administrator'),
+            default => $this->role?->name,
+        };
+    }
 }

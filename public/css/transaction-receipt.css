@@ -1,0 +1,264 @@
+/* Struk transaksi — tampilan layar & cetak */
+
+.transaction-receipt {
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 1.25rem 1.35rem;
+    background: #fffefb;
+    border: 1px dashed rgba(92, 74, 50, 0.35);
+    border-radius: 12px;
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    font-size: 0.8125rem;
+    color: #1f2937;
+    box-shadow: 0 8px 28px rgba(92, 74, 50, 0.08);
+}
+
+.transaction-receipt__brand {
+    padding-bottom: 0.85rem;
+    margin-bottom: 0.85rem;
+    border-bottom: 2px dashed rgba(16, 185, 129, 0.35);
+}
+
+.transaction-receipt__logo {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.transaction-receipt__title {
+    font-family: "Bitter", Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #5c4a32;
+    margin: 0 0 0.15rem;
+}
+
+.transaction-receipt__subtitle {
+    margin: 0;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #059669;
+}
+
+.transaction-receipt__meta,
+.transaction-receipt__items,
+.transaction-receipt__totals,
+.transaction-receipt__payment {
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px dashed rgba(92, 74, 50, 0.2);
+}
+
+.transaction-receipt__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.35rem;
+}
+
+.transaction-receipt__row span:first-child {
+    color: #4b5563;
+}
+
+.transaction-receipt__row--queue strong {
+    color: #059669;
+    font-size: 1rem;
+}
+
+.transaction-receipt__badge {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.transaction-receipt__badge.is-paid {
+    background: #d1fae5;
+    color: #047857;
+}
+
+.transaction-receipt__item {
+    margin-bottom: 0.55rem;
+}
+
+.transaction-receipt__item-name {
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+}
+
+.transaction-receipt__item-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #4b5563;
+}
+
+.transaction-receipt__row.is-discount span:last-child {
+    color: #059669;
+}
+
+.transaction-receipt__row.is-tax span:last-child {
+    color: #2563eb;
+}
+
+.transaction-receipt__row--grand {
+    font-family: "Bitter", Georgia, serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-top: 0.35rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid rgba(92, 74, 50, 0.15);
+}
+
+.transaction-receipt__row--grand span:last-child {
+    color: #059669;
+}
+
+.transaction-receipt__footer {
+    padding-top: 0.25rem;
+}
+
+.transaction-receipt__footer p {
+    margin: 0 0 0.25rem;
+    font-weight: 600;
+    color: #5c4a32;
+}
+
+.transaction-receipt__footer small {
+    color: #6b7280;
+    font-size: 0.6875rem;
+}
+
+.transaction-struk-actions {
+    display: inline-flex;
+    gap: 0.35rem;
+    flex-wrap: nowrap;
+}
+
+.transaction-struk-actions .btn {
+    white-space: nowrap;
+}
+
+/* Popup struk di kasir */
+.receipt-modal__dialog {
+    max-width: 420px;
+}
+
+.receipt-modal__content {
+    border-radius: 1.25rem;
+    overflow: hidden;
+}
+
+.receipt-modal__header {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: #fff;
+    padding: 1.25rem 1.5rem;
+    align-items: flex-start;
+}
+
+.receipt-modal__header .btn-close {
+    filter: invert(1);
+    opacity: 0.85;
+}
+
+.receipt-modal__success {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+.receipt-modal__header .modal-title {
+    color: #fff;
+    font-family: "Bitter", Georgia, serif;
+}
+
+.receipt-modal__desc {
+    font-size: 0.8125rem;
+    opacity: 0.9;
+}
+
+.receipt-modal__body {
+    background: #f5f1e8;
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+}
+
+.receipt-modal__body .transaction-receipt {
+    margin: 1rem auto;
+    box-shadow: 0 8px 24px rgba(92, 74, 50, 0.1);
+}
+
+.receipt-modal__footer {
+    background: var(--surface-soft, #f8fafc);
+    padding: 1rem 1.25rem;
+}
+
+html.dark .receipt-modal__body,
+body.dark .receipt-modal__body {
+    background: #0f172a;
+}
+
+html.dark .receipt-modal__footer,
+body.dark .receipt-modal__footer {
+    background: #111827;
+}
+
+@media print {
+    .no-print,
+    .receipt-modal__header,
+    .receipt-modal__footer,
+    .modal-backdrop {
+        display: none !important;
+    }
+
+    .receipt-modal {
+        position: static !important;
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    .receipt-modal .modal-dialog {
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .receipt-modal__body {
+        max-height: none !important;
+        overflow: visible !important;
+        background: #fff !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #receiptContent,
+    #receiptContent * {
+        visibility: visible;
+    }
+
+    #receiptContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 80mm;
+        max-width: 80mm;
+        margin: 0;
+        padding: 0.5rem;
+        border: none;
+        box-shadow: none;
+        font-size: 11px;
+    }
+}

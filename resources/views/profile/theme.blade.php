@@ -1,4 +1,4 @@
-@extends('layouts.cashier')
+@extends($areaLayout ?? 'layouts.cashier')
 
 @section('title', 'Theme - Pos System')
 

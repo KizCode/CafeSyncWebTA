@@ -1,4 +1,4 @@
-﻿/* ======================= FORMS ======================= */
+/* ======================= FORMS ======================= */
 .form-control,
 .form-select {
     border-radius: 8px;
@@ -51,19 +51,22 @@
 }
 
 /* ======================= TOGGLES & SWITCHES ======================= */
-.form-check-input {
+.form-switch .form-check-input,
+.toggle-switch-lg {
     width: 3rem;
     height: 1.5rem;
     cursor: pointer;
     border-color: var(--border-color);
 }
 
-.form-check-input:checked {
+.form-switch .form-check-input:checked,
+.toggle-switch-lg:checked {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.form-check-input:focus {
+.form-switch .form-check-input:focus,
+.toggle-switch-lg:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25);
 }
@@ -276,17 +279,12 @@ body.dark .table-card .table-hover tbody tr:hover {
 }
 
 .icon-faded {
-    opacity: 0.2;
+    opacity: 0.35;
+    color: var(--text-muted);
 }
 
 .transition-fast {
     transition: var(--transition-fast);
-}
-
-.toggle-switch-lg {
-    width: 3rem;
-    height: 1.5rem;
-    cursor: pointer;
 }
 
 .label-pointer {

@@ -1,4 +1,6 @@
 const cashierApp = (() => {
+    const t = (key, fallback = '') => (window.CafeSyncI18n && window.CafeSyncI18n[key]) || fallback || key;
+
     let cart = [];
     let paymentModal = null;
     let cartData = null;
@@ -7,6 +9,22 @@ const cashierApp = (() => {
         const number = Number(value) || 0;
         return Math.round(number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     };
+
+    const randomQueueNames = () => {
+        const list = window.CafeSyncRandomNames;
+        return Array.isArray(list) && list.length ? list : [t('customer', 'Pelanggan')];
+    };
+
+    const pickRandomQueueName = () => {
+        const pool = randomQueueNames();
+        return pool[Math.floor(Math.random() * pool.length)];
+    };
+
+    const assignRandomQueueName = () => {
+        $('#customerName').val(pickRandomQueueName());
+    };
+
+    const isValidQueueName = name => /^[\p{L}\s']+$/u.test(name);
 
     const getSubtotal = () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -49,8 +67,9 @@ const cashierApp = (() => {
         $('#searchProduct').on('keyup', onSearchProduct);
         $('#discountToggle').on('change', toggleDiscount);
         $('#discountType, #discountValue, #taxToggle').on('change keyup', calculateTotal);
-        $('#paymentMethod').on('change', onPaymentMethodChange);
+        $('input[name="paymentMethod"]').on('change', onPaymentMethodChange);
         $('#cashReceived').on('input', calculateCashChange);
+        $('#btnRandomQueueName').on('click', assignRandomQueueName);
 
         renderCart();
         calculateTotal();
@@ -62,28 +81,24 @@ const cashierApp = (() => {
         const storedData = sessionStorage.getItem('cart_data');
 
         if (!storedData) {
-            alert('Data keranjang tidak ditemukan!');
+            alert(t('cart_not_found'));
             window.location.href = returnUrl;
             return;
         }
 
         cartData = JSON.parse(storedData);
+        cart = (cartData.cart || []).map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            stock: item.stock ?? 9999,
+        }));
         displayOrderSummary();
         $('#paidAmountInput').on('input change', calculateChange);
         $('#paymentForm').on('submit', event => {
-            const paymentMethod = $('input[name="payment_method"]:checked').val();
-            if (!paymentMethod) {
-                event.preventDefault();
-                alert('Silakan pilih metode pembayaran!');
-                return;
-            }
-            if (paymentMethod === 'tunai') {
-                const paidAmount = parseFloat($('#paidAmountInput').val()) || 0;
-                if (paidAmount < cartData.grand_total) {
-                    event.preventDefault();
-                    alert('Jumlah uang tidak mencukupi!');
-                }
-            }
+            event.preventDefault();
+            processPayment();
         });
     }
 
@@ -106,7 +121,7 @@ const cashierApp = (() => {
             if (existingItem.quantity < stock) {
                 existingItem.quantity += 1;
             } else {
-                showAlert('Stok tidak mencukupi!', 'warning');
+                showAlert(t('insufficient_stock'), 'warning');
                 return;
             }
         } else {
@@ -136,7 +151,7 @@ const cashierApp = (() => {
         }
 
         if (quantity > item.stock) {
-            showAlert('Stok tidak mencukupi', 'error');
+            showAlert(t('insufficient_stock_short'), 'error');
             renderCart();
             return;
         }
@@ -152,7 +167,7 @@ const cashierApp = (() => {
             cartItemsDiv.html(`
                 <div class="text-center py-5">
                     <i class="fas fa-shopping-cart fa-3x text-muted mb-3 opacity-25"></i>
-                    <p class="text-muted">Keranjang masih kosong</p>
+                    <p class="text-muted">${t('cart_empty_message')}</p>
                 </div>
             `);
             $('#payButton').prop('disabled', true);
@@ -195,23 +210,14 @@ const cashierApp = (() => {
         calculateTotal();
     }
 
-    function calculateTotal() {
+    function buildTotals() {
         const subtotal = getSubtotal();
         const discount = getDiscount();
         const afterDiscount = subtotal - discount.amount;
         const taxAmount = getTaxAmount(afterDiscount);
         const grandTotal = Math.max(0, afterDiscount + taxAmount);
 
-        $('#subtotal').text(`Rp ${formatNumber(subtotal)}`);
-        $('#discountAmount').text(`- Rp ${formatNumber(discount.amount)}`);
-        $('#taxAmount').text(`Rp ${formatNumber(taxAmount)}`);
-        $('#grandTotal').text(`Rp ${formatNumber(grandTotal)}`);
-
-        $('#discountRow').toggle(discount.amount > 0);
-        $('#taxRow').toggle(taxAmount > 0);
-        $('#payButton').prop('disabled', cart.length === 0);
-
-        $('#grandTotal').data({
+        return {
             subtotal,
             discountAmount: discount.amount,
             discountType: discount.type,
@@ -219,16 +225,52 @@ const cashierApp = (() => {
             taxAmount,
             isTaxEnabled: $('#taxToggle').is(':checked'),
             grandTotal,
-        });
+        };
+    }
+
+    function getCartTotals() {
+        const cached = $('#cartTotalsData').data('totals');
+        if (cached && cached.grandTotal != null) {
+            return cached;
+        }
+
+        if (cartData && cartData.grand_total != null) {
+            return {
+                subtotal: cartData.subtotal ?? 0,
+                discountAmount: cartData.discount_amount ?? 0,
+                discountType: cartData.discount_type ?? '',
+                discountValue: cartData.discount_value ?? 0,
+                taxAmount: cartData.tax_amount ?? 0,
+                isTaxEnabled: Boolean(cartData.is_tax_enabled),
+                grandTotal: cartData.grand_total ?? 0,
+            };
+        }
+
+        return buildTotals();
+    }
+
+    function calculateTotal() {
+        const totals = buildTotals();
+
+        $('#subtotal').text(`Rp ${formatNumber(totals.subtotal)}`);
+        $('#discountAmount').text(`- Rp ${formatNumber(totals.discountAmount)}`);
+        $('#taxAmount').text(`Rp ${formatNumber(totals.taxAmount)}`);
+        $('#grandTotal').text(`Rp ${formatNumber(totals.grandTotal)}`);
+
+        $('#discountRow').toggle(totals.discountAmount > 0);
+        $('#taxRow').toggle(totals.taxAmount > 0);
+        $('#payButton').prop('disabled', cart.length === 0);
+
+        $('#cartTotalsData').data('totals', totals);
     }
 
     function openPaymentModal() {
         if (!cart.length) {
-            showAlert('Keranjang kosong', 'info');
+            showAlert(t('cart_empty'), 'info');
             return;
         }
 
-        const totals = $('#grandTotal').data();
+        const totals = getCartTotals();
         $('#modalSubtotal').text(`Rp ${formatNumber(totals.subtotal)}`);
         $('#modalDiscount').text(`- Rp ${formatNumber(totals.discountAmount)}`);
         $('#modalTax').text(`Rp ${formatNumber(totals.taxAmount)}`);
@@ -237,10 +279,16 @@ const cashierApp = (() => {
         $('#modalDiscountRow').toggle(totals.discountAmount > 0);
         $('#modalTaxRow').toggle(totals.taxAmount > 0);
         $('#paymentForm')[0].reset();
-        $('#changeSection').hide();
+        $('#methodCash').prop('checked', true);
+        $('#changeSection').addClass('d-none').hide();
+        $('#cashReceived').val('');
+        $('#customerName').val('');
         onPaymentMethodChange();
 
-        paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+        const modalEl = document.getElementById('paymentModal');
+        if (!paymentModal) {
+            paymentModal = new bootstrap.Modal(modalEl);
+        }
         paymentModal.show();
 
         sessionStorage.setItem('cart_data', JSON.stringify({
@@ -257,48 +305,114 @@ const cashierApp = (() => {
         setTimeout(() => $('#cashReceived').focus(), 300);
     }
 
+    function getSelectedPaymentMethod() {
+        return $('input[name="paymentMethod"]:checked').val()
+            || $('input[name="payment_method"]:checked').val()
+            || 'cash';
+    }
+
+    function getCashPaidInput() {
+        return $('#cashReceived').length ? $('#cashReceived') : $('#paidAmountInput');
+    }
+
+    function isCashPayment(method) {
+        return method === 'cash' || method === 'tunai';
+    }
+
     function onPaymentMethodChange() {
-        const method = $('#paymentMethod').val();
-        const isCash = method === 'cash';
-        $('#cashPayment').toggle(isCash);
-        $('#changeSection').toggle(false);
-        $('#cashReceived').prop('required', isCash);
-        $('#confirmPayment').prop('disabled', isCash);
-        if (!isCash) {
+        const method = getSelectedPaymentMethod();
+        const cash = isCashPayment(method);
+        $('#cashPayment').toggle(cash);
+        $('#changeSection').hide();
+        $('#cashReceived').prop('required', cash);
+        $('#confirmPayment').prop('disabled', cash);
+        if (!cash) {
             $('#confirmPayment').prop('disabled', false);
+        } else {
+            calculateCashChange();
         }
     }
 
     function calculateCashChange() {
-        const totals = $('#grandTotal').data();
-        const paid = parseFloat($('#cashReceived').val()) || 0;
-        const change = paid - totals.grandTotal;
-        const valid = change >= 0;
+        const method = getSelectedPaymentMethod();
+        if (!isCashPayment(method)) {
+            return;
+        }
 
-        $('#changeSection').toggle(valid);
-        $('#changeAmount').text(valid ? `Rp ${formatNumber(change)}` : 'Rp 0');
+        const totals = getCartTotals();
+        const paid = parseFloat(getCashPaidInput().val()) || 0;
+        const change = paid - totals.grandTotal;
+        const valid = paid > 0 && change >= 0;
+
+        if (paid > 0) {
+            $('#changeSection').removeClass('d-none').toggle(valid);
+            $('#changeAmount').text(valid ? `Rp ${formatNumber(change)}` : 'Rp 0');
+        } else {
+            $('#changeSection').hide();
+        }
         $('#confirmPayment').prop('disabled', !valid);
     }
 
     function clearCart() {
-        if (confirm('Yakin ingin mengosongkan keranjang?')) {
+        if (confirm(t('clear_cart_confirm'))) {
             cart = [];
             renderCart();
             calculateTotal();
         }
     }
 
-    function processPayment() {
-        const method = $('#paymentMethod').val();
-        const totals = $('#grandTotal').data();
-        const paid = parseFloat($('#cashReceived').val()) || 0;
+    async function parseJsonResponse(response) {
+        const contentType = response.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+            const text = await response.text();
+            if (text.includes('<!DOCTYPE') || text.includes('<html')) {
+                throw new Error(t('html_server_error'));
+            }
+            throw new Error(t('invalid_server_response'));
+        }
+        return response.json();
+    }
 
-        if (method === 'cash' && paid < totals.grandTotal) {
-            showAlert('Uang kurang', 'error');
+    function isPaymentSuccessful(response, data) {
+        if (!response.ok) {
+            return false;
+        }
+        if (data.success === true || data.success === 'true') {
+            return true;
+        }
+        if (data.transaction_id || data.invoice_number) {
+            return true;
+        }
+        return response.status === 201 && data.id;
+    }
+
+    function getServerErrorMessage(data, fallback) {
+        if (!data || typeof data !== 'object') {
+            return fallback;
+        }
+        if (data.errors) {
+            return Object.values(data.errors).flat().join('\n');
+        }
+        return data.message || data.error || fallback;
+    }
+
+    async function processPayment() {
+        const method = getSelectedPaymentMethod();
+        const totals = getCartTotals();
+        const paid = parseFloat(getCashPaidInput().val()) || 0;
+
+        if (!cart.length) {
+            showAlert(t('cart_empty'), 'warning');
             return;
         }
 
-        if (!confirm('Lanjutkan pembayaran?')) {
+        if (!totals.grandTotal || totals.grandTotal <= 0) {
+            showAlert(t('invalid_payment_total'), 'error');
+            return;
+        }
+
+        if (isCashPayment(method) && paid < totals.grandTotal) {
+            showAlert(t('insufficient_cash_short'), 'error');
             return;
         }
 
@@ -306,46 +420,86 @@ const cashierApp = (() => {
         const url = form.action || '/transactions';
         const tokenMeta = document.querySelector('meta[name="csrf-token"]');
         const token = tokenMeta ? tokenMeta.content : '';
-        const formData = new FormData(form);
+        const formData = new FormData();
 
-        formData.append('subtotal', totals.subtotal);
-        formData.append('discount_amount', totals.discountAmount);
-        formData.append('tax_amount', totals.taxAmount);
-        formData.append('grand_total', totals.grandTotal);
-        formData.append('items', JSON.stringify(cart));
+        formData.append('_token', $('input[name="_token"]').val() || token);
         formData.append('payment_method', method);
+        cart.forEach((item, index) => {
+            formData.append(`items[${index}][product_id]`, item.id);
+            formData.append(`items[${index}][quantity]`, item.quantity);
+            formData.append(`items[${index}][unit_price]`, item.price);
+            formData.append(`items[${index}][price]`, item.price);
+        });
+        formData.append('subtotal', totals.subtotal);
+        formData.append('discount_amount', totals.discountAmount ?? 0);
+        formData.append('discount_type', totals.discountType ?? '');
+        formData.append('discount_value', totals.discountValue ?? 0);
+        formData.append('tax_amount', totals.taxAmount ?? 0);
+        formData.append('is_tax_enabled', totals.isTaxEnabled ? '1' : '0');
+        formData.append('grand_total', totals.grandTotal);
+        formData.append('total_amount', totals.grandTotal);
 
-        if (method === 'cash') {
-            formData.append('cash_received', paid);
-            formData.append('change_amount', paid - totals.grandTotal);
+        const customerName = ($('#customerName').val() || '').trim();
+        if (customerName.length < 2) {
+            showAlert(t('queue_name_required'), 'warning');
+            return;
         }
+        formData.append('customer_name', customerName);
 
-        $('#confirmPayment').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Memproses...');
+        const paidAmount = isCashPayment(method) ? paid : totals.grandTotal;
+        formData.append('paid_amount', paidAmount);
+        formData.append('cash_received', paidAmount);
+        formData.append('change_amount', Math.max(0, paidAmount - totals.grandTotal));
 
-        fetch(url, {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': token },
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (!data || data.error) {
-                    throw new Error(data?.message || 'Tidak dapat menyimpan transaksi');
-                }
-                if (paymentModal) {
-                    paymentModal.hide();
-                }
-                cart = [];
-                renderCart();
-                calculateTotal();
-                showAlert(data.message || 'Transaksi berhasil disimpan.', 'success');
-            })
-            .catch(error => {
-                showAlert(error.message || 'Terjadi kesalahan.', 'error');
-            })
-            .finally(() => {
-                $('#confirmPayment').prop('disabled', false).html('<i class="fas fa-check me-2"></i>Proses Pembayaran');
+        const confirmBtn = $('#confirmPayment').length ? $('#confirmPayment') : $('#confirmButton');
+        const confirmLabel = confirmBtn.html();
+        confirmBtn.prop('disabled', true).html(`<i class="fas fa-spinner fa-spin me-2"></i>${t('processing')}`);
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    Accept: 'application/json',
+                },
+                body: formData,
             });
+
+            const data = await parseJsonResponse(response);
+
+            if (!isPaymentSuccessful(response, data)) {
+                throw new Error(getServerErrorMessage(data, t('save_failed')));
+            }
+
+            if (paymentModal) {
+                paymentModal.hide();
+            }
+
+            cart = [];
+            sessionStorage.removeItem('cart_data');
+            renderCart();
+            calculateTotal();
+
+            const transactionId = data.transaction_id || data.id;
+            if (transactionId) {
+                if (window.ReceiptPopup?.show) {
+                    await window.ReceiptPopup.show(transactionId, { queued: data.queued !== false });
+                } else {
+                    window.location.href = `/receipt/${transactionId}`;
+                }
+                return;
+            }
+
+            showAlert(data.message || t('transaction_saved'), 'success');
+        } catch (error) {
+            showAlert(error.message || t('generic_error'), 'error');
+        } finally {
+            confirmBtn.prop('disabled', false).html(confirmLabel);
+            if (isCashPayment(getSelectedPaymentMethod())) {
+                calculateCashChange();
+            }
+        }
     }
 
     function displayOrderSummary() {
@@ -392,7 +546,7 @@ const cashierApp = (() => {
             $('#changeAmount').val(formatNumber(change));
             $('#confirmButton').prop('disabled', false);
         } else {
-            $('#changeAmount').val('Uang kurang!');
+            $('#changeAmount').val(t('insufficient_cash'));
             $('#confirmButton').prop('disabled', true);
         }
     }
@@ -424,10 +578,13 @@ const cashierApp = (() => {
 
     function showAlert(message, icon = 'info') {
         if (typeof Swal !== 'undefined') {
+            const hasLines = String(message).includes('\n');
             Swal.fire({
                 icon,
-                text: message,
-                confirmButtonText: 'OK',
+                ...(hasLines ? { html: String(message).replace(/\n/g, '<br>') } : { text: message }),
+                confirmButtonText: t('ok', 'OK'),
+                heightAuto: false,
+                customClass: { container: 'swal-over-modal' },
             });
         } else {
             alert(message);
@@ -443,6 +600,8 @@ const cashierApp = (() => {
         toggleDiscount,
         calculateTotal,
         openPaymentModal,
+        assignRandomQueueName,
+        onPaymentMethodChange,
         processPayment,
         selectPaymentMethod,
         setQuickAmount,
@@ -459,6 +618,8 @@ window.updateQuantity = cashierApp.updateQuantity;
 window.toggleDiscount = cashierApp.toggleDiscount;
 window.calculateTotal = cashierApp.calculateTotal;
 window.openPaymentModal = cashierApp.openPaymentModal;
+window.assignRandomQueueName = cashierApp.assignRandomQueueName;
+window.onPaymentMethodChange = cashierApp.onPaymentMethodChange;
 window.processPayment = cashierApp.processPayment;
 window.selectPaymentMethod = cashierApp.selectPaymentMethod;
 window.setQuickAmount = cashierApp.setQuickAmount;

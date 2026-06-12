@@ -43,14 +43,5 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role_id' => $roles['Gudang'] ?? null,
         ]);
-
-        User::create([
-            'name' => 'CEO Cafesync',
-            'username' => 'ceo',
-            'email' => 'ceo@cafesync.com',
-            'phone' => '081234567893',
-            'password' => Hash::make('password'),
-            'role_id' => $roles['CEO'] ?? null,
-        ]);
     }
 }

@@ -49,6 +49,11 @@
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 253, 249, 0.88) 100%);
+    border: 1px solid rgba(92, 74, 50, 0.08);
+    box-shadow: var(--theme-shadow-sm);
 }
 
 .page-header__main {
@@ -76,7 +81,7 @@
     font-family: "Bitter", Georgia, serif;
     font-size: 1.625rem;
     font-weight: 700;
-    color: var(--theme-earth);
+    color: var(--text-primary);
     margin: 0;
     line-height: 1.2;
 }
@@ -119,7 +124,7 @@
 .page-card > .card-header h5 {
     font-family: "Bitter", Georgia, serif;
     font-weight: 700;
-    color: var(--theme-earth);
+    color: var(--text-primary);
     margin: 0;
 }
 
@@ -152,7 +157,7 @@
 .stat-card .card-body h4 {
     font-family: "Bitter", Georgia, serif;
     font-weight: 700;
-    color: var(--theme-earth);
+    color: var(--text-primary);
 }
 
 .stat-card__icon {
@@ -233,7 +238,7 @@
 
 .btn-outline-secondary {
     border-color: rgba(92, 74, 50, 0.25) !important;
-    color: var(--theme-earth) !important;
+    color: var(--text-secondary) !important;
 }
 
 .btn-outline-secondary:hover {
@@ -270,12 +275,12 @@
 .empty-state {
     padding: 2.5rem 1rem;
     text-align: center;
-    color: var(--text-muted);
+    color: var(--text-secondary);
 }
 
 .empty-state i {
     font-size: 2.5rem;
-    opacity: 0.35;
+    opacity: 0.5;
     margin-bottom: 0.75rem;
     color: var(--primary-color);
 }
@@ -306,6 +311,72 @@
 /* Badge polish */
 .badge.bg-success {
     background: var(--primary-color) !important;
+}
+
+/* Tabel di dalam kartu */
+.page-card .table thead th {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom-width: 1px;
+    padding: 0.85rem 1.25rem;
+    background: linear-gradient(135deg, #faf8f5 0%, #f0f7f0 100%);
+}
+
+.page-card .table tbody td {
+    padding: 0.9rem 1.25rem;
+    vertical-align: middle;
+    border-color: rgba(92, 74, 50, 0.06);
+}
+
+.page-card .table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.page-card .table tbody tr:hover {
+    background: rgba(16, 185, 129, 0.04);
+}
+
+.page-card .table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.alert-danger {
+    border-radius: 0.75rem;
+    border-color: rgba(239, 68, 68, 0.25) !important;
+    background: rgba(254, 226, 226, 0.65) !important;
+    color: #b91c1c !important;
+}
+
+/* Aksen per area */
+.area-gudang .page-header__badge {
+    background: rgba(196, 163, 90, 0.18);
+    border-color: rgba(196, 163, 90, 0.35);
+    color: #78561a;
+}
+
+.area-admin .page-header__badge {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.22);
+    color: #1d4ed8;
+}
+
+.area-kasir .cashier-card {
+    border-radius: 1.25rem !important;
+}
+
+html.dark .page-header,
+body.dark .page-header {
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border-color: #334155;
+}
+
+html.dark .page-card .table thead th,
+body.dark .page-card .table thead th {
+    background: linear-gradient(135deg, #111827 0%, #0f172a 100%);
+    color: var(--text-muted);
 }
 
 
@@ -380,3 +451,70 @@ body.dark .stat-card .card-body h3,
 body.dark .stat-card .card-body h4 {
     color: var(--text-primary);
 }
+
+/* ---- Kontras teks (light & dark) ---- */
+.page-header__desc,
+.page-card .text-muted,
+.filter-panel .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+.stat-card--revenue h6,
+.stat-card--info h6,
+.stat-card--revenue .opacity-75,
+.stat-card--info .opacity-75 {
+    opacity: 1 !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.stat-card .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+html.dark .page-card > .card-header h4,
+html.dark .page-card > .card-header h5,
+html.dark .page-card > .card-header h6,
+html.dark .chart-panel > .card-header h5,
+html.dark .chart-panel > .card-header h6,
+body.dark .page-card > .card-header h4,
+body.dark .page-card > .card-header h5,
+body.dark .page-card > .card-header h6,
+body.dark .chart-panel > .card-header h5,
+body.dark .chart-panel > .card-header h6 {
+    color: var(--text-primary) !important;
+}
+
+html.dark .page-header__desc,
+body.dark .page-header__desc {
+    color: var(--text-secondary) !important;
+}
+
+html.dark .area-gudang .page-header__badge,
+body.dark .area-gudang .page-header__badge {
+    color: #fcd34d;
+}
+
+html.dark .area-admin .page-header__badge,
+body.dark .area-admin .page-header__badge {
+    color: #93c5fd;
+}
+
+html.dark .btn-outline-secondary,
+body.dark .btn-outline-secondary {
+    color: var(--text-secondary) !important;
+    border-color: #475569 !important;
+}
+
+html.dark .btn-outline-secondary:hover,
+body.dark .btn-outline-secondary:hover {
+    color: var(--text-primary) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: var(--primary-color) !important;
+}
+
+html.dark .notification-dropdown .dropdown-header,
+body.dark .notification-dropdown .dropdown-header {
+    background: linear-gradient(135deg, #111827 0%, #0f172a 100%) !important;
+    color: var(--text-primary) !important;
+}
+

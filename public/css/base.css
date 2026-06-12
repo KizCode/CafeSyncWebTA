@@ -4,8 +4,8 @@
     --surface-soft: #f8fafc;
     --surface-strong: #f1f5f9;
     --text-primary: #111827;
-    --text-secondary: #475569;
-    --text-muted: #6b7280;
+    --text-secondary: #374151;
+    --text-muted: #4b5563;
     --dark-color: #111827;
     --light-color: #f8fafc;
     --border-color: #e5e7eb;
@@ -48,9 +48,9 @@ body.dark {
     --surface: #111827;
     --surface-soft: #1e293b;
     --surface-strong: #111827;
-    --text-primary: #e2e8f0;
-    --text-secondary: #94a3b8;
-    --text-muted: #94a3b8;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #b8c5d6;
     --dark-color: #e2e8f0;
     --light-color: #1f2937;
     --border-color: #334155;
@@ -68,6 +68,9 @@ body.dark {
     --button-bg: #0f172a;
     --button-hover-bg: #334155;
     --shadow-color: rgba(0, 0, 0, 0.28);
+    --theme-earth: #e2e8f0;
+    --profile-earth: #e2e8f0;
+    --auth-earth: #e2e8f0;
 }
 
 html.dark .top-header,
@@ -456,4 +459,60 @@ h6,
 
 .logo-name {
     font-weight: 700;
+}
+
+/* Teks cokelat (#5c4a32) tidak boleh dipakai di dark mode */
+html.dark .sidebar-footer-card p,
+body.dark .sidebar-footer-card p,
+html.dark .profile-lock-notice strong,
+body.dark .profile-lock-notice strong,
+html.dark .profile-tip,
+body.dark .profile-tip,
+html.dark .profile-hero__name,
+body.dark .profile-hero__name,
+html.dark .profile-panel__title:not(.profile-panel__title--danger),
+body.dark .profile-panel__title:not(.profile-panel__title--danger),
+html.dark .profile-field__label,
+body.dark .profile-field__label,
+html.dark .profile-settings-header__title,
+body.dark .profile-settings-header__title,
+html.dark .user-dropdown-menu .dropdown-header-user strong,
+body.dark .user-dropdown-menu .dropdown-header-user strong,
+html.dark .notification-dropdown .dropdown-header,
+body.dark .notification-dropdown .dropdown-header,
+html.dark .logo-name,
+body.dark .logo-name,
+html.dark .page-header__title,
+body.dark .page-header__title,
+html.dark .page-card > .card-header h4,
+body.dark .page-card > .card-header h4,
+html.dark .page-card > .card-header h5,
+body.dark .page-card > .card-header h5,
+html.dark .stat-card .card-body h3,
+body.dark .stat-card .card-body h3,
+html.dark .stat-card .card-body h4,
+body.dark .stat-card .card-body h4,
+html.dark .btn-outline-secondary,
+body.dark .btn-outline-secondary {
+    color: var(--text-primary) !important;
+}
+
+html.dark .profile-lock-notice p,
+body.dark .profile-lock-notice p,
+html.dark .profile-panel__desc,
+body.dark .profile-panel__desc,
+html.dark .profile-settings-header__desc,
+body.dark .profile-settings-header__desc,
+html.dark .profile-hero__email,
+body.dark .profile-hero__email,
+html.dark .profile-hero__meta,
+body.dark .profile-hero__meta {
+    color: var(--text-secondary) !important;
+}
+
+html.dark .profile-lock-notice__icon,
+body.dark .profile-lock-notice__icon,
+html.dark .profile-tip i,
+body.dark .profile-tip i {
+    color: #6ee7b7 !important;
 }

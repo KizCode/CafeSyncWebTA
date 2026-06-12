@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Riwayat Transaksi</title>
+    <title>{{ __('ui.transaction_history') }}</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
         body { font-family: "Plus Jakarta Sans", Arial, sans-serif; font-size: 12px; }
@@ -46,7 +46,7 @@
             <tr>
                 <th width="5%">No</th>
                 <th width="15%">Invoice</th>
-                <th width="15%">Tanggal</th>
+                <th width="15%">{{ __('ui.date') }}</th>
                 <th width="10%">Metode</th>
                 <th width="10%" class="text-center">Jumlah Item</th>
                 <th width="15%" class="text-right">Total</th>
@@ -129,7 +129,7 @@
             <tr>
                 <th width="5%">No</th>
                 <th width="15%">Invoice</th>
-                <th width="15%">Tanggal</th>
+                <th width="15%">{{ __('ui.date') }}</th>
                 <th width="10%">Metode</th>
                 <th width="10%" class="text-center">Jumlah Item</th>
                 <th width="15%" class="text-right">Total</th>

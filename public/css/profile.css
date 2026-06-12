@@ -1,7 +1,6 @@
 /* Halaman Profil & Akun — tema sawah / kopi */
 
 .profile-page {
-    --profile-earth: #5c4a32;
     --profile-radius: 1.25rem;
 }
 
@@ -52,7 +51,7 @@
     font-family: "Bitter", Georgia, serif;
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--profile-earth);
+    color: var(--text-primary);
     margin: 0 0 0.35rem;
     line-height: 1.2;
 }
@@ -60,7 +59,7 @@
 .profile-settings-header__desc {
     margin: 0;
     font-size: 0.9375rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     max-width: 36rem;
     line-height: 1.55;
 }
@@ -147,7 +146,7 @@
     font-family: "Bitter", Georgia, serif;
     font-size: 1.25rem;
     font-weight: 700;
-    color: #5c4a32;
+    color: var(--text-primary);
     margin: 0 0 0.35rem;
     line-height: 1.2;
 }
@@ -272,7 +271,7 @@
     background: rgba(196, 163, 90, 0.12);
     border: 1px dashed rgba(196, 163, 90, 0.45);
     font-size: 0.75rem;
-    color: #5c4a32;
+    color: var(--text-secondary);
     line-height: 1.5;
 }
 
@@ -352,7 +351,7 @@
     font-family: "Bitter", Georgia, serif;
     font-size: 1.125rem;
     font-weight: 700;
-    color: #5c4a32;
+    color: var(--text-primary);
     margin: 0 0 0.25rem;
 }
 
@@ -362,7 +361,7 @@
 
 .profile-panel__desc {
     font-size: 0.8125rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin: 0;
     line-height: 1.5;
 }
@@ -447,14 +446,15 @@
 .profile-lock-notice strong {
     display: block;
     font-size: 0.875rem;
-    color: var(--profile-earth);
+    font-weight: 700;
+    color: var(--text-primary);
     margin-bottom: 0.15rem;
 }
 
 .profile-lock-notice p {
     margin: 0;
     font-size: 0.8125rem;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     line-height: 1.45;
 }
 
@@ -485,7 +485,7 @@
     gap: 0.5rem;
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--profile-earth);
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
@@ -711,7 +711,7 @@ body.dark .profile-field__input {
 html.dark .profile-panel__body fieldset:disabled .profile-field__input,
 body.dark .profile-panel__body fieldset:disabled .profile-field__input {
     background: #0f172a;
-    color: var(--text-muted);
+    color: var(--text-secondary);
 }
 
 html.dark .profile-lock-notice,
@@ -729,5 +729,26 @@ html.dark .profile-mode-badge,
 body.dark .profile-mode-badge {
     background: rgba(255, 255, 255, 0.06);
     border-color: #334155;
+    color: var(--text-secondary);
+}
+
+html.dark .profile-nav__text small,
+body.dark .profile-nav__text small {
+    opacity: 1;
     color: var(--text-muted);
+}
+
+html.dark .profile-lock-notice strong,
+body.dark .profile-lock-notice strong {
+    color: var(--text-primary);
+}
+
+html.dark .profile-lock-notice p,
+body.dark .profile-lock-notice p {
+    color: var(--text-secondary);
+}
+
+html.dark .profile-tip,
+body.dark .profile-tip {
+    color: var(--text-secondary);
 }

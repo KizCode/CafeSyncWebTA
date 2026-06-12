@@ -1,20 +1,20 @@
 @extends('layouts.standalone')
 
-@section('title', 'Struk Pembayaran')
+@section('title', __('ui.payment_receipt'))
 
 @section('content')
     <div class="card page-card shadow">
         <div class="card-body p-4">
                         <div class="text-center mb-4">
                             <i class="fas fa-check-circle fa-4x text-success mb-3"></i>
-                            <h3>Pembayaran Berhasil!</h3>
-                            <p class="text-muted">Transaksi telah berhasil diproses</p>
+                            <h3>{{ __('ui.payment_success') }}</h3>
+                            <p class="text-muted">{{ __('ui.payment_success_desc') }}</p>
                         </div>
 
                         <!-- Receipt -->
                         <div id="receiptContent" class="border rounded p-4 mb-3">
                             <div class="text-center mb-3">
-                                <h4 class="mb-0">STRUK PEMBAYARAN</h4>
+                                <h4 class="mb-0">{{ strtoupper(__('ui.payment_receipt')) }}</h4>
                                 <small class="text-muted">{{ config('app.name', 'Sistem Kasir') }}</small>
                             </div>
 
@@ -22,7 +22,7 @@
 
                             <div class="mb-3">
                                 <div class="row mb-1">
-                                    <div class="col-5"><small>No. Invoice:</small></div>
+                                    <div class="col-5"><small>{{ __('ui.invoice_number') }}:</small></div>
                                     <div class="col-7 text-end">
                                         <small><strong>{{ $transaction->invoice_number }}</strong></small></div>
                                 </div>
@@ -31,19 +31,19 @@
                                 @endphp
                                 @if ($queueSettings->show_queue_on_receipt && $transaction->queue_number)
                                     <div class="row mb-1">
-                                        <div class="col-5"><small>No. Antrian:</small></div>
+                                        <div class="col-5"><small>{{ __('ui.queue_name') }}:</small></div>
                                         <div class="col-7 text-end">
                                             <small><strong class="text-success">{{ $transaction->queue_number }}</strong></small>
                                         </div>
                                     </div>
                                 @endif
                                 <div class="row mb-1">
-                                    <div class="col-5"><small>Tanggal:</small></div>
+                                    <div class="col-5"><small>{{ __('ui.date') }}:</small></div>
                                     <div class="col-7 text-end">
                                         <small>{{ $transaction->created_at->format('d/m/Y H:i') }}</small></div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-5"><small>Kasir:</small></div>
+                                    <div class="col-5"><small>{{ __('ui.cashier_label') }}:</small></div>
                                     <div class="col-7 text-end"><small>Admin</small></div>
                                 </div>
                             </div>
@@ -71,13 +71,13 @@
                             <!-- Totals -->
                             <div class="mb-2">
                                 <div class="d-flex justify-content-between">
-                                    <span>Subtotal:</span>
+                                    <span>{{ __('ui.subtotal') }}:</span>
                                     <span>Rp {{ number_format($transaction->subtotal, 0, ',', '.') }}</span>
                                 </div>
 
                                 @if ($transaction->discount_amount > 0)
                                     <div class="d-flex justify-content-between text-success">
-                                        <span>Diskon
+                                        <span>{{ __('ui.discount') }}
                                             @if ($transaction->discount_type == 'percent')
                                                 ({{ $transaction->discount_value }}%)
                                             @endif
@@ -89,7 +89,7 @@
 
                                 @if ($transaction->is_tax_enabled)
                                     <div class="d-flex justify-content-between text-info">
-                                        <span>PPN 11%:</span>
+                                        <span>{{ __('ui.tax_ppn') }}:</span>
                                         <span>Rp {{ number_format($transaction->tax_amount, 0, ',', '.') }}</span>
                                     </div>
                                 @endif
@@ -99,7 +99,7 @@
 
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between fw-bold fs-5">
-                                    <span>TOTAL:</span>
+                                    <span>{{ strtoupper(__('ui.total')) }}:</span>
                                     <span>Rp {{ number_format($transaction->grand_total, 0, ',', '.') }}</span>
                                 </div>
                             </div>
@@ -108,16 +108,16 @@
 
                             <div class="mb-2">
                                 <div class="d-flex justify-content-between">
-                                    <span>Metode Bayar:</span>
+                                    <span>{{ __('ui.payment_method') }}:</span>
                                     <span class="text-uppercase"><strong>{{ $transaction->payment_method }}</strong></span>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <span>Dibayar:</span>
+                                    <span>{{ __('ui.paid_amount') }}:</span>
                                     <span>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</span>
                                 </div>
                                 @if ($transaction->payment_method == 'tunai')
                                     <div class="d-flex justify-content-between">
-                                        <span>Kembalian:</span>
+                                        <span>{{ __('ui.change') }}:</span>
                                         <span>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</span>
                                     </div>
                                 @endif
@@ -126,25 +126,25 @@
                             <hr>
 
                             <div class="text-center">
-                                <small class="text-muted">Terima kasih atas kunjungan Anda!</small><br>
-                                <small class="text-muted">Barang yang sudah dibeli tidak dapat dikembalikan</small>
+                                <small class="text-muted">{{ __('ui.thank_you') }}</small><br>
+                                <small class="text-muted">{{ __('ui.no_returns') }}</small>
                             </div>
                         </div>
 
                         <!-- Action Buttons -->
                         <div class="d-grid gap-2">
                             <button class="btn btn-primary" onclick="window.print()">
-                                <i class="fas fa-print"></i> Cetak Struk
+                                <i class="fas fa-print"></i> {{ __('ui.print_receipt') }}
                             </button>
                             <a href="{{ route('transactions.pdf', $transaction->id) }}" class="btn btn-danger"
                                 target="_blank">
-                                <i class="fas fa-file-pdf"></i> Download PDF
+                                <i class="fas fa-file-pdf"></i> {{ __('ui.download_pdf') }}
                             </a>
                             <a href="{{ route('cashier.index') }}" class="btn btn-success">
-                                <i class="fas fa-shopping-cart"></i> Transaksi Baru
+                                <i class="fas fa-shopping-cart"></i> {{ __('ui.new_transaction') }}
                             </a>
                             <a href="{{ route('transactions.history') }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-history"></i> Lihat Riwayat
+                                <i class="fas fa-history"></i> {{ __('ui.view_history') }}
                             </a>
                         </div>
         </div>

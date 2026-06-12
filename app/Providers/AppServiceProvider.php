@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Transaction;
+use App\Observers\TransactionObserver;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +23,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Transaction::observe(TransactionObserver::class);
+
+        View::composer('*', function ($view) {
+            $user = Auth::user();
+
+            if (! $user) {
+                return;
+            }
+
+            $view->with('areaLayout', match ($user->role?->name) {
+                'Gudang' => 'layouts.warehouse',
+                'Administrator' => 'layouts.admin',
+                default => 'layouts.cashier',
+            });
+        });
     }
 }

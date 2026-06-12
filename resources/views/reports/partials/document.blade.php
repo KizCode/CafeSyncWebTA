@@ -6,45 +6,45 @@
         <td style="padding-left: 10px;">
             <div class="brand-name">CafeSync</div>
             <div class="brand-tagline">Kopi &amp; Sawah — POS System</div>
-            <div class="report-title">Laporan Pendapatan</div>
+            <div class="report-title">{{ __('ui.revenue_report') }}</div>
         </td>
         <td class="report-meta">
-            <strong>Dicetak: {{ date('d/m/Y H:i') }}</strong>
-            Periode laporan:<br>
+            <strong>{{ __('ui.printed_at') }}: {{ date('d/m/Y H:i') }}</strong>
+            {{ __('ui.report_period_label') }}:<br>
             <span class="period-pill">
                 {{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }}
-                s/d
+                {{ __('ui.to_date_sep') }}
                 {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }}
             </span>
         </td>
     </tr>
 </table>
 
-<div class="section-title">Ringkasan Keuangan</div>
+<div class="section-title">{{ __('ui.financial_summary') }}</div>
 
 <table class="summary-table">
     <tr>
         <td>
             <div class="stat-box stat-box--green">
-                <div class="stat-label">Pendapatan</div>
+                <div class="stat-label">{{ __('ui.revenue') }}</div>
                 <div class="stat-value green">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</div>
             </div>
         </td>
         <td>
             <div class="stat-box stat-box--blue">
-                <div class="stat-label">Transaksi</div>
+                <div class="stat-label">{{ __('ui.transactions') }}</div>
                 <div class="stat-value">{{ number_format($totalTransactions, 0, ',', '.') }}</div>
             </div>
         </td>
         <td>
             <div class="stat-box">
-                <div class="stat-label">Item Terjual</div>
+                <div class="stat-label">{{ __('ui.items_sold') }}</div>
                 <div class="stat-value">{{ number_format($totalItemsSold, 0, ',', '.') }}</div>
             </div>
         </td>
         <td>
             <div class="stat-box stat-box--gold">
-                <div class="stat-label">Pengeluaran</div>
+                <div class="stat-label">{{ __('ui.expenses') }}</div>
                 <div class="stat-value red">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</div>
             </div>
         </td>
@@ -54,13 +54,13 @@
 <table class="profit-banner">
     <tr>
         <td>
-            <div class="label">Laba Kotor (Pendapatan − Pengeluaran)</div>
+            <div class="label">{{ __('ui.gross_profit') }}</div>
             <div class="value">Rp {{ number_format($grossProfit, 0, ',', '.') }}</div>
         </td>
     </tr>
 </table>
 
-<div class="section-title">10 Produk Terlaris</div>
+<div class="section-title">10 {{ __('ui.best_sellers') }}</div>
 
 @php
     $topProductsTotal = $topProducts->sum(function ($item) {
@@ -72,11 +72,11 @@
     <thead>
         <tr>
             <th style="width: 24px;">#</th>
-            <th>Produk</th>
-            <th>Kategori</th>
-            <th class="text-right">Qty</th>
-            <th class="text-right">Harga</th>
-            <th class="text-right">Subtotal</th>
+            <th>{{ __('ui.product') }}</th>
+            <th>{{ __('ui.category') }}</th>
+            <th class="text-right">{{ __('ui.quantity') }}</th>
+            <th class="text-right">{{ __('ui.price') }}</th>
+            <th class="text-right">{{ __('ui.subtotal') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -95,14 +95,14 @@
             </tr>
         @empty
             <tr>
-                <td colspan="6" class="empty-msg">Tidak ada data penjualan pada periode ini.</td>
+                <td colspan="6" class="empty-msg">{{ __('ui.no_sales_data') }}</td>
             </tr>
         @endforelse
     </tbody>
     @if ($topProducts->isNotEmpty())
         <tfoot>
             <tr>
-                <td colspan="5" class="text-right">Total produk terlaris:</td>
+                <td colspan="5" class="text-right">{{ __('ui.top_products_total') }}</td>
                 <td class="text-right" style="color: #047857;">Rp {{ number_format($topProductsTotal, 0, ',', '.') }}
                 </td>
             </tr>
@@ -112,12 +112,11 @@
 
 <table class="report-footer-meta">
     <tr>
-        <td>CafeSync POS — Laporan Pendapatan</td>
-        <td style="text-align: right;">Dicetak {{ date('d/m/Y H:i') }}</td>
+        <td>CafeSync POS — {{ __('ui.revenue_report') }}</td>
+        <td style="text-align: right;">{{ __('ui.printed_at') }} {{ date('d/m/Y H:i') }}</td>
     </tr>
 </table>
 
 <div class="disclaimer">
-    Dokumen dihasilkan otomatis oleh CafeSync POS. Hanya transaksi berstatus <strong>LUNAS</strong> dalam periode
-    terpilih yang dihitung.
+    {{ __('ui.report_disclaimer') }}
 </div>

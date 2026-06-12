@@ -1,45 +1,56 @@
 <x-guest-layout>
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <div class="auth-flash auth-flash--success">{{ session('status') }}</div>
+    @endif
 
     <div class="auth-card__header">
-        <h2 class="auth-card__header-title">{{ __('Masuk') }}</h2>
-        <p class="auth-card__header-desc">Masukkan email dan kata sandi untuk membuka kasir.</p>
+        <h1 class="auth-card__header-title">{{ __('ui.login_title') }}</h1>
+        <p class="auth-card__header-desc">{{ __('ui.login_desc') }}</p>
     </div>
 
-    <form method="POST" action="{{ route('login') }}" class="auth-form">
-        @csrf
+    <div class="auth-card__body">
+        <form method="POST" action="{{ route('login') }}" class="auth-form" autocomplete="on">
+            @csrf
 
-        <div class="auth-field">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required
-                autofocus autocomplete="username" placeholder="nama@email.com" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <div class="auth-field">
+                <label class="auth-label" for="login">{{ __('ui.username_or_email') }}</label>
+                <div class="auth-input-wrap">
+                    <i class="fas fa-user auth-input-wrap__icon" aria-hidden="true"></i>
+                    <input id="login" type="text" name="login" class="auth-input" value="{{ old('login') }}" required
+                        autofocus autocomplete="username" placeholder="{{ __('ui.login_placeholder') }}">
+                </div>
+                @error('login')
+                    <p class="auth-error">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <div class="auth-field">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block w-full mt-1" type="password" name="password" required
-                autocomplete="current-password" placeholder="••••••••" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <div class="auth-field">
+                <label class="auth-label" for="password">{{ __('ui.password') }}</label>
+                <div class="auth-input-wrap">
+                    <i class="fas fa-lock auth-input-wrap__icon" aria-hidden="true"></i>
+                    <input id="password" type="password" name="password" class="auth-input" required
+                        autocomplete="current-password" placeholder="{{ __('ui.password_placeholder') }}">
+                </div>
+                @error('password')
+                    <p class="auth-error">{{ $message }}</p>
+                @enderror
+            </div>
 
-        <label for="remember_me" class="auth-remember mt-4">
-            <input id="remember_me" type="checkbox"
-                class="rounded border-slate-300 text-emerald-600 shadow-sm focus:ring-emerald-500" name="remember">
-            <span>{{ __('Remember me') }}</span>
-        </label>
+            <div class="auth-form__row">
+                <label for="remember_me" class="auth-remember">
+                    <input id="remember_me" type="checkbox" name="remember">
+                    <span>{{ __('ui.remember_me') }}</span>
+                </label>
 
-        <div class="auth-form__actions">
-            @if (Route::has('password.request'))
-                <a class="auth-link" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+                @if (Route::has('password.request'))
+                    <a class="auth-link" href="{{ route('password.request') }}">{{ __('ui.forgot_password') }}</a>
+                @endif
+            </div>
 
-            <x-primary-button class="w-full sm:w-auto sm:ms-auto justify-center">
-                <i class="fas fa-sign-in-alt mr-2" aria-hidden="true"></i>
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+            <button type="submit" class="auth-btn-primary auth-btn-primary--full">
+                <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                {{ __('ui.login') }}
+            </button>
+        </form>
+    </div>
 </x-guest-layout>

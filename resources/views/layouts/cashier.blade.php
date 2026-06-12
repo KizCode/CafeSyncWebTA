@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="UTF-8">
@@ -36,12 +36,11 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="area-kasir">
     <!-- Top Header -->
     <header class="top-header no-print">
         <div class="header-left">
-            <button id="toggleSidebar" class="btn-toggle" type="button" title="Toggle Sidebar"
-                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Sembunyikan menu">
+            <button id="toggleSidebar" class="btn-toggle" type="button" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
             </button>
             <a href="{{ route('cashier.index') }}" class="logo-section text-decoration-none">
@@ -50,7 +49,7 @@
                 </div>
                 <div class="logo-text">
                     <div class="logo-name">CafeSync</div>
-                    <div class="logo-subtitle">Kopi & Sawah</div>
+                    <div class="logo-subtitle">{{ __('ui.cashier') }}</div>
                 </div>
             </a>
         </div>
@@ -71,48 +70,10 @@
 
         <div class="header-right">
             <div class="header-actions">
-            <div class="notification-bell dropdown">
-                <button class="notification-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                    data-bs-placement="bottom" data-bs-title="Notifikasi" aria-label="Notifikasi">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end notification-dropdown">
-                    <li>
-                        <h6 class="px-3 py-2 dropdown-header fw-700">Notifikasi</h6>
-                    </li>
-                    <li><a class="dropdown-item" href="#">
-                            <div class="notification-item">
-                                <div class="notification-icon bg-warning">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </div>
-                                <div class="notification-content">
-                                    <p class="mb-0 fw-500">Stok Terbatas</p>
-                                    <small class="text-muted">Kopi arabika tinggal 5 items</small>
-                                </div>
-                            </div>
-                        </a></li>
-                    <li><a class="dropdown-item" href="#">
-                            <div class="notification-item">
-                                <div class="notification-icon bg-success">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <div class="notification-content">
-                                    <p class="mb-0 fw-500">Transaksi Berhasil</p>
-                                    <small class="text-muted">10 transaksi hari ini</small>
-                                </div>
-                            </div>
-                        </a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="text-center dropdown-item text-primary small fw-500" href="#">Lihat semua
-                            notifikasi</a></li>
-                </ul>
-            </div>
+            <x-language-switcher class="me-1" />
 
             <button id="themeToggleBtn" class="btn-toggle" type="button" data-bs-toggle="tooltip"
-                data-bs-placement="bottom" data-bs-title="Ubah tema" aria-label="Ubah tema">
+                data-bs-placement="bottom" data-bs-title="{{ __('ui.toggle_theme') }}" aria-label="{{ __('ui.toggle_theme') }}">
                 <i id="themeToggleIcon" class="fas fa-moon"></i>
             </button>
 
@@ -132,11 +93,11 @@
                     </li>
                     <li><a class="dropdown-item" href="{{ route('profile.edit') }}">
                             <i class="fas fa-user me-2 text-success"></i>
-                            <span>Profil</span>
+                            <span>{{ __('ui.profile') }}</span>
                         </a></li>
                     <li><a class="dropdown-item" href="{{ route('profile.account') }}">
                             <i class="fas fa-lock me-2 text-success"></i>
-                            <span>Keamanan Akun</span>
+                            <span>{{ __('ui.account_security') }}</span>
                         </a></li>
                     <li><hr class="dropdown-divider my-2"></li>
                     <li>
@@ -144,7 +105,7 @@
                             @csrf
                             <button type="submit" class="dropdown-item text-danger w-100 text-start">
                                 <i class="fas fa-sign-out-alt me-2"></i>
-                                <span>Keluar</span>
+                                <span>{{ __('ui.logout') }}</span>
                             </button>
                         </form>
                     </li>
@@ -158,75 +119,75 @@
         <div class="sidebar-brand">
             <span class="sidebar-brand__tag">
                 <i class="fas fa-seedling" aria-hidden="true"></i>
-                <span>Menu Utama</span>
+                <span>{{ __('ui.main_menu') }}</span>
             </span>
         </div>
         <nav class="sidebar-nav">
-            <p class="sidebar-section-label">Operasional</p>
+            <p class="sidebar-section-label">{{ __('ui.cashier') }}</p>
             <ul class="sidebar-menu">
                 <li class="sidebar-menu-item">
                     <a href="{{ route('cashier.index') }}"
-                        class="sidebar-menu-link {{ request()->routeIs('cashier.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Kasir">
+                        class="sidebar-menu-link {{ request()->routeIs('cashier.index') ? 'active' : '' }}"
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ __('ui.cashier') }}">
                         <div class="sidebar-icon">
                             <i class="fas fa-cash-register"></i>
                         </div>
-                        <span class="sidebar-text">Kasir</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="{{ route('transactions.history') }}"
-                        class="sidebar-menu-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Transaksi">
-                        <div class="sidebar-icon">
-                            <i class="fas fa-receipt"></i>
-                        </div>
-                        <span class="sidebar-text">Transaksi</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu-item">
-                    <a href="{{ route('reports.index') }}"
-                        class="sidebar-menu-link {{ request()->routeIs('reports.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Laporan">
-                        <div class="sidebar-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <span class="sidebar-text">Laporan</span>
+                        <span class="sidebar-text">{{ __('ui.cashier') }}</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
                     <a href="{{ route('queue.index') }}"
                         class="sidebar-menu-link {{ request()->routeIs('queue.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Antrian Produksi">
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ __('ui.production_queue') }}">
                         <div class="sidebar-icon">
                             <i class="fas fa-list-check"></i>
                         </div>
-                        <span class="sidebar-text">Antrian</span>
+                        <span class="sidebar-text">{{ __('ui.queue') }}</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="{{ route('cashier.products.index') }}"
+                        class="sidebar-menu-link {{ request()->routeIs('cashier.products.*') ? 'active' : '' }}"
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ __('ui.products_recipes') }}">
+                        <div class="sidebar-icon">
+                            <i class="fas fa-mug-saucer"></i>
+                        </div>
+                        <span class="sidebar-text">{{ __('ui.products') }}</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a href="{{ route('transactions.history') }}"
+                        class="sidebar-menu-link {{ request()->routeIs('transactions.history') ? 'active' : '' }}"
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ __('ui.transaction_history') }}">
+                        <div class="sidebar-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <span class="sidebar-text">{{ __('ui.transactions') }}</span>
                     </a>
                 </li>
             </ul>
 
             <div class="sidebar-divider"></div>
 
-            <p class="sidebar-section-label">Pengaturan</p>
+            <p class="sidebar-section-label">{{ __('ui.account') }}</p>
             <ul class="sidebar-menu sidebar-footer">
                 <li class="sidebar-menu-item">
                     <a href="{{ route('profile.edit') }}"
                         class="sidebar-menu-link {{ request()->routeIs('profile.*') ? 'active' : '' }}"
-                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Pengaturan">
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ __('ui.profile') }}">
                         <div class="sidebar-icon">
-                            <i class="fas fa-cog"></i>
+                            <i class="fas fa-user"></i>
                         </div>
-                        <span class="sidebar-text">Pengaturan</span>
+                        <span class="sidebar-text">{{ __('ui.profile') }}</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item">
                     <a href="#" class="sidebar-menu-link" onclick="event.preventDefault(); showAbout()"
-                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Tentang">
+                        data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="{{ __('ui.about') }}">
                         <div class="sidebar-icon">
                             <i class="fas fa-info-circle"></i>
                         </div>
-                        <span class="sidebar-text">Tentang</span>
+                        <span class="sidebar-text">{{ __('ui.about') }}</span>
                     </a>
                 </li>
             </ul>
@@ -235,7 +196,7 @@
         <div class="sidebar-footer-info">
             <div class="sidebar-footer-card">
                 <i class="fas fa-mug-hot" aria-hidden="true"></i>
-                <p>CafeSync POS — suasana hangat warung kopi di tengah sawah</p>
+                <p>{{ __('ui.cashier_footer') }}</p>
             </div>
             <div class="version-badge">v1.0.0</div>
         </div>
@@ -243,8 +204,18 @@
 
     <!-- Main Content -->
     <main class="main-content page-area" id="mainContent">
+        @if (session('error'))
+            <div class="container-fluid page-shell pt-3 mb-0">
+                <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('ui.close') }}"></button>
+                </div>
+            </div>
+        @endif
         @yield('content')
     </main>
+
+    <x-receipt-modal />
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -371,8 +342,10 @@
             if (!icon) return;
             icon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
             themeToggleBtn?.classList.toggle('is-dark', dark);
-            themeToggleBtn?.setAttribute('data-bs-title', dark ? 'Ubah ke tema terang' : 'Ubah ke tema gelap');
-            themeToggleBtn?.setAttribute('title', dark ? 'Ubah ke tema terang' : 'Ubah ke tema gelap');
+            const themeLight = @json(__('ui.theme_light'));
+            const themeDark = @json(__('ui.theme_dark'));
+            themeToggleBtn?.setAttribute('data-bs-title', dark ? themeLight : themeDark);
+            themeToggleBtn?.setAttribute('title', dark ? themeLight : themeDark);
         }
 
         function applyTheme(theme) {
@@ -394,22 +367,70 @@
             }
         }
 
+        function stylesheetKey(href) {
+            try {
+                return new URL(href, location.origin).pathname;
+            } catch (error) {
+                return href;
+            }
+        }
+
         function syncStylesheets(doc) {
+            const loaded = new Set(
+                Array.from(document.querySelectorAll('head link[rel="stylesheet"]'))
+                    .map(function(link) {
+                        return stylesheetKey(link.getAttribute('href') || '');
+                    })
+            );
+
             doc.querySelectorAll('head link[rel="stylesheet"]').forEach(function(link) {
                 const href = link.getAttribute('href');
                 if (!href) return;
-                const exists = Array.from(document.querySelectorAll('head link[rel="stylesheet"]'))
-                    .some(function(existing) {
-                        return existing.getAttribute('href') === href;
+                const key = stylesheetKey(href);
+                if (loaded.has(key)) return;
+                loaded.add(key);
+                document.head.appendChild(link.cloneNode(true));
+            });
+        }
+
+        function syncPageScripts(doc) {
+            const skipSrc = ['bootstrap', 'jquery', 'report-preview.js', 'queue-board.js', 'queue-icon-picker.js', 'cashier.js'];
+
+            doc.querySelectorAll('body script').forEach(function(script) {
+                const src = script.getAttribute('src');
+
+                if (src) {
+                    if (skipSrc.some(function(part) {
+                            return src.includes(part);
+                        })) {
+                        return;
+                    }
+                    const key = stylesheetKey(src);
+                    const exists = Array.from(document.querySelectorAll('body script[src]')).some(function(existing) {
+                        return stylesheetKey(existing.getAttribute('src') || '') === key;
                     });
-                if (!exists) {
-                    document.head.appendChild(link.cloneNode(true));
+                    if (exists) return;
+                    const el = document.createElement('script');
+                    el.src = src;
+                    document.body.appendChild(el);
+                    return;
                 }
+
+                const content = (script.textContent || '').trim();
+                if (!content) return;
+                if (!content.includes('queueBoardConfig')) return;
+
+                const el = document.createElement('script');
+                el.textContent = content;
+                document.body.appendChild(el);
             });
         }
 
         function reinitializePage() {
             initTooltips();
+            if (typeof window.initQueueIconPickers === 'function') {
+                window.initQueueIconPickers();
+            }
             document.dispatchEvent(new CustomEvent('page:loaded'));
         }
 
@@ -457,6 +478,7 @@
                 }
 
                 syncStylesheets(doc);
+                syncPageScripts(doc);
 
                 if (pushState) {
                     history.pushState({
@@ -517,6 +539,18 @@
     <script src="{{ asset('js/report-preview.js') }}"></script>
     <script src="{{ asset('js/queue-board.js') }}"></script>
     <script src="{{ asset('js/queue-icon-picker.js') }}"></script>
+    @include('layouts.partials.i18n-script')
+    <script>
+        window.CafeSyncReceiptLabels = {
+            title: @json(__('ui.transaction_receipt')),
+            paymentTitle: @json(__('ui.payment_receipt')),
+            paymentDesc: @json(__('ui.receipt_popup_desc')),
+            historyDesc: @json(__('ui.transaction_receipt')),
+            close: @json(__('ui.close')),
+            continuePos: @json(__('ui.continue_pos')),
+        };
+    </script>
+    <script src="{{ asset('js/receipt-popup.js') }}?v={{ file_exists(public_path('js/receipt-popup.js')) ? filemtime(public_path('js/receipt-popup.js')) : time() }}"></script>
     @stack('scripts')
 </body>
 

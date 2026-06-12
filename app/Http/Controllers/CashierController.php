@@ -5,14 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CashierController extends Controller
 {
-    public function index()
+    public function index(StockService $stockService)
     {
-        $categories = Category::with('products')->get();
+        $categories = Category::with(['products.ingredients'])->get();
+
+        foreach ($categories as $category) {
+            foreach ($category->products as $product) {
+                $stockService->syncProductStock($product);
+            }
+        }
 
         // Get today's statistics
         $todayRevenue = Transaction::whereDate('created_at', today())
@@ -40,9 +47,13 @@ class CashierController extends Controller
         return view('cashier.index', compact('categories', 'todayRevenue', 'todayTransactions', 'weeklyRevenue'));
     }
 
-    public function getProducts()
+    public function getProducts(StockService $stockService)
     {
-        $products = Product::with('category')->get();
+        $products = Product::with(['category', 'ingredients'])->get();
+
+        foreach ($products as $product) {
+            $stockService->syncProductStock($product);
+        }
 
         return response()->json($products);
     }

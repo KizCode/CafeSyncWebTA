@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Transaction;
 use App\Models\TransactionItem;
-use App\Models\Product;
+use App\Services\StockService;
 use Illuminate\Database\Seeder;
 
 class TransactionSeeder extends Seeder
@@ -55,10 +55,11 @@ class TransactionSeeder extends Seeder
             'total_price' => 30000,
         ]);
 
-        // Update stock
-        Product::find(1)->decrement('stock', 2);
-        Product::find(6)->decrement('stock', 3);
-        Product::find(8)->decrement('stock', 2);
+        app(StockService::class)->deductForSale([
+            ['product_id' => 1, 'quantity' => 2],
+            ['product_id' => 6, 'quantity' => 3],
+            ['product_id' => 8, 'quantity' => 2],
+        ], null, $transaction1->id);
 
         // Transaction 2 - QRIS tanpa diskon/pajak
         $transaction2 = Transaction::create([
@@ -91,8 +92,10 @@ class TransactionSeeder extends Seeder
             'total_price' => 15000,
         ]);
 
-        Product::find(3)->decrement('stock', 1);
-        Product::find(11)->decrement('stock', 1);
+        app(StockService::class)->deductForSale([
+            ['product_id' => 3, 'quantity' => 1],
+            ['product_id' => 11, 'quantity' => 1],
+        ], null, $transaction2->id);
 
         // Transaction 3 - Debit dengan pajak
         $transaction3 = Transaction::create([
@@ -143,9 +146,11 @@ class TransactionSeeder extends Seeder
             'total_price' => 12000,
         ]);
 
-        Product::find(4)->decrement('stock', 2);
-        Product::find(9)->decrement('stock', 1);
-        Product::find(12)->decrement('stock', 1);
-        Product::find(15)->decrement('stock', 1);
+        app(StockService::class)->deductForSale([
+            ['product_id' => 4, 'quantity' => 2],
+            ['product_id' => 9, 'quantity' => 1],
+            ['product_id' => 12, 'quantity' => 1],
+            ['product_id' => 15, 'quantity' => 1],
+        ], null, $transaction3->id);
     }
 }

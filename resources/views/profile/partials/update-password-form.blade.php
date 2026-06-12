@@ -5,18 +5,18 @@
                 <i class="fas fa-key" aria-hidden="true"></i>
             </div>
             <div class="profile-panel__title-wrap">
-                <h3 class="profile-panel__title">Kata Sandi</h3>
-                <p class="profile-panel__desc">Ganti kata sandi secara berkala agar akun kasir tetap aman.</p>
+                <h3 class="profile-panel__title">{{ __('ui.password_title') }}</h3>
+                <p class="profile-panel__desc">{{ __('ui.password_panel_desc') }}</p>
             </div>
         </div>
         <div class="profile-panel__actions">
-            <span class="profile-mode-badge js-mode-badge">Mode lihat</span>
+            <span class="profile-mode-badge js-mode-badge">{{ __('ui.view_mode') }}</span>
             <button type="button" class="btn btn-sm profile-btn-edit js-toggle-edit" data-target="password-fieldset">
-                <i class="fas fa-pen me-1"></i>Ubah
+                <i class="fas fa-pen me-1"></i>{{ __('ui.edit') }}
             </button>
             <button type="button" class="btn btn-sm btn-outline-secondary js-cancel-edit d-none"
                 data-target="password-fieldset">
-                Batal
+                {{ __('ui.cancel') }}
             </button>
         </div>
     </div>
@@ -25,8 +25,8 @@
         <div class="profile-lock-notice js-lock-notice">
             <div class="profile-lock-notice__icon"><i class="fas fa-lock" aria-hidden="true"></i></div>
             <div>
-                <strong>Kata sandi terkunci</strong>
-                <p>Klik <span class="text-success fw-semibold">Ubah</span> untuk mengganti kata sandi Anda.</p>
+                <strong>{{ __('ui.password_locked') }}</strong>
+                <p>{{ __('ui.password_locked_hint') }}</p>
             </div>
         </div>
 
@@ -38,12 +38,12 @@
                 <div class="profile-fields">
                     <div class="profile-field profile-field--full">
                         <label for="update_password_current_password" class="profile-field__label">
-                            <i class="fas fa-lock" aria-hidden="true"></i> Kata Sandi Saat Ini
+                            <i class="fas fa-lock" aria-hidden="true"></i> {{ __('ui.current_password') }}
                         </label>
                         <input type="password"
                             class="form-control profile-field__input @error('current_password', 'updatePassword') is-invalid @enderror"
                             id="update_password_current_password" name="current_password" autocomplete="current-password"
-                            placeholder="Masukkan kata sandi lama">
+                            placeholder="{{ __('ui.current_password_placeholder') }}">
                         @error('current_password', 'updatePassword')
                             <div class="profile-field__error">{{ $message }}</div>
                         @enderror
@@ -51,12 +51,12 @@
 
                     <div class="profile-field">
                         <label for="update_password_password" class="profile-field__label">
-                            <i class="fas fa-lock-open" aria-hidden="true"></i> Kata Sandi Baru
+                            <i class="fas fa-lock-open" aria-hidden="true"></i> {{ __('ui.new_password') }}
                         </label>
                         <input type="password"
                             class="form-control profile-field__input @error('password', 'updatePassword') is-invalid @enderror"
                             id="update_password_password" name="password" autocomplete="new-password"
-                            placeholder="Minimal 8 karakter">
+                            placeholder="{{ __('ui.new_password_placeholder') }}">
                         @error('password', 'updatePassword')
                             <div class="profile-field__error">{{ $message }}</div>
                         @enderror
@@ -64,12 +64,12 @@
 
                     <div class="profile-field">
                         <label for="update_password_password_confirmation" class="profile-field__label">
-                            <i class="fas fa-check-double" aria-hidden="true"></i> Konfirmasi Baru
+                            <i class="fas fa-check-double" aria-hidden="true"></i> {{ __('ui.confirm_new_password') }}
                         </label>
                         <input type="password"
                             class="form-control profile-field__input @error('password_confirmation', 'updatePassword') is-invalid @enderror"
                             id="update_password_password_confirmation" name="password_confirmation"
-                            autocomplete="new-password" placeholder="Ulangi kata sandi baru">
+                            autocomplete="new-password" placeholder="{{ __('ui.confirm_new_password_placeholder') }}">
                         @error('password_confirmation', 'updatePassword')
                             <div class="profile-field__error">{{ $message }}</div>
                         @enderror
@@ -78,11 +78,11 @@
 
                 <div class="profile-panel__footer">
                     <button type="submit" class="btn btn-success profile-btn-save js-submit-button" disabled>
-                        <i class="fas fa-save me-1"></i>Simpan Kata Sandi
+                        <i class="fas fa-save me-1"></i>{{ __('ui.save_password') }}
                     </button>
                     @if (session('status') === 'password-updated')
                         <span class="profile-saved">
-                            <i class="fas fa-check-circle"></i> Kata sandi diperbarui
+                            <i class="fas fa-check-circle"></i> {{ __('ui.password_updated') }}
                         </span>
                     @endif
                 </div>

@@ -1,135 +1,119 @@
 @extends('layouts.cashier')
 
-@section('title', 'Detail Transaksi')
+@section('title', __('ui.transaction_detail'))
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/transaction-receipt.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/print.css') }}">
+@endpush
 
 @section('content')
     <div class="container-fluid page-shell">
-        <x-page-header title="Detail Transaksi" icon="fa-receipt" badge="Transaksi"
-            description="Informasi lengkap transaksi dan item yang dibeli.">
+        <x-page-header :title="__('ui.transaction_detail')" icon="fa-receipt" :badge="__('ui.transactions')"
+            :description="__('ui.invoice_number') . ' ' . $transaction->invoice_number">
             <x-slot:actions>
-                <a href="{{ route('transactions.history') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                <a href="{{ route('transactions.history') }}" class="btn btn-outline-secondary btn-sm no-print">
+                    <i class="fas fa-arrow-left me-1"></i> {{ __('ui.back_to_history') }}
                 </a>
-                <a href="{{ route('transactions.pdf', $transaction->id) }}" class="btn btn-success" target="_blank">
-                    <i class="fas fa-print me-2"></i>Cetak Struk
+                <a href="{{ route('transactions.struk', $transaction->id) }}" class="btn btn-outline-success btn-sm no-print">
+                    <i class="fas fa-receipt me-1"></i> {{ __('ui.transaction_receipt') }}
+                </a>
+                <a href="{{ route('transactions.print', $transaction->id) }}" class="btn btn-success btn-sm no-print"
+                    target="_blank">
+                    <i class="fas fa-print me-1"></i> {{ __('ui.print') }}
                 </a>
             </x-slot:actions>
         </x-page-header>
 
-        <div class="card page-card">
-            <div class="card-body">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <table class="table table-sm table-borderless">
-                            <tr>
-                                <td width="40%">No. Invoice:</td>
-                                <td><strong>{{ $transaction->invoice_number }}</strong></td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal:</td>
-                                <td>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</td>
-                            </tr>
-                            <tr>
-                                <td>Status:</td>
-                                <td>
-                                    @if ($transaction->status == 'lunas')
-                                        <span class="badge bg-success">Lunas</span>
-                                    @else
-                                        <span class="badge bg-warning">Belum Lunas</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        </table>
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <x-transaction-receipt :transaction="$transaction" class="h-100" />
+            </div>
+            <div class="col-lg-7">
+                <div class="card page-card h-100">
+                    <div class="card-header">
+                        <h2 class="h6 mb-0"><i class="fas fa-list me-2 text-success"></i>{{ __('ui.transaction_breakdown') }}</h2>
                     </div>
-                    <div class="col-md-6">
-                        <table class="table table-sm table-borderless">
-                            <tr>
-                                <td width="40%">Metode Bayar:</td>
-                                <td><span
-                                        class="badge bg-secondary text-uppercase">{{ $transaction->payment_method }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Total Item:</td>
-                                <td>{{ $transaction->items->sum('quantity') }} item</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                    <div class="card-body">
+                        <div class="row g-3 mb-4">
+                            <div class="col-sm-6">
+                                <span class="text-muted small d-block">{{ __('ui.invoice_number') }}</span>
+                                <strong>{{ $transaction->invoice_number }}</strong>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted small d-block">{{ __('ui.date') }}</span>
+                                <span>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted small d-block">{{ __('ui.payment_method') }}</span>
+                                <span class="badge bg-secondary text-uppercase">{{ $transaction->payment_method }}</span>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="text-muted small d-block">{{ __('ui.status') }}</span>
+                                @if ($transaction->status == 'lunas')
+                                    <span class="badge bg-success">{{ __('ui.paid') }}</span>
+                                @else
+                                    <span class="badge bg-warning text-dark">{{ __('ui.unpaid') }}</span>
+                                @endif
+                            </div>
+                            @if ($transaction->customer_name || $transaction->queue_number)
+                                <div class="col-sm-6">
+                                    <span class="text-muted small d-block">{{ __('ui.queue_name') }}</span>
+                                    <strong class="text-success">{{ $transaction->customer_name ?? $transaction->queue_number }}</strong>
+                                </div>
+                            @endif
+                        </div>
 
-                <hr>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>{{ __('ui.product') }}</th>
+                                        <th class="text-center">{{ __('ui.quantity') }}</th>
+                                        <th class="text-end">{{ __('ui.price') }}</th>
+                                        <th class="text-end">{{ __('ui.total') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($transaction->items as $item)
+                                        <tr>
+                                            <td>{{ $item->product->name ?? '—' }}</td>
+                                            <td class="text-center fw-semibold">{{ $item->quantity }}</td>
+                                            <td class="text-end">Rp {{ number_format($item->unit_price, 0, ',', '.') }}
+                                            </td>
+                                            <td class="text-end">Rp
+                                                {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
 
-                <h5 class="mb-3"><i class="fas fa-list me-2 text-success"></i>Detail Item</h5>
-                <div class="table-responsive table-card mb-4 p-0">
-                    <table class="table table-sm table-hover align-middle mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Produk</th>
-                                <th class="text-center">Qty</th>
-                                <th class="text-end">Harga</th>
-                                <th class="text-end">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($transaction->items as $item)
-                                <tr>
-                                    <td>{{ $item->product->name }}</td>
-                                    <td class="text-center fw-semibold">{{ $item->quantity }}</td>
-                                    <td class="text-end">Rp {{ number_format($item->unit_price, 0, ',', '.') }}</td>
-                                    <td class="text-end">Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        <hr>
 
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-6 ms-auto">
-                        <table class="table table-sm table-borderless">
-                            <tr>
-                                <td>Subtotal:</td>
-                                <td class="text-end">Rp {{ number_format($transaction->subtotal, 0, ',', '.') }}</td>
-                            </tr>
+                        <div class="ms-auto" style="max-width: 320px;">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>{{ __('ui.subtotal') }}</span>
+                                <span>Rp {{ number_format($transaction->subtotal, 0, ',', '.') }}</span>
+                            </div>
                             @if ($transaction->discount_amount > 0)
-                                <tr class="text-success">
-                                    <td>
-                                        Diskon
-                                        @if ($transaction->discount_type == 'percent')
-                                            ({{ $transaction->discount_value }}%)
-                                        @endif
-                                        :
-                                    </td>
-                                    <td class="text-end">- Rp
-                                        {{ number_format($transaction->discount_amount, 0, ',', '.') }}</td>
-                                </tr>
+                                <div class="d-flex justify-content-between mb-1 text-success">
+                                    <span>{{ __('ui.discount') }}</span>
+                                    <span>- Rp {{ number_format($transaction->discount_amount, 0, ',', '.') }}</span>
+                                </div>
                             @endif
                             @if ($transaction->is_tax_enabled)
-                                <tr class="text-info">
-                                    <td>PPN 11%:</td>
-                                    <td class="text-end">Rp {{ number_format($transaction->tax_amount, 0, ',', '.') }}
-                                    </td>
-                                </tr>
+                                <div class="d-flex justify-content-between mb-1 text-info">
+                                    <span>{{ __('ui.tax_ppn') }}</span>
+                                    <span>Rp {{ number_format($transaction->tax_amount, 0, ',', '.') }}</span>
+                                </div>
                             @endif
-                            <tr class="fw-bold fs-5">
-                                <td>TOTAL:</td>
-                                <td class="text-end text-success">Rp
-                                    {{ number_format($transaction->grand_total, 0, ',', '.') }}</td>
-                            </tr>
-                            <tr>
-                                <td>Dibayar:</td>
-                                <td class="text-end">Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}
-                                </td>
-                            </tr>
-                            @if ($transaction->payment_method == 'tunai')
-                                <tr>
-                                    <td>Kembalian:</td>
-                                    <td class="text-end">Rp
-                                        {{ number_format($transaction->change_amount, 0, ',', '.') }}</td>
-                                </tr>
-                            @endif
-                        </table>
+                            <div class="d-flex justify-content-between fw-bold fs-5 mt-2 pt-2 border-top">
+                                <span>{{ __('ui.total') }}</span>
+                                <span class="text-success">Rp
+                                    {{ number_format($transaction->grand_total, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

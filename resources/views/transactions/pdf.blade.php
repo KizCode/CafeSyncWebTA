@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Struk - {{ $transaction->invoice_number }}</title>
+    <title>{{ __('ui.print_receipt_title') }} - {{ $transaction->invoice_number }}</title>
     <style>
         * {
             margin: 0;
@@ -114,21 +114,21 @@
 </head>
 <body>
     <div class="header">
-        <h2>STRUK PEMBAYARAN</h2>
+        <h2>{{ strtoupper(__('ui.payment_receipt')) }}</h2>
         <p>{{ config('app.name', 'Sistem Kasir') }}</p>
     </div>
 
     <div class="info">
         <div class="info-row">
-            <span>No. Invoice:</span>
+            <span>{{ __('ui.invoice_number') }}:</span>
             <strong>{{ $transaction->invoice_number }}</strong>
         </div>
         <div class="info-row">
-            <span>Tanggal:</span>
+            <span>{{ __('ui.date') }}:</span>
             <span>{{ $transaction->created_at->format('d/m/Y H:i:s') }}</span>
         </div>
         <div class="info-row">
-            <span>Kasir:</span>
+            <span>{{ __('ui.cashier_label') }}:</span>
             <span>Admin</span>
         </div>
     </div>
@@ -149,13 +149,13 @@
 
     <div class="totals">
         <div class="total-row">
-            <span>Subtotal:</span>
+            <span>{{ __('ui.subtotal') }}:</span>
             <span>Rp {{ number_format($transaction->subtotal, 0, ',', '.') }}</span>
         </div>
 
         @if($transaction->discount_amount > 0)
         <div class="total-row text-success">
-            <span>Diskon
+            <span>{{ __('ui.discount') }}
                 @if($transaction->discount_type == 'percent')
                     ({{ $transaction->discount_value }}%)
                 @endif
@@ -166,37 +166,37 @@
 
         @if($transaction->is_tax_enabled)
         <div class="total-row text-info">
-            <span>PPN 11%:</span>
+            <span>{{ __('ui.tax_ppn') }}:</span>
             <span>Rp {{ number_format($transaction->tax_amount, 0, ',', '.') }}</span>
         </div>
         @endif
 
         <div class="total-row grand-total">
-            <span>TOTAL:</span>
+            <span>{{ strtoupper(__('ui.total')) }}:</span>
             <span>Rp {{ number_format($transaction->grand_total, 0, ',', '.') }}</span>
         </div>
     </div>
 
     <div class="payment">
         <div class="total-row">
-            <span>Metode Bayar:</span>
+            <span>{{ __('ui.payment_method') }}:</span>
             <strong style="text-transform: uppercase;">{{ $transaction->payment_method }}</strong>
         </div>
         <div class="total-row">
-            <span>Dibayar:</span>
+            <span>{{ __('ui.paid_amount') }}:</span>
             <span>Rp {{ number_format($transaction->paid_amount, 0, ',', '.') }}</span>
         </div>
         @if($transaction->payment_method == 'tunai')
         <div class="total-row">
-            <span>Kembalian:</span>
+            <span>{{ __('ui.change') }}:</span>
             <span>Rp {{ number_format($transaction->change_amount, 0, ',', '.') }}</span>
         </div>
         @endif
     </div>
 
     <div class="footer">
-        <p>Terima kasih atas kunjungan Anda!</p>
-        <p>Barang yang sudah dibeli tidak dapat dikembalikan</p>
+        <p>{{ __('ui.thank_you') }}</p>
+        <p>{{ __('ui.no_returns') }}</p>
         <p style="margin-top: 10px;">{{ now()->format('d/m/Y H:i:s') }}</p>
     </div>
 

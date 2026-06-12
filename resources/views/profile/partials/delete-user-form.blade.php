@@ -5,8 +5,8 @@
                 <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
             </div>
             <div class="profile-panel__title-wrap">
-                <h3 class="profile-panel__title profile-panel__title--danger">Hapus Akun</h3>
-                <p class="profile-panel__desc">Tindakan ini permanen. Semua data terkait akun akan dihapus dan tidak dapat dikembalikan.</p>
+                <h3 class="profile-panel__title profile-panel__title--danger">{{ __('ui.delete_account') }}</h3>
+                <p class="profile-panel__desc">{{ __('ui.delete_account_desc') }}</p>
             </div>
         </div>
     </div>
@@ -15,14 +15,14 @@
         <div class="profile-alert profile-alert--danger mb-3">
             <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
             <div>
-                <strong>Zona berbahaya</strong>
-                <p class="mb-0">Pastikan Anda sudah mencadangkan data penting sebelum menghapus akun.</p>
+                <strong>{{ __('ui.danger_zone') }}</strong>
+                <p class="mb-0">{{ __('ui.delete_account_backup_hint') }}</p>
             </div>
         </div>
 
         <button type="button" class="btn btn-danger profile-btn-danger" data-bs-toggle="modal"
             data-bs-target="#confirmUserDeletionModal">
-            <i class="fas fa-trash-alt me-1"></i>Hapus Akun Saya
+            <i class="fas fa-trash-alt me-1"></i>{{ __('ui.delete_account_title') }}
         </button>
     </div>
 
@@ -36,22 +36,22 @@
 
                     <div class="modal-header border-0 pb-0">
                         <h5 class="modal-title text-danger" id="confirmUserDeletionModalLabel">
-                            <i class="fas fa-exclamation-circle me-2"></i>Konfirmasi Hapus Akun
+                            <i class="fas fa-exclamation-circle me-2"></i>{{ __('ui.confirm_delete_account') }}
                         </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('ui.close') }}"></button>
                     </div>
 
                     <div class="modal-body">
                         <p class="text-muted small mb-3">
-                            Masukkan kata sandi untuk mengonfirmasi penghapusan akun secara permanen.
+                            {{ __('ui.delete_account_password_hint') }}
                         </p>
 
                         <label for="password" class="profile-field__label">
-                            <i class="fas fa-lock" aria-hidden="true"></i> Kata Sandi
+                            <i class="fas fa-lock" aria-hidden="true"></i> {{ __('ui.password') }}
                         </label>
                         <input type="password"
                             class="form-control profile-field__input @error('password', 'userDeletion') is-invalid @enderror"
-                            id="password" name="password" placeholder="Kata sandi Anda">
+                            id="password" name="password" placeholder="{{ __('ui.your_password_placeholder') }}">
                         @error('password', 'userDeletion')
                             <div class="profile-field__error">{{ $message }}</div>
                         @enderror
@@ -59,10 +59,10 @@
 
                     <div class="modal-footer border-0 pt-0">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Batal
+                            {{ __('ui.cancel') }}
                         </button>
                         <button type="submit" class="btn btn-danger">
-                            Ya, Hapus Akun
+                            {{ __('ui.yes_delete_account') }}
                         </button>
                     </div>
                 </form>

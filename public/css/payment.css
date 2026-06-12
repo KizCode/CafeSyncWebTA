@@ -1,28 +1,103 @@
-﻿/* ======================= PAYMENT METHOD ======================= */
-.payment-method {
+/* ======================= PAYMENT MODAL ======================= */
+
+#paymentModal .payment-method-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+#paymentModal .payment-method-option {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    min-height: 0;
+}
+
+#paymentModal .payment-method-option .form-check-input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    float: none;
+    pointer-events: none;
+}
+
+#paymentModal .payment-method-option .form-check-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    margin: 0;
+    padding: 1.1rem 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
     cursor: pointer;
-    transition: var(--transition);
-    border: 2px solid transparent;
-    border-radius: 8px;
-    padding: 12px;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.payment-method:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+#paymentModal .payment-method-option .form-check-label i {
+    font-size: 1.4rem;
+    line-height: 1;
+    color: inherit;
 }
 
-.payment-method.active {
-    border-color: var(--info-color);
-    background-color: #eff6ff;
+#paymentModal .payment-method-option .form-check-label span {
+    display: block;
+    line-height: 1.2;
 }
 
-.payment-method input[type="radio"] {
-    display: none;
+#paymentModal .payment-method-option .form-check-input:checked + .form-check-label {
+    border-color: #059669;
+    background: #ecfdf5;
+    color: #065f46;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
 }
 
-.payment-method-option input:checked + label {
-    background: #f0fdf4 !important;
-    border-color: var(--primary-color) !important;
-    color: var(--primary-color);
+#paymentModal .payment-method-option .form-check-input:checked + .form-check-label i {
+    color: #059669;
+}
+
+#paymentModal .payment-method-option .form-check-label:hover {
+    border-color: #cbd5e1;
+    background: #f1f5f9;
+}
+
+#paymentModal .payment-method-option .form-check-input:checked + .form-check-label:hover {
+    border-color: #059669;
+    background: #d1fae5;
+}
+
+html.dark #paymentModal .payment-method-option .form-check-label,
+body.dark #paymentModal .payment-method-option .form-check-label {
+    background: #1e293b;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+html.dark #paymentModal .payment-method-option .form-check-input:checked + .form-check-label,
+body.dark #paymentModal .payment-method-option .form-check-input:checked + .form-check-label {
+    background: #064e3b;
+    border-color: #10b981;
+    color: #6ee7b7;
+}
+
+/* SweetAlert di atas modal pembayaran Bootstrap */
+.swal-over-modal {
+    z-index: 2000 !important;
+}
+
+#paymentModal.show {
+    z-index: 1055;
+}
+
+.modal-backdrop.show {
+    z-index: 1050;
 }

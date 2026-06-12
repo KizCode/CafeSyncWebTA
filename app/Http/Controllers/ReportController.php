@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expense;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -56,10 +57,12 @@ class ReportController extends Controller
         $startDate = $request->start_date ?? now()->startOfMonth()->format('Y-m-d');
         $endDate = $request->end_date ?? now()->format('Y-m-d');
 
-        $transactions = Transaction::whereBetween('created_at', [
-            $startDate . ' 00:00:00',
-            $endDate . ' 23:59:59',
-        ])->where('status', 'lunas')->get();
+        $timezone = config('app.timezone');
+        $rangeStart = Carbon::parse($startDate, $timezone)->startOfDay();
+        $rangeEnd = Carbon::parse($endDate, $timezone)->endOfDay();
+
+        $transactions = Transaction::whereBetween('created_at', [$rangeStart, $rangeEnd])
+            ->where('status', 'lunas')->get();
 
         $totalRevenue = $transactions->sum('grand_total');
         $totalTransactions = $transactions->count();
@@ -72,10 +75,7 @@ class ReportController extends Controller
 
         $grossProfit = $totalRevenue - $totalExpenses;
 
-        $dailyRevenue = Transaction::whereBetween('created_at', [
-            $startDate . ' 00:00:00',
-            $endDate . ' 23:59:59',
-        ])
+        $dailyRevenue = Transaction::whereBetween('created_at', [$rangeStart, $rangeEnd])
             ->where('status', 'lunas')
             ->select(
                 DB::raw('DATE(created_at) as date'),

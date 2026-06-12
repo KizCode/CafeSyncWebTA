@@ -1,11 +1,11 @@
-@extends('layouts.cashier')
+@extends('layouts.admin')
 
-@section('title', 'Laporan Pendapatan')
+@section('title', __('ui.revenue_report'))
 
 @section('content')
     <div class="container-fluid page-shell">
-        <x-page-header title="Laporan Pendapatan" icon="fa-chart-line" badge="Laporan"
-            description="Pantau pendapatan dan produk terlaris dalam periode tertentu." />
+        <x-page-header :title="__('ui.revenue_report')" icon="fa-chart-line" :badge="__('ui.report')"
+            :description="__('ui.reports_desc')" />
 
         <div class="card page-card">
             <div class="card-body">
@@ -14,18 +14,18 @@
                         <div class="card-body">
                             <div class="row g-3 align-items-end">
                                 <div class="col-md-4">
-                                    <label class="form-label">Tanggal Mulai</label>
+                                    <label class="form-label">{{ __('ui.start_date') }}</label>
                                     <input type="date" class="form-control" name="start_date" value="{{ $startDate }}"
                                         required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Tanggal Akhir</label>
+                                    <label class="form-label">{{ __('ui.end_date') }}</label>
                                     <input type="date" class="form-control" name="end_date" value="{{ $endDate }}"
                                         required>
                                 </div>
                                 <div class="col-md-4 text-md-end">
                                     <button type="submit" class="btn btn-primary btn-sm mb-2">
-                                        <i class="fas fa-search"></i> Tampilkan
+                                        <i class="fas fa-search"></i> {{ __('ui.show') }}
                                     </button>
                                 </div>
                             </div>
@@ -36,12 +36,12 @@
                 <div
                     class="mb-3 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
                     <div class="text-muted small">
-                        Periode: {{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }}
+                        {{ __('ui.period') }}: {{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }}
                         — {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }}
                     </div>
                     <a href="{{ route('reports.preview', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
                         class="btn btn-success btn-sm" data-no-ajax>
-                        <i class="fas fa-file-pdf me-1"></i> Pratinjau PDF
+                        <i class="fas fa-file-pdf me-1"></i> {{ __('ui.preview_report') }} PDF
                     </a>
                 </div>
 
@@ -50,7 +50,7 @@
                         <div class="card stat-card stat-card--revenue h-100">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="mb-0 opacity-75">Total Pendapatan</h6>
+                                    <h6 class="mb-0 opacity-75">{{ __('ui.total_revenue') }}</h6>
                                     <h4 class="mb-0">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h4>
                                 </div>
                                 <div class="stat-card__icon"><i class="fas fa-money-bill-wave"></i></div>
@@ -61,7 +61,7 @@
                         <div class="card stat-card stat-card--info h-100">
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 class="mb-0 opacity-75">Total Transaksi</h6>
+                                    <h6 class="mb-0 opacity-75">{{ __('ui.total_transactions') }}</h6>
                                     <h4 class="mb-0">{{ $totalTransactions }}</h4>
                                 </div>
                                 <div class="stat-card__icon"><i class="fas fa-shopping-cart"></i></div>
@@ -72,7 +72,7 @@
 
                 <div class="card chart-panel mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-chart-area me-2 text-success"></i>Grafik Pendapatan Harian</h5>
+                        <h5 class="mb-0"><i class="fas fa-chart-area me-2 text-success"></i>{{ __('ui.daily_revenue_chart') }}</h5>
                     </div>
                     <div class="card-body">
                         <canvas id="revenueChart" height="80"></canvas>
@@ -81,7 +81,7 @@
 
                 <div class="card page-card">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-trophy me-2 text-warning"></i>Produk Terlaris</h5>
+                        <h5 class="mb-0"><i class="fas fa-trophy me-2 text-warning"></i>{{ __('ui.best_sellers') }}</h5>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -89,11 +89,11 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Nama Produk</th>
-                                        <th>Kategori</th>
-                                        <th class="text-end">Terjual</th>
-                                        <th class="text-end">Harga</th>
-                                        <th class="text-end">Total Pendapatan</th>
+                                        <th>{{ __('ui.product_name') }}</th>
+                                        <th>{{ __('ui.category') }}</th>
+                                        <th class="text-end">{{ __('ui.sold') }}</th>
+                                        <th class="text-end">{{ __('ui.price') }}</th>
+                                        <th class="text-end">{{ __('ui.total_revenue') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -114,7 +114,7 @@
                                             <td colspan="6">
                                                 <div class="empty-state">
                                                     <i class="fas fa-box-open d-block"></i>
-                                                    Tidak ada data
+                                                    {{ __('ui.no_data') }}
                                                 </div>
                                             </td>
                                         </tr>
@@ -134,9 +134,11 @@
     <script>
         $(document).ready(function() {
             const dailyData = @json($dailyRevenue);
+            const chartLocale = @json(app()->getLocale() === 'id' ? 'id-ID' : 'en-US');
+            const chartLabel = @json(__('ui.chart_revenue_label'));
             const labels = dailyData.map(item => {
                 const date = new Date(item.date);
-                return date.toLocaleDateString('id-ID', {
+                return date.toLocaleDateString(chartLocale, {
                     day: '2-digit',
                     month: 'short'
                 });
@@ -149,7 +151,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Pendapatan (Rp)',
+                        label: chartLabel,
                         data: data,
                         borderColor: '#10b981',
                         backgroundColor: 'rgba(16, 185, 129, 0.12)',
@@ -168,7 +170,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return 'Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                    return 'Rp ' + context.parsed.y.toLocaleString(chartLocale);
                                 }
                             }
                         }
@@ -178,7 +180,7 @@
                             beginAtZero: true,
                             ticks: {
                                 callback: function(value) {
-                                    return 'Rp ' + value.toLocaleString('id-ID');
+                                    return 'Rp ' + value.toLocaleString(chartLocale);
                                 }
                             }
                         }

@@ -394,11 +394,103 @@ body.dark .icon-picker__option {
 }
 
 .queue-card {
-    padding: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.65rem;
+    margin-bottom: 0.5rem;
     border: 1px solid var(--border-color, #e5e7eb);
     border-radius: 10px;
     background: var(--surface-soft, #f9fafb);
     box-shadow: 0 2px 8px rgba(92, 74, 50, 0.05);
+    cursor: default;
+}
+
+.queue-card__name-edit {
+    border: none;
+    background: transparent;
+    appearance: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    border-bottom: 1px dashed transparent;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.queue-card__name-edit:hover {
+    color: var(--bs-primary, #0d6efd);
+    border-bottom-color: currentColor;
+}
+
+.queue-card__name-edit:focus,
+.queue-card__name-edit:focus-visible,
+.queue-card__name-edit:active {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px dashed transparent;
+}
+
+.queue-card__name-edit::after {
+    content: "\f044";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.7em;
+    margin-left: 0.4rem;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.queue-card__name-edit:hover::after {
+    opacity: 0.7;
+}
+
+.queue-card--ghost {
+    opacity: 0.45;
+    background: #ecfdf5;
+    border-style: dashed;
+}
+
+.queue-card--chosen {
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+}
+
+.queue-board--loading {
+    opacity: 0.65;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.queue-card--removing {
+    opacity: 0;
+    transform: scale(0.92) translateY(-6px);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    pointer-events: none;
+}
+
+.queue-card--drag {
+    opacity: 0.92;
+}
+
+.queue-card__drag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    flex-shrink: 0;
+    color: var(--text-secondary, #475569);
+    cursor: grab;
+    border-radius: 4px;
+}
+
+.queue-card__drag:active {
+    cursor: grabbing;
+}
+
+.queue-card__content {
+    flex: 1;
+    min-width: 0;
 }
 
 .queue-card__head {

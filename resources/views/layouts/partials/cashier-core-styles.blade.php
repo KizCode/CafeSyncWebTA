@@ -6,3 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
 <link rel="stylesheet" href="{{ asset('css/report-preview.css') }}">
 <link rel="stylesheet" href="{{ asset('css/queue.css') }}">
+<link rel="stylesheet" href="{{ asset('css/transaction-receipt.css') }}">
+<link rel="stylesheet" href="{{ asset('css/cashier-page.css') }}">
+<link rel="stylesheet" href="{{ asset('css/payment.css') }}">
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">

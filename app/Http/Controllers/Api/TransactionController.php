@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
-use App\Models\Product;
+use App\Services\ProductionQueueService;
+use App\Services\StockService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +26,7 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
+            'customer_name' => 'required|string|min:2|max:50',
             'subtotal' => 'required|numeric',
             'discount_amount' => 'nullable|numeric',
             'discount_type' => 'nullable|string',
@@ -34,7 +37,7 @@ class TransactionController extends Controller
             'payment_method' => 'nullable|string',
             'paid_amount' => 'nullable|numeric',
             'change_amount' => 'nullable|numeric',
-            'status' => 'nullable|string',
+            'status' => 'nullable|in:lunas,belum_lunas',
             'items' => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
@@ -46,11 +49,13 @@ class TransactionController extends Controller
         try {
             $transactionData = array_merge($data, [
                 'invoice_number' => Transaction::generateInvoiceNumber(),
+                'status' => $data['status'] ?? 'lunas',
             ]);
 
             unset($transactionData['items']);
 
-            $transaction = Transaction::create($transactionData);
+            $queueOnCreate = ProductionQueueService::queueAttributesForNewPayment($data['customer_name']);
+            $transaction = Transaction::create(array_merge($transactionData, $queueOnCreate));
 
             foreach ($data['items'] as $item) {
                 $itemData = [
@@ -62,12 +67,20 @@ class TransactionController extends Controller
                 ];
 
                 TransactionItem::create($itemData);
+            }
 
-                // Optionally decrement product stock if available
-                if ($product = Product::find($item['product_id'])) {
-                    if (is_numeric($product->stock)) {
-                        $product->decrement('stock', $item['quantity']);
-                    }
+            app(StockService::class)->deductForSale(
+                $data['items'],
+                null,
+                $transaction->id
+            );
+
+            if (($transaction->status ?? 'lunas') === 'lunas') {
+                $enqueue = ProductionQueueService::attachPaidOrderToQueue($transaction, $data['customer_name']);
+                if (! $enqueue['success']) {
+                    throw new \RuntimeException(
+                        ProductionQueueService::queueFailureMessage($enqueue['reason'] ?? null)
+                    );
                 }
             }
 

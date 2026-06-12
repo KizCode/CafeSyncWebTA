@@ -31,4 +31,16 @@ class Product extends Model
     {
         return $this->hasMany(TransactionItem::class);
     }
+
+    public function ingredients()
+    {
+        return $this->belongsToMany(Ingredient::class, 'product_ingredients')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
+    public function hasRecipe(): bool
+    {
+        return $this->ingredients()->exists();
+    }
 }
