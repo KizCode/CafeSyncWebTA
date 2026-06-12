@@ -272,6 +272,7 @@ return [
     'more_items' => '+:count more',
     'done' => 'Done',
     'item' => 'Item',
+    'qty_short' => 'Qty',
     'print_receipt' => 'Print Receipt',
     'download_pdf' => 'Download PDF',
     'select_payment_method' => 'Select Payment Method',

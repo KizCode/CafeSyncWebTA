@@ -134,7 +134,7 @@
     <script>
         $(document).ready(function() {
             const dailyData = @json($dailyRevenue);
-            const chartLocale = @json(app()->getLocale() === 'id' ? 'id-ID' : 'en-US');
+            const chartLocale = window.CafeSyncLocale || @json(app()->getLocale() === 'id' ? 'id-ID' : 'en-US');
             const chartLabel = @json(__('ui.chart_revenue_label'));
             const labels = dailyData.map(item => {
                 const date = new Date(item.date);

@@ -32,6 +32,8 @@
     --info-color: #3b82f6;
     --transition: all 0.2s ease;
     --transition-fast: all 0.15s ease;
+    --tooltip-bg: #1f2937;
+    --tooltip-fg: #f9fafb;
 }
 
 body {
@@ -71,6 +73,8 @@ body.dark {
     --theme-earth: #e2e8f0;
     --profile-earth: #e2e8f0;
     --auth-earth: #e2e8f0;
+    --tooltip-bg: #e2e8f0;
+    --tooltip-fg: #0f172a;
 }
 
 html.dark .top-header,

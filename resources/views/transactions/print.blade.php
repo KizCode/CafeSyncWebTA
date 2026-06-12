@@ -5,19 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ __('ui.print_receipt_title') }} — {{ $transaction->invoice_number }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    @include('layouts.partials.fonts')
     <link rel="stylesheet" href="{{ asset('css/transaction-receipt.css') }}">
     <style>
         body {
-            background: #f5f1e8;
+            margin: 0;
             padding: 1rem;
+            background: #e7e5e4;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
         }
 
         @media print {
             body {
                 background: #fff;
                 padding: 0;
+                display: block;
+                min-height: auto;
             }
         }
     </style>
@@ -30,7 +36,7 @@
         window.addEventListener('load', function() {
             setTimeout(function() {
                 window.print();
-            }, 300);
+            }, 350);
         });
     </script>
 </body>

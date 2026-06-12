@@ -272,6 +272,7 @@ return [
     'more_items' => '+:count lainnya',
     'done' => 'Selesai',
     'item' => 'Item',
+    'qty_short' => 'Jml',
     'print_receipt' => 'Cetak Struk',
     'download_pdf' => 'Unduh PDF',
     'select_payment_method' => 'Pilih Metode Pembayaran',

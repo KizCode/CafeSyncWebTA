@@ -6,9 +6,9 @@
     @php
         $pdfQuery = ['start_date' => $startDate, 'end_date' => $endDate];
         $periodLabel =
-            \Carbon\Carbon::parse($startDate)->format('d M Y') .
+            \Carbon\Carbon::parse($startDate)->translatedFormat('d M Y') .
             ' — ' .
-            \Carbon\Carbon::parse($endDate)->format('d M Y');
+            \Carbon\Carbon::parse($endDate)->translatedFormat('d M Y');
     @endphp
 
     <div class="container-fluid page-shell report-preview-page"

@@ -57,6 +57,7 @@
     height: 1.5rem;
     cursor: pointer;
     border-color: var(--border-color);
+    background-color: #cbd5e1;
 }
 
 .form-switch .form-check-input:checked,
@@ -69,6 +70,55 @@
 .toggle-switch-lg:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.25);
+}
+
+/* Mode gelap — switch & checkbox */
+html.dark .form-switch .form-check-input:not(:checked),
+body.dark .form-switch .form-check-input:not(:checked),
+html.dark .toggle-switch-lg:not(:checked),
+body.dark .toggle-switch-lg:not(:checked) {
+    background-color: #475569 !important;
+    border-color: #64748b !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23f1f5f9'/%3e%3c/svg%3e") !important;
+}
+
+html.dark .form-switch .form-check-input:checked,
+body.dark .form-switch .form-check-input:checked,
+html.dark .toggle-switch-lg:checked,
+body.dark .toggle-switch-lg:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e") !important;
+}
+
+html.dark .form-switch .form-check-input:focus,
+body.dark .form-switch .form-check-input:focus,
+html.dark .toggle-switch-lg:focus,
+body.dark .toggle-switch-lg:focus {
+    box-shadow: 0 0 0 0.25rem rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark .form-check:not(.form-switch) .form-check-input[type="checkbox"],
+body.dark .form-check:not(.form-switch) .form-check-input[type="checkbox"] {
+    background-color: #1e293b;
+    border-color: #64748b;
+}
+
+html.dark .form-check:not(.form-switch) .form-check-input[type="checkbox"]:checked,
+body.dark .form-check:not(.form-switch) .form-check-input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+html.dark .queue-toggle,
+body.dark .queue-toggle {
+    background: var(--surface-soft);
+    border-color: var(--border-color);
+}
+
+html.dark .queue-toggle input[type="checkbox"],
+body.dark .queue-toggle input[type="checkbox"] {
+    accent-color: var(--primary-color);
 }
 
 .form-check-label {

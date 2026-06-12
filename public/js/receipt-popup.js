@@ -103,14 +103,12 @@
 
     function print(transactionId) {
         const id = transactionId || activeTransactionId;
-        const content = document.getElementById('receiptContent');
-        if (content) {
-            window.print();
+        if (!id) {
             return;
         }
-        if (id) {
-            window.open(`/transactions/${id}/print`, '_blank', 'noopener');
-        }
+        // Cetak lewat halaman khusus — window.print() dari dalam modal Bootstrap
+        // menghasilkan preview kosong di Chrome/Edge.
+        window.open(`/transactions/${id}/print`, '_blank', 'noopener,noreferrer');
     }
 
     function bindReceiptTriggers(root) {

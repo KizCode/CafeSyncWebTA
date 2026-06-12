@@ -28,19 +28,43 @@ body.dark .cart-item-card .btn-outline-secondary {
 
 /* ======================= PRODUCT SEARCH ======================= */
 .cashier-search {
-    max-width: 320px;
+    width: 100%;
 }
 
 .cashier-search .form-control {
-    font-size: 0.8125rem;
-    padding: 0.35rem 0.65rem;
-    border-radius: 0 0.5rem 0.5rem 0;
+    font-size: 0.875rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0 0.625rem 0.625rem 0;
+    border-color: var(--border-color, #e5e7eb);
+    background: var(--surface, #fff);
+}
+
+.cashier-search .form-control:focus {
+    border-color: var(--primary-color, #10b981);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
 .cashier-search .input-group-text {
-    padding: 0.35rem 0.55rem;
-    font-size: 0.75rem;
-    border-radius: 0.5rem 0 0 0.5rem;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.875rem;
+    border-radius: 0.625rem 0 0 0.625rem;
+    border-color: var(--border-color, #e5e7eb);
+    background: var(--surface-soft, #f8fafc);
+    color: var(--text-muted, #6b7280);
+}
+
+html.dark .cashier-search .form-control,
+body.dark .cashier-search .form-control {
+    background: #1f2937;
+    border-color: #334155;
+    color: var(--text-primary);
+}
+
+html.dark .cashier-search .input-group-text,
+body.dark .cashier-search .input-group-text {
+    background: #111827;
+    border-color: #334155;
+    color: var(--text-secondary);
 }
 
 /* ======================= CASHIER CARDS ======================= */

@@ -3,19 +3,37 @@
         display: none !important;
     }
 
-    body * {
-        visibility: hidden;
+    body {
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    #receiptContent,
-    #receiptContent * {
-        visibility: visible;
+    .top-header,
+    .sidebar,
+    #sidebar,
+    .page-header,
+    .page-shell > .page-header {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .row > .col-lg-7,
+    .row > .col-lg-7 .card {
+        display: none !important;
     }
 
     #receiptContent {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
+        display: block !important;
+        width: 76mm !important;
+        max-width: 76mm !important;
+        margin: 0 auto !important;
+        box-shadow: none !important;
+        border: none !important;
+        page-break-inside: avoid;
     }
 }

@@ -10,16 +10,17 @@ Sistem Point of Sale (POS) untuk kafe/restoran berbasis web. Dibangun dengan Lar
 2. [Instalasi](#instalasi)
 3. [Akun Demo](#akun-demo)
 4. [Login & Navigasi](#login--navigasi)
-5. [Panduan per Role](#panduan-per-role)
+5. [Bahasa & Tema](#bahasa--tema)
+6. [Panduan per Role](#panduan-per-role)
    - [Kasir](#kasir)
    - [Administrator](#administrator)
    - [Gudang](#gudang)
-6. [Fitur Umum](#fitur-umum)
-7. [Perhitungan Transaksi](#perhitungan-transaksi)
-8. [Deploy ke Hosting](#deploy-ke-hosting)
-9. [Pengembangan](#pengembangan)
-10. [Teknologi](#teknologi)
-11. [Lisensi](#lisensi)
+7. [Fitur Umum](#fitur-umum)
+8. [Perhitungan Transaksi](#perhitungan-transaksi)
+9. [Deploy ke Hosting](#deploy-ke-hosting)
+10. [Pengembangan](#pengembangan)
+11. [Teknologi](#teknologi)
+12. [Lisensi](#lisensi)
 
 ---
 
@@ -109,9 +110,24 @@ Setelah menjalankan seeder, gunakan akun berikut (password semua: **`password`**
 1. Buka alamat website → halaman **Login** muncul otomatis.
 2. Masukkan **username** dan **password**.
 3. Setelah login, Anda diarahkan ke halaman utama sesuai role.
-4. Gunakan **sidebar** di kiri untuk berpindah menu.
-5. Tombol **bahasa** (ID/EN) di header mengganti bahasa antarmuka.
+4. Gunakan **sidebar** di kiri untuk berpindah menu (sidebar bisa diperkecil; hover ikon untuk melihat label).
+5. Tombol **bahasa** (ID/EN) di header mengganti bahasa antarmuka — halaman akan dimuat ulang.
 6. Tombol **tema** (ikon bulan/matahari) mengganti mode terang/gelap.
+
+---
+
+## Bahasa & Tema
+
+### Bahasa (ID / EN)
+
+- Semua label antarmuka mengikuti bahasa yang dipilih.
+- **Tanggal & jam** di header Kasir juga mengikuti bahasa (mis. *Kamis, 11 Juni 2026* atau *Thursday, June 11, 2026*).
+- Grafik laporan dan format bulan di halaman admin mengikuti locale yang sama.
+
+### Tema gelap
+
+- Disimpan di browser (localStorage), berlaku di semua halaman setelah login.
+- Tooltip sidebar, toggle (diskon/PPN), checkbox, dan form disesuaikan agar tetap terbaca di mode gelap.
 
 ---
 
@@ -124,7 +140,7 @@ Menu utama Kasir: **Kasir**, **Antrian**, **Produk**, **Transaksi**, dan **Profi
 #### Membuat transaksi
 
 1. Buka menu **Kasir**.
-2. Klik kategori di atas untuk memfilter produk, atau gunakan kotak **Cari produk**.
+2. Gunakan kotak **Cari produk** (lebar penuh) atau klik **kategori** untuk memfilter.
 3. Klik produk untuk menambahkannya ke keranjang.
 4. Atur jumlah item di keranjang (+ / −) atau hapus item yang tidak diperlukan.
 5. *(Opsional)* Aktifkan **Diskon** — pilih persen (%) atau nominal (Rp).
@@ -135,7 +151,10 @@ Menu utama Kasir: **Kasir**, **Antrian**, **Produk**, **Transaksi**, dan **Profi
    - **Tunai:** masukkan uang diterima; gunakan tombol cepat (20rb, 50rb, 100rb, Uang Pas) jika perlu.
    - **QRIS / Debit:** nominal otomatis sesuai total.
 10. Klik **Konfirmasi Pembayaran**.
-11. **Popup struk** muncul — klik **Cetak** untuk mencetak, **Buka Antrian** untuk melihat antrian produksi, atau **Lanjut Transaksi** untuk kembali ke POS.
+11. **Popup struk** muncul — pratinjau struk thermal dengan nama pesanan, item, dan total.
+    - **Cetak** → membuka halaman cetak di tab baru (ukuran kertas thermal 80mm), lalu dialog print browser.
+    - **Buka Antrian** → ke papan antrian produksi.
+    - **Lanjut Transaksi** → kembali ke POS.
 
 #### Antrian produksi
 
@@ -147,10 +166,10 @@ Menu utama Kasir: **Kasir**, **Antrian**, **Produk**, **Transaksi**, dan **Profi
 
 #### Riwayat transaksi & cetak ulang struk
 
-1. Buka menu **Transaksi**.
+1. Buka menu **Transaksi** (tersedia khusus role Kasir & Administrator).
 2. Filter berdasarkan **tanggal mulai** dan **tanggal akhir** jika diperlukan.
 3. Klik nomor invoice, tombol **Struk**, atau ikon **Cetak** → struk muncul di **popup**.
-4. Klik **Cetak** di dalam popup untuk mencetak struk.
+4. Klik **Cetak** di popup → halaman cetak terbuka di tab baru dengan struk yang sudah terisi.
 
 #### Kelola produk (Kasir)
 
@@ -187,7 +206,7 @@ Sama seperti Kasir, plus tombol **Export PDF** saat filter tanggal aktif untuk m
 
 #### Pengaturan antrian
 
-Atur status produksi (nama, warna, ikon) dan daftar nama acak pelanggan di antrian.
+Atur status produksi (nama, warna, ikon), toggle antrian otomatis, tampil di struk, reset harian, dan daftar nama acak pelanggan.
 
 ---
 
@@ -217,12 +236,14 @@ Stok bahan otomatis berkurang saat produk terjual (sesuai resep produk).
 |-------|------------|
 | Multi-role | Administrator, Kasir, Gudang dengan akses terpisah |
 | POS realtime | Keranjang, diskon, PPN, dan pembayaran tanpa reload halaman |
-| Popup struk | Struk muncul di modal setelah bayar & dari riwayat transaksi |
+| Cari produk | Kotak pencarian lebar penuh di halaman Kasir |
+| Popup struk | Struk thermal di modal setelah bayar & dari riwayat transaksi |
+| Cetak struk | Halaman khusus `/transactions/{id}/print` — thermal 80mm, auto-print |
 | Antrian produksi | Drag-and-drop, ubah status & nama pelanggan |
 | Resep produk | Kaitkan bahan baku ke produk untuk stok otomatis |
 | Laporan & PDF | Laporan pendapatan dan export struk/transaksi ke PDF |
-| Bilingual | Bahasa Indonesia & Inggris |
-| Tema gelap | Mode terang / gelap disimpan di browser |
+| Bilingual | Bahasa Indonesia & Inggris (tanggal & grafik ikut locale) |
+| Tema gelap | Mode terang/gelap; tooltip & toggle disesuaikan kontrasnya |
 | Profil | Ubah nama, email, telepon; keamanan akun & ganti password |
 
 ---
@@ -270,6 +291,8 @@ php artisan migrate --force
 
 Pastikan folder `storage/` dan `bootstrap/cache/` bisa ditulis web server.
 
+Setelah deploy, lakukan **hard refresh** (`Ctrl+Shift+R`) di browser agar CSS/JS terbaru ter-load.
+
 ---
 
 ## Pengembangan
@@ -287,6 +310,11 @@ npm run build
 # Reset database + data demo
 php artisan migrate:fresh --seed
 ```
+
+### Dokumentasi
+
+- Satu file panduan: **`README.md`** (ini).
+- Setiap perubahan fitur atau alur penggunaan yang terlihat di UI **wajib** ikut diperbarui di README.
 
 ---
 

@@ -268,8 +268,12 @@
             setTimeout(initTooltips, 300);
         });
 
-        // Update date and time
+        // Locale tanggal mengikuti bahasa UI (harus tersedia sebelum updateDateTime)
+        window.CafeSyncLocale = @json(app()->getLocale() === 'id' ? 'id-ID' : 'en-US');
+
+        // Update date and time (ikut bahasa UI: ID / EN)
         function updateDateTime() {
+            const locale = window.CafeSyncLocale || 'id-ID';
             const now = new Date();
             const dateOptions = {
                 weekday: 'long',
@@ -277,14 +281,16 @@
                 month: 'long',
                 day: 'numeric'
             };
-            const dateStr = now.toLocaleDateString('id-ID', dateOptions);
-            const timeStr = now.toLocaleTimeString('id-ID', {
+            const dateStr = now.toLocaleDateString(locale, dateOptions);
+            const timeStr = now.toLocaleTimeString(locale, {
                 hour: '2-digit',
                 minute: '2-digit'
             });
 
-            document.getElementById('currentDate').textContent = dateStr;
-            document.getElementById('currentTime').textContent = timeStr;
+            const dateEl = document.getElementById('currentDate');
+            const timeEl = document.getElementById('currentTime');
+            if (dateEl) dateEl.textContent = dateStr;
+            if (timeEl) timeEl.textContent = timeStr;
         }
 
         updateDateTime();
@@ -440,6 +446,7 @@
             if (link.closest('[data-bs-toggle]')) return false;
             if (link.href.startsWith('mailto:') || link.href.startsWith('tel:')) return false;
             const url = new URL(link.href, location.origin);
+            if (url.pathname.startsWith('/locale/')) return false;
             return url.origin === location.origin && url.href !== location.href;
         }
 

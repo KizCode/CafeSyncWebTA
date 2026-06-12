@@ -1,0 +1,33 @@
+---
+description: Selalu perbarui README.md saat ada perubahan fitur, UI, atau alur penggunaan
+alwaysApply: true
+---
+
+# Sinkronisasi README
+
+Saat menambah, mengubah, atau memperbaiki fitur yang memengaruhi pengguna, **perbarui `README.md` dalam sesi yang sama** sebelum menyelesaikan tugas.
+
+## Kapan wajib update README
+
+- Fitur baru atau alur kerja berubah (Kasir, Admin, Gudang)
+- Perilaku UI yang perlu diketahui pengguna (popup, cetak, filter, bahasa, tema)
+- Instalasi, deploy, akun demo, atau persyaratan berubah
+- Bug fix yang mengubah cara pakai (bukan fix internal tanpa dampak UX)
+
+## Kapan boleh tidak update
+
+- Refactor internal tanpa perubahan perilaku
+- Perbaikan typo kode / styling minor yang tidak mengubah panduan
+
+## Yang diperbarui di README
+
+1. Bagian panduan role yang terdampak
+2. Tabel **Fitur Umum** jika ada fitur baru
+3. **Instalasi / Deploy** jika langkah setup berubah
+4. Hindari file README tambahan — satu `README.md` saja
+
+## Gaya penulisan
+
+- Bahasa Indonesia, jelas untuk pengguna akhir (bukan changelog developer)
+- Langkah bernomor untuk alur baru
+- Jangan dokumentasikan setiap commit; ringkas perubahan yang relevan bagi pengguna
