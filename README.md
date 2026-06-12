@@ -1,59 +1,308 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CafeSync POS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Point of Sale (POS) untuk kafe/restoran berbasis web. Dibangun dengan Laravel 12, mendukung tiga peran pengguna (Administrator, Kasir, Gudang), antrian produksi, manajemen stok bahan baku, laporan pendapatan, dan antarmuka bilingual Indonesia / Inggris.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Daftar Isi
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. [Persyaratan](#persyaratan)
+2. [Instalasi](#instalasi)
+3. [Akun Demo](#akun-demo)
+4. [Login & Navigasi](#login--navigasi)
+5. [Panduan per Role](#panduan-per-role)
+   - [Kasir](#kasir)
+   - [Administrator](#administrator)
+   - [Gudang](#gudang)
+6. [Fitur Umum](#fitur-umum)
+7. [Perhitungan Transaksi](#perhitungan-transaksi)
+8. [Deploy ke Hosting](#deploy-ke-hosting)
+9. [Pengembangan](#pengembangan)
+10. [Teknologi](#teknologi)
+11. [Lisensi](#lisensi)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Persyaratan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2 atau lebih baru
+- Composer
+- Node.js & npm (untuk asset frontend)
+- Ekstensi PHP: `pdo`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`, `fileinfo`
+- Database: SQLite (default) atau MySQL/MariaDB
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Instalasi
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clone repository
 
-### Premium Partners
+```bash
+git clone <url-repository>
+cd CafeSync-WEB
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Install dependensi
 
-## Contributing
+```bash
+composer install
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Konfigurasi environment
 
-## Code of Conduct
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Siapkan database
 
-## Security Vulnerabilities
+**SQLite (default):**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Windows (PowerShell)
+New-Item -Path "database\database.sqlite" -ItemType File -Force
 
-## License
+# Linux / macOS
+touch database/database.sqlite
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**MySQL:** ubah pengaturan `DB_*` di file `.env`, lalu buat database kosong.
+
+### 5. Migrasi & data awal
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 6. Jalankan aplikasi
+
+```bash
+php artisan serve
+```
+
+Buka browser: **http://127.0.0.1:8000** — Anda akan diarahkan ke halaman login.
+
+Untuk development dengan hot-reload CSS/JS:
+
+```bash
+npm run dev
+```
+
+---
+
+## Akun Demo
+
+Setelah menjalankan seeder, gunakan akun berikut (password semua: **`password`**):
+
+| Username  | Role          | Akses utama                          |
+|-----------|---------------|--------------------------------------|
+| `admin`   | Administrator | Dashboard admin, produk, laporan     |
+| `kasir01` | Kasir         | POS, antrian, riwayat transaksi      |
+| `gudang01`| Gudang        | Stok bahan baku & pergerakan stok    |
+
+---
+
+## Login & Navigasi
+
+1. Buka alamat website → halaman **Login** muncul otomatis.
+2. Masukkan **username** dan **password**.
+3. Setelah login, Anda diarahkan ke halaman utama sesuai role.
+4. Gunakan **sidebar** di kiri untuk berpindah menu.
+5. Tombol **bahasa** (ID/EN) di header mengganti bahasa antarmuka.
+6. Tombol **tema** (ikon bulan/matahari) mengganti mode terang/gelap.
+
+---
+
+## Panduan per Role
+
+### Kasir
+
+Menu utama Kasir: **Kasir**, **Antrian**, **Produk**, **Transaksi**, dan **Profil**.
+
+#### Membuat transaksi
+
+1. Buka menu **Kasir**.
+2. Klik kategori di atas untuk memfilter produk, atau gunakan kotak **Cari produk**.
+3. Klik produk untuk menambahkannya ke keranjang.
+4. Atur jumlah item di keranjang (+ / −) atau hapus item yang tidak diperlukan.
+5. *(Opsional)* Aktifkan **Diskon** — pilih persen (%) atau nominal (Rp).
+6. *(Opsional)* Aktifkan **PPN 11%**.
+7. Isi **nama pelanggan** untuk antrian (bisa pakai tombol acak).
+8. Klik **Bayar** → modal pembayaran terbuka.
+9. Pilih metode: **Tunai**, **QRIS**, atau **Debit**.
+   - **Tunai:** masukkan uang diterima; gunakan tombol cepat (20rb, 50rb, 100rb, Uang Pas) jika perlu.
+   - **QRIS / Debit:** nominal otomatis sesuai total.
+10. Klik **Konfirmasi Pembayaran**.
+11. **Popup struk** muncul — klik **Cetak** untuk mencetak, **Buka Antrian** untuk melihat antrian produksi, atau **Lanjut Transaksi** untuk kembali ke POS.
+
+#### Antrian produksi
+
+1. Buka menu **Antrian**.
+2. Lihat pesanan yang sedang menunggu / diproses / selesai.
+3. Seret kartu pesanan untuk mengubah urutan.
+4. Ubah status pesanan (misalnya: Menunggu → Sedang dibuat → Selesai).
+5. Klik nama pelanggan untuk mengedit jika perlu.
+
+#### Riwayat transaksi & cetak ulang struk
+
+1. Buka menu **Transaksi**.
+2. Filter berdasarkan **tanggal mulai** dan **tanggal akhir** jika diperlukan.
+3. Klik nomor invoice, tombol **Struk**, atau ikon **Cetak** → struk muncul di **popup**.
+4. Klik **Cetak** di dalam popup untuk mencetak struk.
+
+#### Kelola produk (Kasir)
+
+Menu **Produk** memungkinkan Kasir melihat dan mengelola daftar produk serta resep bahan baku yang dipakai per produk.
+
+---
+
+### Administrator
+
+Menu utama Admin: **Dashboard**, **Produk & Resep**, **Transaksi**, **Laporan**, **Pengaturan Antrian**, dan **Profil**.
+
+#### Dashboard
+
+Ringkasan aktivitas bisnis: pendapatan, transaksi, dan statistik penting.
+
+#### Produk & Resep
+
+1. Buka **Produk & Resep**.
+2. Tambah, ubah, atau hapus produk.
+3. Atur harga, kategori, stok, dan gambar produk.
+4. Kelola **resep** — tentukan bahan baku dan jumlah per produk.
+
+#### Riwayat transaksi
+
+Sama seperti Kasir, plus tombol **Export PDF** saat filter tanggal aktif untuk mengunduh daftar transaksi.
+
+#### Laporan pendapatan
+
+1. Buka menu **Laporan**.
+2. Pilih rentang tanggal.
+3. Lihat ringkasan: total pendapatan, pengeluaran, laba kotor, jumlah transaksi.
+4. Grafik pendapatan harian dan tabel produk terlaris ditampilkan di halaman yang sama.
+5. Unduh atau pratinjau laporan dalam format PDF.
+
+#### Pengaturan antrian
+
+Atur status produksi (nama, warna, ikon) dan daftar nama acak pelanggan di antrian.
+
+---
+
+### Gudang
+
+Menu utama Gudang: **Dashboard**, **Bahan Baku**, dan **Profil**.
+
+#### Kelola bahan baku
+
+1. Buka **Bahan Baku**.
+2. Tambah bahan baru (nama, satuan, stok minimum).
+3. Klik bahan untuk mengubah datanya.
+
+#### Stok masuk & penyesuaian
+
+- **Stok masuk:** catat penerimaan bahan dari supplier.
+- **Sesuaikan stok:** koreksi stok fisik (rusak, hilang, selisih opname).
+- **Riwayat:** lihat semua pergerakan stok per bahan.
+
+Stok bahan otomatis berkurang saat produk terjual (sesuai resep produk).
+
+---
+
+## Fitur Umum
+
+| Fitur | Keterangan |
+|-------|------------|
+| Multi-role | Administrator, Kasir, Gudang dengan akses terpisah |
+| POS realtime | Keranjang, diskon, PPN, dan pembayaran tanpa reload halaman |
+| Popup struk | Struk muncul di modal setelah bayar & dari riwayat transaksi |
+| Antrian produksi | Drag-and-drop, ubah status & nama pelanggan |
+| Resep produk | Kaitkan bahan baku ke produk untuk stok otomatis |
+| Laporan & PDF | Laporan pendapatan dan export struk/transaksi ke PDF |
+| Bilingual | Bahasa Indonesia & Inggris |
+| Tema gelap | Mode terang / gelap disimpan di browser |
+| Profil | Ubah nama, email, telepon; keamanan akun & ganti password |
+
+---
+
+## Perhitungan Transaksi
+
+```
+Subtotal      = jumlah (harga × qty) semua item
+Diskon        = subtotal × (persen/100)  ATAU  nilai nominal (maks = subtotal)
+Setelah diskon = subtotal − diskon
+PPN           = setelah diskon × 11%  (jika diaktifkan)
+Grand Total   = setelah diskon + PPN
+```
+
+**Format invoice:** `INV-YYYYMMDD-XXXX`  
+- `YYYYMMDD` = tanggal transaksi  
+- `XXXX` = nomor urut harian (otomatis)
+
+---
+
+## Deploy ke Hosting
+
+Aplikasi ini membutuhkan **hosting PHP** (bukan GitHub Pages).
+
+### Document root = folder `public/` (disarankan)
+
+Arahkan document root hosting ke folder `public/`. Tidak perlu file tambahan.
+
+### Document root = folder proyek
+
+Jika hosting tidak bisa mengubah document root, gunakan file yang sudah disediakan di root repo:
+
+- `index.php` — meneruskan request ke Laravel
+- `.htaccess` — mengarahkan request ke folder `public/` (Apache)
+
+Langkah deploy umum:
+
+```bash
+composer install --optimize-autoloader --no-dev
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan migrate --force
+```
+
+Pastikan folder `storage/` dan `bootstrap/cache/` bisa ditulis web server.
+
+---
+
+## Pengembangan
+
+```bash
+# Server lokal
+php artisan serve
+
+# Asset hot-reload
+npm run dev
+
+# Build production
+npm run build
+
+# Reset database + data demo
+php artisan migrate:fresh --seed
+```
+
+---
+
+## Teknologi
+
+| Lapisan | Stack |
+|---------|-------|
+| Backend | Laravel 12, PHP 8.2+ |
+| Frontend | Blade, Bootstrap 5, jQuery |
+| Database | SQLite (default) / MySQL |
+| PDF | DomPDF |
+| Grafik | Chart.js |
+| Ikon | Font Awesome 6 |
+
+---
+
+## Lisensi
+
+MIT License
